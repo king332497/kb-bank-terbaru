@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffcb05">
+<title>Login Pengajuan Pinjaman</title>
+<style>
+:root{
+  --kb-yellow:#ffcb05;
+  --kb-yellow-strong:#f3b900;
+  --kb-yellow-soft:#fff8d9;
+  --ink:#171719;
+  --ink-soft:#404046;
+  --muted:#74747c;
+  --muted-2:#9a99a0;
+  --line:#e9e7e1;
+  --line-strong:#d8d4ca;
+  --surface:#ffffff;
+  --surface-soft:#f8f8f6;
+  --canvas:#f5f5f2;
+  --danger:#b42318;
+  --shadow:0 22px 60px rgba(24,24,27,.09);
+  --focus:0 0 0 4px rgba(255,203,5,.22);
+  --radius-card:24px;
+  --radius-control:14px;
+  --header:76px;
+  --container:1180px;
+}
+*{box-sizing:border-box}
+html{min-width:320px;background:var(--canvas)}
+html,body{margin:0;min-height:100%}
+body{
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 88% 9%,rgba(255,203,5,.16),transparent 29rem),
+    linear-gradient(180deg,#fafaf7 0%,#f5f5f2 100%);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{border:0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+header{
+  min-height:var(--header);
+  border-bottom:1px solid rgba(23,23,25,.06);
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(14px) saturate(135%);
+}
+.nav{
+  width:min(calc(100% - 40px),var(--container));
+  min-height:var(--header);
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.brand{display:inline-flex;align-items:center;gap:12px;min-width:0}
+.brand-mark{
+  width:42px;height:42px;flex:0 0 auto;border-radius:12px;display:grid;place-items:center;
+  background:var(--kb-yellow);color:#171719;border:1px solid rgba(23,23,25,.06);
+  box-shadow:0 6px 18px rgba(177,132,0,.13);
+}
+.brand-mark svg{width:27px;height:27px;display:block}
+.brand-copy{min-width:0}
+.brand-copy strong{display:block;font-size:1rem;line-height:1.05;letter-spacing:-.035em;font-weight:820}
+.brand-copy strong b{font-weight:620}
+.brand-copy span{display:block;margin-top:5px;color:#88878d;font-size:.55rem;font-weight:800;letter-spacing:.13em}
+.back{
+  min-height:42px;padding:0 14px;border:1px solid var(--line);border-radius:12px;
+  display:inline-flex;align-items:center;gap:8px;background:#fff;color:#4b4b50;
+  font-size:.76rem;font-weight:720;transition:border-color .2s ease,background-color .2s ease,transform .2s ease;
+}
+.back:hover{background:#fafaf8;border-color:#d8d5cd}
+.back:active{transform:translateY(1px)}
+.back:focus-visible{outline:none;box-shadow:var(--focus)}
+
+main{min-height:calc(100vh - var(--header));display:grid;place-items:center;padding:46px 0 64px}
+.login-layout{
+  width:min(calc(100% - 40px),1040px);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(360px,.86fr);
+  overflow:hidden;
+  border:1px solid rgba(23,23,25,.08);
+  border-radius:var(--radius-card);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+.brand-side{
+  position:relative;
+  min-height:602px;
+  overflow:hidden;
+  padding:54px 52px;
+  background:var(--kb-yellow);
+}
+.brand-side::before{
+  content:"";position:absolute;inset:auto -64px -92px auto;width:300px;height:300px;
+  border:54px solid rgba(255,255,255,.18);border-radius:50%;
+}
+.brand-side::after{
+  content:"";position:absolute;right:44px;top:42px;width:132px;height:132px;opacity:.26;
+  background-image:radial-gradient(rgba(23,23,25,.54) 1px,transparent 1px);background-size:15px 15px;
+}
+.eyebrow{
+  position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;
+  padding:8px 11px;border:1px solid rgba(23,23,25,.08);border-radius:999px;
+  background:rgba(255,255,255,.72);font-size:.63rem;font-weight:850;letter-spacing:.12em;
+}
+.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#171719}
+.brand-side h1{
+  position:relative;z-index:2;max-width:520px;margin:30px 0 17px;
+  font-size:clamp(2.8rem,5.3vw,4.55rem);line-height:.96;letter-spacing:-.058em;font-weight:820;
+}
+.brand-side>p{position:relative;z-index:2;max-width:500px;margin:0;color:#4d3e08;font-size:.94rem;line-height:1.72}
+.trust-list{position:relative;z-index:2;display:grid;gap:13px;margin:31px 0 0;padding:0;list-style:none}
+.trust-item{display:flex;align-items:flex-start;gap:11px;color:#332a0c;font-size:.78rem;font-weight:650;line-height:1.5}
+.trust-icon{width:24px;height:24px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.76)}
+.trust-icon svg{width:13px;height:13px}
+.brand-note{
+  position:absolute;left:52px;bottom:46px;z-index:2;width:min(325px,calc(100% - 104px));
+  padding:14px 15px;border:1px solid rgba(255,255,255,.42);border-radius:15px;
+  background:rgba(255,255,255,.42);backdrop-filter:blur(8px);
+}
+.brand-note small{display:block;color:#6e5600;font-size:.6rem;font-weight:850;letter-spacing:.08em}
+.brand-note strong{display:block;margin-top:5px;color:#241d06;font-size:.82rem;line-height:1.4}
+
+.login-panel{padding:47px 40px 42px;display:flex;flex-direction:column;justify-content:center;background:#fff}
+.panel-kicker{margin:0 0 9px;color:#8d6900;font-size:.62rem;font-weight:850;letter-spacing:.12em}
+.login-panel h2{margin:0;font-size:2rem;line-height:1.12;letter-spacing:-.045em;font-weight:790}
+.panel-desc{margin:10px 0 24px;color:var(--muted);font-size:.79rem;line-height:1.65}
+.security-note{
+  display:flex;align-items:flex-start;gap:10px;margin-bottom:21px;padding:11px 12px;
+  border:1px solid #eee5c2;border-radius:12px;background:#fffaf0;color:#715900;font-size:.68rem;font-weight:680;line-height:1.45;
+}
+.security-icon{width:28px;height:28px;flex:0 0 auto;border-radius:9px;display:grid;place-items:center;background:#fff0b4}
+.security-icon svg{width:15px;height:15px}
+
+.login-form{display:grid;gap:15px}
+.field{display:grid;gap:7px}
+.field-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.field label{font-size:.73rem;font-weight:760;color:#35353a}
+.field-hint{font-size:.62rem;color:var(--muted-2)}
+.input-shell{position:relative}
+.form-control{
+  width:100%;height:52px;border:1px solid var(--line-strong);border-radius:var(--radius-control);
+  padding:0 44px 0 14px;background:#fbfbfa;color:var(--ink);font-size:.8rem;outline:none;
+  pointer-events:auto;user-select:text;-webkit-user-select:text;caret-color:var(--ink);touch-action:manipulation;
+  transition:border-color .22s cubic-bezier(.2,.7,.2,1),box-shadow .22s cubic-bezier(.2,.7,.2,1),background-color .22s cubic-bezier(.2,.7,.2,1);
+}
+.form-control::placeholder{color:#aaa9ae;transition:color .22s ease,opacity .22s ease}
+.form-control:hover:not(:disabled){border-color:#c8c3b9}
+.form-control:focus-visible{border-color:#a67e00;background:#fff;box-shadow:var(--focus)}
+.input-shell:focus-within .form-control::placeholder{opacity:.72}
+.input-shell:focus-within .input-icon{color:#8a6800}
+.form-control:disabled{background:#f4f4f2;color:#aaa9ae;cursor:not-allowed;opacity:1}
+.form-control[aria-invalid="true"]{border-color:var(--danger)}
+.form-control[aria-invalid="true"]:focus-visible{box-shadow:0 0 0 4px rgba(180,35,24,.12)}
+.input-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:#8c8b91;pointer-events:none;transition:color .22s ease}
+.input-icon svg{width:100%;height:100%;display:block}
+.password-toggle{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:10px;
+  display:grid;place-items:center;background:transparent;color:#76757b;cursor:pointer;
+  transition:background-color .2s ease,color .2s ease;
+}
+.password-toggle:hover:not(:disabled){background:#f1f1ee;color:#303034}
+.password-toggle:focus-visible{outline:none;box-shadow:var(--focus)}
+.password-toggle:disabled{cursor:not-allowed;opacity:.52}
+.password-toggle svg{width:18px;height:18px}
+.password-field{padding-right:52px}
+.field-error{display:none;margin:0;color:var(--danger);font-size:.66rem;line-height:1.45}
+.field.has-error .field-error{display:block;animation:errorIn .18s ease-out}
+
+.helper-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:1px 0 2px}
+.remember{display:inline-flex;align-items:center;gap:8px;color:#76757b;font-size:.67rem}
+.remember input{width:15px;height:15px;margin:0;accent-color:#171719}
+.helper-link{color:#77767c;font-size:.67rem;font-weight:650;pointer-events:none;opacity:.72}
+.login-btn{
+  min-height:52px;width:100%;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  background:#171719;color:#fff;font-size:.8rem;font-weight:820;letter-spacing:.005em;
+  box-shadow:0 10px 24px rgba(23,23,25,.15);cursor:pointer;
+  transition:transform .18s ease,background-color .18s ease,box-shadow .18s ease,opacity .18s ease;
+}
+.login-btn:hover:not(:disabled){background:#29292d;box-shadow:0 12px 27px rgba(23,23,25,.18)}
+.login-btn:active:not(:disabled){transform:translateY(1px);box-shadow:0 7px 18px rgba(23,23,25,.15)}
+.login-btn:focus-visible{outline:none;box-shadow:var(--focus),0 10px 24px rgba(23,23,25,.15)}
+.login-btn:disabled{background:#d9d8d5;color:#8b8a8f;box-shadow:none;cursor:not-allowed}
+.login-btn.is-loading{cursor:progress}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+
+.status-note{
+  margin-top:20px;padding:12px 13px;border:1px solid var(--line);border-radius:12px;
+  background:var(--surface-soft);color:#737278;font-size:.66rem;line-height:1.55;
+}
+.status-note strong{color:#444449}
+.footer-note{margin:16px 2px 0;color:#9b9aa0;text-align:center;font-size:.61rem;line-height:1.5}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes errorIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+
+.page-loader{
+  position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:24px;
+  background:rgba(248,248,245,.94);backdrop-filter:blur(5px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .2s ease,visibility .2s ease;
+}
+.page-loader.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+.page-loader__content{display:grid;justify-items:center;gap:12px;color:#3f3f43;font-size:.74rem;font-weight:720}
+.page-loader__spinner{
+  width:34px;height:34px;border:3px solid rgba(23,23,25,.12);border-top-color:var(--kb-yellow-strong);
+  border-radius:50%;animation:spin .7s linear infinite;
+}
+
+@media(max-width:860px){
+  body{overflow-x:hidden}
+  main{
+    min-height:calc(100dvh - var(--header));
+    place-items:start center;
+    padding:24px 0 40px;
+  }
+  .login-layout{
+    grid-template-columns:1fr;
+    width:min(calc(100% - 32px),560px);
+    max-width:560px;
+    border-radius:22px;
+  }
+  .brand-side{
+    min-height:auto;
+    padding:30px 28px 28px;
+  }
+  .brand-side::before{
+    width:210px;
+    height:210px;
+    right:-86px;
+    bottom:-112px;
+    border-width:40px;
+  }
+  .brand-side::after{
+    right:22px;
+    top:20px;
+    width:100px;
+    height:100px;
+  }
+  .brand-side h1{
+    max-width:440px;
+    margin:18px 0 0;
+    font-size:clamp(1.75rem,6vw,2.35rem);
+    line-height:1.04;
+    letter-spacing:-.045em;
+  }
+  .brand-side>p,
+  .trust-list,
+  .brand-note{display:none}
+  .login-panel{padding:32px 28px 34px}
+}
+@media(max-width:430px){
+  :root{--header:64px;--radius-card:20px;--radius-control:13px}
+  html{min-width:0}
+  body{background:#f6f6f3}
+  header{min-height:var(--header)}
+  .nav{
+    width:calc(100% - 24px);
+    min-height:var(--header);
+    gap:10px;
+  }
+  .brand{gap:9px}
+  .brand-mark{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+  }
+  .brand-mark svg{width:23px;height:23px}
+  .brand-copy strong{font-size:.88rem;letter-spacing:-.025em}
+  .brand-copy span{display:none}
+  .back{
+    min-height:38px;
+    padding:0 10px;
+    border-radius:10px;
+    font-size:.7rem;
+    white-space:nowrap;
+  }
+  main{
+    padding:12px 0 max(24px,env(safe-area-inset-bottom));
+    align-items:start;
+  }
+  .login-layout{
+    width:calc(100% - 20px);
+    border-radius:20px;
+    box-shadow:0 14px 36px rgba(24,24,27,.08);
+  }
+  .brand-side{
+    padding:20px 18px 21px;
+  }
+  .brand-side::before{
+    width:165px;
+    height:165px;
+    right:-82px;
+    bottom:-104px;
+    border-width:32px;
+  }
+  .brand-side::after{display:none}
+  .eyebrow{
+    padding:7px 9px;
+    font-size:.56rem;
+    letter-spacing:.1em;
+  }
+  .brand-side h1{
+    max-width:315px;
+    margin-top:13px;
+    font-size:1.45rem;
+    line-height:1.08;
+    letter-spacing:-.035em;
+  }
+  .login-panel{
+    padding:24px 18px 26px;
+  }
+  .panel-kicker{
+    margin-bottom:7px;
+    font-size:.58rem;
+  }
+  .login-panel h2{
+    font-size:1.55rem;
+    line-height:1.14;
+    letter-spacing:-.035em;
+  }
+  .panel-desc{
+    margin:8px 0 18px;
+    font-size:.78rem;
+    line-height:1.55;
+  }
+  .security-note{
+    gap:9px;
+    margin-bottom:18px;
+    padding:10px 11px;
+    border-radius:11px;
+    font-size:.67rem;
+  }
+  .security-icon{
+    width:27px;
+    height:27px;
+    border-radius:8px;
+  }
+  .login-form{gap:14px}
+  .field{gap:7px}
+  .field label{font-size:.78rem}
+  .field-hint{font-size:.62rem}
+  .form-control{
+    height:54px;
+    padding-left:14px;
+    font-size:16px;
+    border-radius:13px;
+  }
+  .password-field{padding-right:52px}
+  .password-toggle{
+    width:40px;
+    height:40px;
+    right:7px;
+    border-radius:10px;
+  }
+  .helper-row{
+    gap:10px;
+    margin-top:0;
+    align-items:center;
+  }
+  .remember,
+  .helper-link{font-size:.68rem}
+  .login-btn{
+    min-height:54px;
+    border-radius:13px;
+    font-size:.82rem;
+  }
+  .status-note{
+    margin-top:17px;
+    padding:10px 11px;
+    border-radius:11px;
+    font-size:.63rem;
+    line-height:1.5;
+  }
+  .footer-note{
+    margin-top:14px;
+    font-size:.59rem;
+  }
+}
+@media(max-width:350px){
+  .nav{gap:8px}
+  .brand{gap:8px}
+  .brand-copy strong{font-size:.82rem}
+  .back{padding:0 8px;font-size:.66rem}
+  .login-layout{width:calc(100% - 16px)}
+  .brand-side{padding-inline:16px}
+  .brand-side h1{font-size:1.32rem}
+  .login-panel{padding:22px 16px 24px}
+  .login-panel h2{font-size:1.45rem}
+  .security-note{font-size:.64rem}
+  .helper-row{gap:8px}
+  .remember,.helper-link{font-size:.64rem}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <a class="brand" href="/" aria-label="KB Bank Finance">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 7v34"/><path d="M8 13l28 22"/><path d="M8 35l28-22"/><path d="M19 24h21"/>
+          </g>
+        </svg>
+      </span>
+      <span class="brand-copy">
+        <strong>KB Bank <b>Finance</b></strong>
+        <span>LAYANAN PENGAJUAN DIGITAL</span>
+      </span>
+    </a>
+    <a class="back" href="/"><span aria-hidden="true">←</span>Kembali</a>
+  </div>
+</header>
+
+<main>
+  <section class="login-layout" aria-labelledby="login-title">
+    <div class="brand-side">
+      <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>AKSES LAYANAN</span>
+      <h1>Akses layanan Anda dengan lebih nyaman.</h1>
+      <p>Antarmuka login dirancang ringkas dan fokus, dengan hierarchy yang jelas untuk pengalaman desktop maupun smartphone.</p>
+
+      <ul class="trust-list" aria-label="Keunggulan antarmuka">
+        <li class="trust-item">
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m5 12 4 4 10-10"/></svg></span>
+          <span>Layout responsif dan nyaman digunakan pada berbagai ukuran layar.</span>
+        </li>
+        <li class="trust-item">
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3 4.5 6v5.5c0 4.7 3.1 7.7 7.5 9.5 4.4-1.8 7.5-4.8 7.5-9.5V6L12 3Z"/></svg></span>
+          <span>Elemen login ditata untuk menjaga fokus pada proses masuk dan informasi penting.</span>
+        </li>
+        <li class="trust-item">
+          <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 11V8a4 4 0 0 1 8 0v3"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg></span>
+          <span>Jangan membagikan kata sandi atau kode keamanan kepada pihak lain.</span>
+        </li>
+      </ul>
+
+      <div class="brand-note">
+        <small>KB BANK FINANCE</small>
+        <strong>Pengalaman login yang sederhana, terstruktur, dan konsisten.</strong>
+      </div>
+    </div>
+
+    <div class="login-panel">
+      <p class="panel-kicker">KB BANK FINANCE</p>
+      <h2 id="login-title">Masuk ke Akun Anda</h2>
+      <p class="panel-desc">Silakan masuk untuk melanjutkan layanan Anda.</p>
+
+      <div class="security-note" role="note">
+        <span class="security-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        </span>
+        <span>Jaga kerahasiaan informasi akun dan pastikan Anda menggunakan kanal yang benar.</span>
+      </div>
+
+      <form class="login-form" id="loginForm" novalidate aria-describedby="login-status">
+        <div class="field" id="emailField">
+          <div class="field-head">
+            <label for="email">Email</label>
+            <span class="field-hint">Wajib</span>
+          </div>
+          <div class="input-shell">
+            <input class="form-control" id="email" name="email" type="email" inputmode="email" autocomplete="username" placeholder="nama@email.com">
+            <span class="input-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+            </span>
+          </div>
+          <p class="field-error" id="emailError">Masukkan alamat email yang valid.</p>
+        </div>
+
+        <div class="field" id="passwordField">
+          <div class="field-head">
+            <label for="password">Password</label>
+            <span class="field-hint">Minimal 8 karakter</span>
+          </div>
+          <div class="input-shell">
+            <input class="form-control password-field" id="password" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password">
+            <button class="password-toggle" id="passwordToggle" type="button" aria-label="Tampilkan password" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+            </button>
+          </div>
+          <p class="field-error" id="passwordError">Password belum dapat diverifikasi pada versi ini.</p>
+        </div>
+
+        <div class="helper-row">
+          <label class="remember"><input id="remember" type="checkbox" disabled> <span>Ingat saya</span></label>
+          <span class="helper-link" aria-disabled="true">Lupa password?</span>
+        </div>
+
+        <button class="login-btn" id="loginButton" type="submit" disabled aria-disabled="true">Masuk</button>
+      </form>
+
+      <div class="status-note" id="login-status" role="status">
+        <strong>Status integrasi:</strong> field Email dan Password sudah dapat diisi. Proses autentikasi belum tersedia pada file sumber ini, sehingga tombol Masuk tetap dinonaktifkan agar tidak membuat proses login baru yang tidak terverifikasi.
+      </div>
+
+      <p class="footer-note">Pastikan Anda tidak membagikan password, PIN, OTP, atau kode keamanan kepada pihak lain.</p>
+    </div>
+  </section>
+</main>
+
+<div class="page-loader" id="pageLoader" aria-hidden="true">
+  <div class="page-loader__content" role="status" aria-live="polite">
+    <span class="page-loader__spinner" aria-hidden="true"></span>
+    <span>Memuat halaman...</span>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  // UI-only guard: source version did not contain authentication logic.
+  // Credentials are not stored, logged, transmitted, or submitted here.
+  const form = document.getElementById('loginForm');
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+  const passwordToggle = document.getElementById('passwordToggle');
+  const pageLoader = document.getElementById('pageLoader');
+
+  // Pastikan field login tetap dapat diketik tanpa mengubah proses autentikasi.
+  [email, password].forEach((input) => {
+    if (!input) return;
+    input.disabled = false;
+    input.readOnly = false;
+    input.removeAttribute('aria-disabled');
+  });
+
+  if (form) {
+    form.addEventListener('submit', (event) => event.preventDefault());
+  }
+
+  if (password && passwordToggle) {
+    passwordToggle.addEventListener('click', () => {
+      const isVisible = password.type === 'text';
+      password.type = isVisible ? 'password' : 'text';
+      passwordToggle.setAttribute('aria-pressed', String(!isVisible));
+      passwordToggle.setAttribute('aria-label', isVisible ? 'Tampilkan password' : 'Sembunyikan password');
+    });
+  }
+
+  if (pageLoader) {
+    const showPageLoader = () => {
+      pageLoader.classList.add('is-visible');
+      pageLoader.setAttribute('aria-hidden', 'false');
+    };
+
+    const hidePageLoader = () => {
+      pageLoader.classList.remove('is-visible');
+      pageLoader.setAttribute('aria-hidden', 'true');
+    };
+
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href]');
+      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (link.hasAttribute('download') || (link.target && link.target !== '_self')) return;
+
+      const url = new URL(link.href, window.location.href);
+      if (url.origin !== window.location.origin || url.href === window.location.href || url.hash) return;
+
+      event.preventDefault();
+      showPageLoader();
+      window.setTimeout(() => { window.location.href = url.href; }, 240);
+    });
+
+    window.addEventListener('pageshow', hidePageLoader);
+  }
+})();
+</script>
+</body>
+</html>
+<!-- redeploy -->
