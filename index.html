@@ -4659,6 +4659,176 @@
     }
 </style>
 
+
+  <style id="kbLuxuryGoldUpgradeV2">
+    /* KB Bank Luxury Gold visual upgrade — presentation layer only. */
+    :root {
+      --kb-gold-950:#2b1b03;
+      --kb-gold-900:#3a2505;
+      --kb-gold-800:#5b3b08;
+      --kb-gold-700:#806012;
+      --kb-gold-600:#a67c10;
+      --kb-gold-500:#c89513;
+      --kb-gold-400:#e2b83b;
+      --kb-gold-300:#f0d879;
+      --kb-gold-200:#f7e9b6;
+      --kb-gold-100:#fff7df;
+      --kb-ivory:#fffdf7;
+      --kb-ivory-2:#fbf6e9;
+      --kb-luxury-shadow:0 24px 70px rgba(77,51,5,.13);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 8% 5%, rgba(255,203,5,.12), transparent 28rem),
+        linear-gradient(180deg,#fffdf8 0%,#fbf6ea 54%,#fffdf9 100%);
+    }
+
+    .site-header {
+      border-bottom-color:rgba(126,91,9,.12);
+      background:linear-gradient(180deg,rgba(255,254,249,.95),rgba(255,250,235,.90));
+      box-shadow:0 8px 28px rgba(75,50,4,.05);
+    }
+    .brand-line { background:linear-gradient(90deg,#ffcb05,#c58c0a); }
+    .nav-links a::after,
+    .nav-links .nav-item-static::after { background:linear-gradient(90deg,#ffcb05,#b97e08); }
+    .menu-toggle,
+    .mobile-menu {
+      border-color:rgba(126,91,9,.14);
+      background:rgba(255,253,246,.97);
+    }
+
+    .hero {
+      min-height:635px;
+      background-image:
+        linear-gradient(90deg,rgba(255,253,247,.97) 0%,rgba(255,252,242,.90) 35%,rgba(255,249,229,.58) 62%,rgba(255,247,217,.24) 100%),
+        url("assets/luxury-gold-background.png");
+      background-size:cover;
+      background-position:center center;
+      background-repeat:no-repeat;
+      border-bottom:1px solid rgba(175,126,9,.13);
+    }
+    .hero::before {
+      width:620px;
+      height:620px;
+      right:-280px;
+      top:-270px;
+      background:radial-gradient(circle,rgba(255,203,5,.22),rgba(205,145,10,.06) 52%,transparent 72%);
+      filter:blur(2px);
+    }
+    .hero::after {
+      opacity:.31;
+      background-image:radial-gradient(rgba(177,127,8,.75) 1px,transparent 1px);
+    }
+    .eyebrow {
+      border:1px solid rgba(169,121,7,.18);
+      background:linear-gradient(180deg,rgba(255,251,234,.95),rgba(255,243,196,.82));
+      color:#6d4d05;
+      box-shadow:0 8px 22px rgba(128,87,0,.07);
+    }
+
+    .hero .btn-primary,
+    .mobile-sticky-cta a,
+    .loan-card .btn-primary {
+      border-color:rgba(93,61,4,.10);
+      background:linear-gradient(135deg,#ffcf22 0%,#e8ad13 55%,#c68d09 100%);
+      color:#251a02;
+      box-shadow:0 13px 30px rgba(176,126,8,.22), inset 0 1px 0 rgba(255,255,255,.55);
+    }
+    .hero .btn-primary:hover,
+    .mobile-sticky-cta a:hover,
+    .loan-card .btn-primary:hover {
+      background:linear-gradient(135deg,#ffd94d 0%,#efb91e 58%,#ce960d 100%);
+      box-shadow:0 16px 34px rgba(176,126,8,.28), inset 0 1px 0 rgba(255,255,255,.65);
+    }
+
+    .hero-visual {
+      filter:drop-shadow(0 28px 45px rgba(90,57,3,.12));
+    }
+    .hero-campaign-v6.kb-hero-dynamic-only {
+      border:1px solid rgba(177,127,8,.16);
+      background:linear-gradient(145deg,rgba(255,255,255,.76),rgba(255,244,210,.46));
+      box-shadow:0 28px 75px rgba(100,66,5,.13), inset 0 1px 0 rgba(255,255,255,.92);
+      backdrop-filter:blur(12px) saturate(120%);
+    }
+
+    .kb-latest-section {
+      background:
+        radial-gradient(circle at 12% 0%,rgba(255,203,5,.10),transparent 25rem),
+        linear-gradient(180deg,#fffdf8 0%,#faf4e6 100%);
+      border-bottom:1px solid rgba(143,102,8,.10);
+    }
+    .kb-market-card {
+      border-color:rgba(131,91,5,.14);
+      background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(255,250,234,.92));
+      box-shadow:0 18px 44px rgba(93,61,4,.08);
+    }
+    .kb-card-icon {
+      background:linear-gradient(145deg,#fff5cd,#f1d36f);
+      color:#765207;
+    }
+
+    .loan-products {
+      position:relative;
+      isolation:isolate;
+      background:
+        linear-gradient(rgba(255,253,247,.92),rgba(255,249,234,.95)),
+        url("assets/luxury-gold-background.png");
+      background-size:cover;
+      background-position:center bottom;
+      border-top:1px solid rgba(165,116,6,.09);
+      border-bottom:1px solid rgba(165,116,6,.11);
+    }
+    .loan-products::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      background:radial-gradient(circle at 76% 20%,rgba(255,203,5,.12),transparent 28rem);
+    }
+    .loan-card {
+      border-color:rgba(139,98,7,.15);
+      background:linear-gradient(155deg,rgba(255,255,255,.97),rgba(255,249,229,.92));
+      box-shadow:0 17px 44px rgba(83,54,3,.08), inset 0 1px 0 rgba(255,255,255,.8);
+    }
+    .loan-card:hover {
+      border-color:rgba(177,126,7,.28);
+      box-shadow:0 24px 58px rgba(88,56,2,.13), inset 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    .kb-official-footer {
+      border-top:1px solid rgba(255,203,5,.26);
+      background:
+        radial-gradient(circle at 85% 0%,rgba(255,203,5,.10),transparent 28rem),
+        linear-gradient(145deg,#17140d 0%,#211a0d 48%,#2d2109 100%);
+    }
+    .kb-official-footer a:hover { color:#f4cf58; }
+
+    .kb-chat-toggle,
+    .kb-chat-fab,
+    [class*="chat"] button:not(.kb-chat-close) {
+      --gold-chat-shadow:0 14px 30px rgba(120,81,4,.18);
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        min-height:auto;
+        background-image:
+          linear-gradient(180deg,rgba(255,253,247,.97) 0%,rgba(255,250,235,.90) 52%,rgba(255,247,218,.70) 100%),
+          url("assets/luxury-gold-background.png");
+        background-position:56% center;
+      }
+      .hero::before { right:-390px; top:-320px; opacity:.8; }
+      .hero::after { opacity:.18; }
+      .loan-products { background-position:66% center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-visual { filter:none; }
+    }
+  </style>
+
 </head>
 <body>
   <a class="skip-link" href="#content">Lewati ke konten</a>

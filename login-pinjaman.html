@@ -724,6 +724,138 @@ body{
   background-attachment:fixed!important;
 }
 </style>
+
+<style id="kbLuxuryGoldUpgradeV2">
+/* KB Bank Luxury Gold login visual upgrade — no flow/JS changes. */
+:root{
+  --kb-gold-deep:#3d2907;
+  --kb-gold:#c89513;
+  --kb-gold-light:#f1d269;
+  --kb-cream:#fffaf0;
+}
+html{
+  background:#f7f1e3;
+}
+body{
+  background:
+    linear-gradient(90deg,rgba(255,253,248,.94),rgba(255,249,232,.79)),
+    url("assets/luxury-gold-background.png") center/cover fixed no-repeat;
+}
+header{
+  border-bottom-color:rgba(126,91,9,.13);
+  background:linear-gradient(180deg,rgba(255,254,249,.96),rgba(255,251,239,.91));
+  box-shadow:0 8px 28px rgba(75,50,4,.05);
+}
+.brand-mark{
+  background:linear-gradient(145deg,#ffd326,#d9a30f);
+  border-color:rgba(106,72,5,.12);
+  box-shadow:0 9px 24px rgba(166,116,5,.18),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.back{
+  border-color:rgba(126,91,9,.16);
+  background:rgba(255,253,247,.86);
+}
+.login-layout{
+  border-color:rgba(116,79,5,.16);
+  background:rgba(255,255,255,.90);
+  box-shadow:0 30px 88px rgba(79,51,4,.16);
+  backdrop-filter:blur(16px) saturate(118%);
+}
+.brand-side{
+  background:
+    linear-gradient(135deg,rgba(255,252,234,.90) 0%,rgba(255,226,122,.74) 45%,rgba(210,154,24,.72) 100%),
+    url("assets/luxury-gold-background.png") 70% center/cover no-repeat;
+  border-right:1px solid rgba(106,72,5,.13);
+}
+.brand-side::before{
+  border-color:rgba(255,255,255,.27);
+  box-shadow:0 0 0 1px rgba(134,91,4,.06);
+}
+.brand-side::after{
+  opacity:.20;
+  background-image:radial-gradient(rgba(91,59,4,.58) 1px,transparent 1px);
+}
+.eyebrow{
+  border-color:rgba(96,63,4,.13);
+  background:rgba(255,253,246,.70);
+  box-shadow:0 8px 22px rgba(100,65,4,.08);
+  backdrop-filter:blur(8px);
+}
+.brand-side>p,
+.trust-item{color:#4d3506}
+.trust-icon{
+  background:rgba(255,253,245,.78);
+  box-shadow:0 5px 16px rgba(100,65,4,.08);
+}
+.brand-note{
+  border-color:rgba(255,255,255,.50);
+  background:rgba(255,252,239,.56);
+  box-shadow:0 12px 32px rgba(101,67,5,.09);
+}
+.login-panel{
+  background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(255,252,243,.96));
+}
+.panel-kicker{color:#8a6208}
+.security-note{
+  border-color:#ead9a1;
+  background:linear-gradient(145deg,#fffdf4,#fff5d6);
+}
+.security-icon{background:linear-gradient(145deg,#fff1b2,#efd06c)}
+.form-control{
+  border-color:#ddd3bd;
+  background:#fffdf8;
+}
+.form-control:hover:not(:disabled){border-color:#c9b88f}
+.form-control:focus-visible{
+  border-color:#a57910;
+  box-shadow:0 0 0 4px rgba(213,166,45,.18);
+}
+.login-btn{
+  background:linear-gradient(135deg,#2b210f 0%,#17130c 100%);
+  color:#fff8df;
+  box-shadow:0 12px 28px rgba(44,31,7,.20),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.login-btn:hover:not(:disabled){
+  background:linear-gradient(135deg,#41310d 0%,#21190a 100%);
+  box-shadow:0 14px 32px rgba(44,31,7,.24);
+}
+.status-note{
+  border-color:#e8dfcc;
+  background:linear-gradient(145deg,#fbfaf6,#fffaf0);
+}
+.page-loader{
+  background:rgba(251,247,236,.94);
+}
+.page-loader__spinner{border-top-color:#c38e0b}
+@media(max-width:860px){
+  body{
+    background:
+      linear-gradient(180deg,rgba(255,253,248,.95),rgba(255,247,221,.86)),
+      url("assets/luxury-gold-background.png") 64% center/cover fixed no-repeat;
+  }
+  .brand-side{
+    background:
+      linear-gradient(115deg,rgba(255,252,235,.90),rgba(234,186,57,.77)),
+      url("assets/luxury-gold-background.png") 68% 66%/cover no-repeat;
+    border-right:0;
+    border-bottom:1px solid rgba(106,72,5,.12);
+  }
+}
+@media(max-width:430px){
+  body{
+    background:
+      linear-gradient(180deg,rgba(255,253,248,.96),rgba(255,247,223,.89)),
+      url("assets/luxury-gold-background.png") 70% center/cover fixed no-repeat;
+  }
+  .login-layout{box-shadow:0 18px 48px rgba(79,51,4,.14)}
+  .brand-side{
+    background:
+      linear-gradient(110deg,rgba(255,252,236,.94),rgba(229,174,35,.78)),
+      url("assets/luxury-gold-background.png") 74% 72%/cover no-repeat;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
