@@ -179,6 +179,16 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
   KBFlow.restoreForm(form, 'employment');
 
   const rawDigits = value => value.replace(/\D/g, '');
+  const monthlyIncomeInput = document.getElementById('monthlyIncome');
+
+  function syncPreEligibility() {
+    if (!window.KBFlow?.evaluateLoanEligibility || !window.KBFlow?.get || !window.KBFlow?.write) return null;
+    const loanData = KBFlow.get('loanDetail', {}) || {};
+    const result = KBFlow.evaluateLoanEligibility(monthlyIncomeInput?.value ?? '', loanData.loanAmount ?? '');
+    KBFlow.write('eligibility', result);
+    return result;
+  }
+
   const formatRupiahDigits = value => {
     const digits = rawDigits(value).slice(0, 15);
     if (!digits) return '';
@@ -192,8 +202,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
       field?.classList.remove('is-error');
       input.removeAttribute('aria-invalid');
       status.classList.remove('show');
+      if (input.id === 'monthlyIncome') syncPreEligibility();
     });
   });
+
+  syncPreEligibility();
 
   const validators = {
     employmentStatus: v => Boolean(v),
@@ -242,6 +255,7 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
       return;
     }
     KBFlow.saveForm(form, 'employment');
+    syncPreEligibility();
     status.innerHTML = '<strong>Data telah lengkap.</strong> Membuka Tahap 7 — Detail Pengajuan …';
     status.classList.add('show');
     status.scrollIntoView({behavior:'smooth',block:'nearest'});

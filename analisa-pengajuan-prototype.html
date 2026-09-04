@@ -1,0 +1,1598 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Analisa Pengajuan — Prototype Lokal</title>
+<style>
+:root{
+  --bg:#fffdf7;
+  --bg2:#f8edcf;
+  --panel:rgba(255,255,255,.84);
+  --line:rgba(190,137,23,.20);
+  --gold:#d4a62f;
+  --gold2:#a96f0b;
+  --gold3:#754803;
+  --cream:#fff5d7;
+  --text:#211a0e;
+  --muted:#786f60;
+  --green:#4d8f58;
+  --shadow:0 30px 90px rgba(137,93,13,.14);
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+html{background:var(--bg)}
+body{
+  margin:0;
+  min-height:100vh;
+  overflow-x:hidden;
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 50% -8%,rgba(255,219,105,.36),transparent 34%),
+    radial-gradient(circle at 10% 70%,rgba(228,184,71,.16),transparent 30%),
+    linear-gradient(145deg,#fffefb 0%,#fff8e9 46%,#f6e6bd 100%);
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;
+  background-image:
+    linear-gradient(rgba(151,104,17,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(151,104,17,.035) 1px,transparent 1px);
+  background-size:34px 34px;
+  mask-image:linear-gradient(to bottom,black,transparent 78%);
+}
+.shell{width:min(1180px,calc(100% - 34px));margin:auto;padding:22px 0 38px}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:5px 2px 20px;
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:-.02em}
+.brand-mark{
+  width:40px;height:40px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(145deg,#f5d76f,#b7780e 58%,#6f4606);
+  color:#1a1205;box-shadow:0 12px 28px rgba(181,123,18,.24),0 0 0 1px rgba(255,255,255,.26) inset;
+}
+.brand small{display:block;margin-top:2px;color:#ad9f7b;font-size:9px;letter-spacing:.15em;text-transform:uppercase}
+.live-chip{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;
+  border:1px solid rgba(194,139,21,.18);background:rgba(255,255,255,.72);
+  color:#6f6145;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+}
+.live-chip i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(116,184,120,.08);animation:livePulse 1.8s infinite}
+@keyframes livePulse{50%{box-shadow:0 0 0 9px rgba(116,184,120,0)}}
+
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:620px;border-radius:34px;border:1px solid rgba(229,188,78,.24);
+  background:
+    radial-gradient(circle at 74% 20%,rgba(255,216,102,.36),transparent 30%),
+    radial-gradient(circle at 18% 88%,rgba(232,190,88,.15),transparent 32%),
+    linear-gradient(135deg,rgba(255,255,255,.98),rgba(255,248,229,.98));
+  box-shadow:var(--shadow),0 0 0 1px rgba(255,255,255,.88) inset;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:-2;opacity:.34;
+  background:
+    linear-gradient(115deg,transparent 0 59%,rgba(233,196,92,.07) 59.2% 59.45%,transparent 59.7%),
+    linear-gradient(115deg,transparent 0 68%,rgba(255,255,255,.035) 68.2% 68.8%,transparent 69%);
+}
+.hero::after{
+  content:"";position:absolute;width:520px;height:520px;border-radius:50%;right:-260px;top:-250px;z-index:-1;
+  border:1px solid rgba(238,198,91,.08);box-shadow:0 0 0 85px rgba(238,198,91,.018),0 0 0 165px rgba(238,198,91,.012);
+}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,.82fr);min-height:620px}
+.copy{padding:clamp(34px,5vw,68px);display:flex;flex-direction:column;justify-content:center;position:relative;z-index:3}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;width:max-content;
+  color:#d7b95f;font-size:10px;font-weight:900;letter-spacing:.17em;text-transform:uppercase;
+}
+.eyebrow::before{content:"";width:30px;height:2px;background:linear-gradient(90deg,#7e5208,#edcb69);border-radius:9px}
+h1{
+  margin:19px 0 17px;max-width:700px;
+  font-family:Georgia,"Times New Roman",serif;font-size:clamp(44px,5.5vw,76px);line-height:.94;letter-spacing:-.048em;font-weight:500;
+}
+h1 em{font-style:normal;color:#e7c45e}
+.lead{max-width:650px;margin:0;color:#756b5c;font-size:15px;line-height:1.74}
+.state-card{
+  margin-top:29px;max-width:650px;border:1px solid var(--line);border-radius:22px;padding:18px;
+  background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  backdrop-filter:blur(12px);
+}
+.state-top{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.state-label{font-size:11px;color:#7b705f;font-weight:750}
+.state-current{font-size:13px;font-weight:850;color:#fff3ca;text-align:right}
+.progress-track{height:8px;margin-top:14px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+.progress-bar{
+  height:100%;width:0;border-radius:inherit;
+  background:linear-gradient(90deg,#8b5908,#d8a932,#ffe58d);
+  box-shadow:0 0 24px rgba(231,196,94,.28);
+  transition:width .8s ease;
+}
+.state-bottom{display:flex;justify-content:space-between;gap:12px;margin-top:11px;font-size:10px;color:#827866}
+.timer{color:#f1d985;font-weight:900;font-variant-numeric:tabular-nums;font-size:12px}
+
+.visual{position:relative;min-height:620px;display:grid;place-items:center;padding:30px}
+.scene{position:relative;width:min(455px,100%);aspect-ratio:1/1}
+.orbit{
+  position:absolute;inset:7%;border-radius:50%;border:1px solid rgba(183,129,16,.20);
+  animation:orbitRotate 18s linear infinite;
+}
+.orbit::before,.orbit::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(183,129,16,.12)}
+.orbit::before{inset:12%}
+.orbit::after{inset:25%}
+@keyframes orbitRotate{to{transform:rotate(360deg)}}
+
+.radar{position:absolute;inset:20%;border-radius:50%;display:grid;place-items:center}
+.ring{
+  position:absolute;border-radius:50%;border:1px solid rgba(190,136,24,.22);
+  animation:radarPulse 3.2s ease-out infinite;
+}
+.ring.r1{inset:28%}
+.ring.r2{inset:14%;animation-delay:1.05s}
+.ring.r3{inset:0;animation-delay:2.1s}
+@keyframes radarPulse{
+  0%{opacity:.08;transform:scale(.75)}
+  42%{opacity:.6}
+  100%{opacity:0;transform:scale(1.12)}
+}
+.radar-sweep{
+  position:absolute;inset:5%;border-radius:50%;
+  background:conic-gradient(from 0deg,transparent 0 72%,rgba(213,161,42,.10) 86%,rgba(255,210,91,.28) 92%,transparent 100%);
+  animation:sweep 4.8s linear infinite;filter:blur(.2px);
+}
+@keyframes sweep{to{transform:rotate(360deg)}}
+
+.doc-stack{position:absolute;inset:24% 21% 22%;filter:drop-shadow(0 22px 34px rgba(119,82,14,.16));animation:docFloat 4.6s ease-in-out infinite}
+@keyframes docFloat{50%{transform:translateY(-11px) rotate(-.7deg)}}
+.doc-back,.doc-main{
+  position:absolute;border-radius:18px;border:1px solid rgba(233,196,92,.24);
+  background:linear-gradient(160deg,#fffaf0,#f5e3b8);
+}
+.doc-back{inset:10% 0 0 10%;transform:rotate(8deg);opacity:.72}
+.doc-main{inset:0 9% 10% 0;padding:22px;overflow:hidden;box-shadow:0 24px 44px rgba(119,82,14,.12)}
+.doc-main::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#7b4e05,#e9bf50,#fff0a9,#8e5f0b)}
+.doc-logo{display:flex;align-items:center;gap:8px;color:#8b600b;font-size:10px;font-weight:900;letter-spacing:.1em}
+.doc-logo i{width:9px;height:9px;border-radius:3px;background:#d6a530;transform:rotate(45deg)}
+.doc-line{height:7px;border-radius:999px;background:rgba(117,84,22,.10);margin-top:15px}
+.doc-line.gold{background:linear-gradient(90deg,rgba(224,182,70,.52),rgba(224,182,70,.08))}
+.doc-line.w88{width:88%}.doc-line.w70{width:70%}.doc-line.w55{width:55%}
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:20px}
+.doc-box{height:48px;border-radius:11px;border:1px solid rgba(233,196,92,.12);background:rgba(255,255,255,.025)}
+.doc-seal{position:absolute;right:20px;bottom:18px;width:54px;height:54px;border-radius:50%;border:1px solid rgba(231,193,83,.32);display:grid;place-items:center;color:#96680d;font-size:9px;font-weight:900;letter-spacing:.08em;transform:rotate(-8deg)}
+.doc-seal::after{content:"CHECK";border-top:1px solid rgba(231,193,83,.24);padding-top:3px}
+
+.magnifier{
+  position:absolute;width:142px;height:142px;border-radius:50%;
+  border:2px solid rgba(197,142,24,.55);
+  background:radial-gradient(circle at 38% 30%,rgba(255,255,255,.72),rgba(244,210,121,.18) 48%,rgba(255,255,255,.32));
+  backdrop-filter:blur(2px);box-shadow:0 14px 44px rgba(124,88,18,.14),0 0 34px rgba(231,193,83,.12) inset;
+  top:22%;left:12%;z-index:5;animation:scanMove 5.4s cubic-bezier(.55,.05,.35,.95) infinite alternate;
+}
+.magnifier::after{
+  content:"";position:absolute;width:72px;height:17px;border-radius:999px;
+  background:linear-gradient(90deg,#e3bc55,#9b690c);right:-56px;bottom:-22px;transform:rotate(47deg);
+  box-shadow:0 7px 17px rgba(113,79,13,.14);
+}
+.magnifier::before{
+  content:"";position:absolute;inset:16%;border-radius:50%;
+  background:linear-gradient(115deg,transparent 15%,rgba(255,255,255,.16) 37%,transparent 57%);
+}
+@keyframes scanMove{
+  0%{transform:translate(-5px,5px) rotate(-6deg)}
+  50%{transform:translate(105px,75px) rotate(4deg)}
+  100%{transform:translate(38px,160px) rotate(-2deg)}
+}
+
+.scan-line{
+  position:absolute;left:28%;right:26%;height:2px;top:35%;z-index:4;
+  background:linear-gradient(90deg,transparent,#f4d675,transparent);
+  box-shadow:0 0 14px rgba(244,214,117,.62);
+  animation:scanLine 3.1s ease-in-out infinite;
+}
+@keyframes scanLine{0%,100%{transform:translateY(-60px);opacity:0}25%,75%{opacity:1}50%{transform:translateY(150px)}}
+
+.float-chip{
+  position:absolute;z-index:7;padding:9px 11px;border-radius:13px;
+  border:1px solid rgba(232,195,91,.16);background:rgba(17,14,9,.72);
+  backdrop-filter:blur(10px);box-shadow:0 14px 30px rgba(0,0,0,.22);
+  color:#cabc99;font-size:9px;font-weight:850;letter-spacing:.04em;
+}
+.float-chip strong{display:block;color:#f5dfa0;font-size:10px;margin-bottom:2px}
+.chip-a{left:2%;bottom:21%;animation:chipFloat 4s ease-in-out infinite}
+.chip-b{right:-1%;top:22%;animation:chipFloat 4.7s ease-in-out infinite .8s}
+.chip-c{right:3%;bottom:12%;animation:chipFloat 4.3s ease-in-out infinite 1.2s}
+@keyframes chipFloat{50%{transform:translateY(-8px)}}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.step{
+  position:relative;padding:13px;border-radius:16px;border:1px solid rgba(238,201,98,.11);
+  background:rgba(255,255,255,.72);min-height:78px;
+}
+.step::before{content:"";position:absolute;left:13px;top:13px;width:7px;height:7px;border-radius:50%;background:#6f654e}
+.step strong{display:block;margin:14px 0 4px;color:#e6dcc2;font-size:10px}
+.step span{color:#8e8369;font-size:9px;line-height:1.4}
+.step.active{border-color:rgba(238,201,98,.32);background:rgba(225,181,64,.055)}
+.step.active::before{background:#e9c45c;box-shadow:0 0 0 5px rgba(233,196,92,.08)}
+.step.done::before{background:#6fa773}
+.step.done strong{color:#f5e8bf}
+
+.notice{
+  display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding:12px 14px;border-radius:15px;
+  border:1px solid rgba(185,132,18,.16);background:rgba(255,255,255,.68);
+  color:#746a59;font-size:10px;line-height:1.55;
+}
+.notice b{color:#7c5a16}
+
+.complete-panel{display:none;margin-top:16px;padding:15px;border-radius:17px;background:rgba(74,118,70,.11);border:1px solid rgba(111,167,115,.24);color:#315b36;font-size:11px;line-height:1.55}
+.complete-panel.show{display:block}
+
+@media(max-width:900px){
+  .hero{min-height:auto}.hero-grid{grid-template-columns:1fr;min-height:auto}.copy{padding:38px 28px 16px}
+  .visual{min-height:500px;padding:8px 26px 30px}.scene{width:min(440px,94vw)}
+  .steps{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .shell{width:calc(100% - 18px);padding-top:12px}.topbar{padding-bottom:13px}.live-chip{padding:8px 10px;font-size:9px}
+  .hero{border-radius:25px}.copy{padding:29px 19px 8px}h1{font-size:44px}.lead{font-size:13px}
+  .state-card{padding:15px;border-radius:18px}.state-top{align-items:flex-start;flex-direction:column}.state-current{text-align:left}
+  .visual{min-height:430px;padding:0 12px 22px}.scene{width:min(390px,100%)}
+  .magnifier{width:112px;height:112px}.magnifier::after{width:58px;height:14px;right:-45px;bottom:-19px}
+  .float-chip{font-size:8px}.steps{grid-template-columns:1fr 1fr;gap:7px}.step{padding:11px;min-height:72px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}
+}
+
+/* ===== Senior-friendly readability enhancement ===== */
+body{
+  color:#16120b;
+  font-size:18px;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.brand{
+  font-size:18px;
+  font-weight:900;
+}
+.brand small{
+  color:#5f5648;
+  font-size:11px;
+  font-weight:800;
+}
+.live-chip{
+  color:#493f30;
+  font-size:12px;
+  font-weight:900;
+}
+.eyebrow{
+  color:#684708;
+  font-size:13px;
+  font-weight:950;
+  letter-spacing:.13em;
+}
+h1{
+  color:#17120a;
+  font-weight:700;
+  line-height:1.02;
+}
+h1 em{
+  color:#8d5e08;
+  font-weight:700;
+}
+.lead{
+  color:#3f392f;
+  font-size:18px;
+  line-height:1.8;
+  font-weight:650;
+  max-width:690px;
+}
+.state-label{
+  color:#4b4338;
+  font-size:14px;
+  font-weight:850;
+}
+.state-current{
+  color:#4d3508;
+  font-size:16px;
+  font-weight:950;
+  line-height:1.45;
+}
+.state-bottom{
+  color:#51493e;
+  font-size:13px;
+  font-weight:800;
+}
+.timer{
+  color:#694707;
+  font-size:17px;
+  font-weight:950;
+}
+.step{
+  min-height:92px;
+}
+.step strong{
+  color:#2a251e;
+  font-size:13px;
+  font-weight:950;
+  line-height:1.35;
+}
+.step span{
+  color:#4f473c;
+  font-size:12px;
+  line-height:1.6;
+  font-weight:650;
+}
+.step.active strong,
+.step.done strong{
+  color:#3e2b07;
+}
+.notice{
+  color:#4b4337;
+  font-size:12px;
+  line-height:1.7;
+  font-weight:650;
+}
+.notice b{
+  color:#3c2a08;
+  font-weight:950;
+}
+.complete-panel{
+  color:#254a2a;
+  font-size:13px;
+  line-height:1.7;
+  font-weight:700;
+}
+.float-chip{
+  color:#4b4131;
+  font-size:11px;
+  font-weight:850;
+}
+.float-chip strong{
+  color:#684608;
+  font-size:12px;
+  font-weight:950;
+}
+.doc-logo{
+  color:#5f4108;
+  font-size:12px;
+  font-weight:950;
+}
+.doc-seal{
+  color:#6a4808;
+  font-size:10px;
+  font-weight:950;
+}
+.progress-track{
+  height:10px;
+}
+.progress-bar{
+  box-shadow:0 0 20px rgba(167,112,9,.22);
+}
+@media(max-width:560px){
+  body{font-size:17px}
+  .brand{font-size:16px}
+  .brand small{font-size:10px}
+  .live-chip{font-size:10px}
+  .eyebrow{font-size:11px}
+  h1{font-size:46px;line-height:1.02}
+  .lead{font-size:17px;line-height:1.75}
+  .state-label{font-size:13px}
+  .state-current{font-size:15px}
+  .state-bottom{font-size:12px}
+  .timer{font-size:16px}
+  .step{min-height:88px}
+  .step strong{font-size:12px}
+  .step span{font-size:11px}
+  .notice{font-size:11px}
+  .float-chip{font-size:9.5px}
+  .float-chip strong{font-size:10.5px}
+}
+
+
+/* ===== HERO 4D IMAGE + HIGH READABILITY ===== */
+.hero{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-height:660px;
+  border-radius:34px;
+  border:1px solid rgba(184,130,21,.24);
+  background:#fffaf0;
+  box-shadow:0 30px 90px rgba(137,93,13,.16),0 0 0 1px rgba(255,255,255,.92) inset;
+}
+.hero-bg{
+  position:absolute;
+  inset:0;
+  z-index:-5;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center center;
+  filter:saturate(1.04) contrast(1.02) brightness(1.01);
+}
+.hero-shade{
+  position:absolute;
+  inset:0;
+  z-index:-4;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,
+      rgba(255,255,255,.99) 0%,
+      rgba(255,253,247,.98) 30%,
+      rgba(255,251,239,.93) 44%,
+      rgba(255,250,235,.65) 53%,
+      rgba(255,250,235,.20) 66%,
+      rgba(255,255,255,0) 78%);
+}
+.hero-glow{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 73% 20%,rgba(255,219,119,.20),transparent 28%),
+    linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.10));
+}
+.hero-grid{
+  display:block;
+  min-height:660px;
+}
+.copy{
+  width:min(650px,60%);
+  min-height:660px;
+  padding:clamp(38px,5vw,66px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  position:relative;
+  z-index:5;
+}
+.eyebrow{
+  color:#5d3e05!important;
+  font-size:13px!important;
+  font-weight:950!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.8);
+}
+h1{
+  color:#11100d!important;
+  font-size:clamp(48px,5.5vw,76px)!important;
+  line-height:1.01!important;
+  font-weight:750!important;
+  text-shadow:0 1px 0 #fff,0 2px 14px rgba(255,255,255,.85);
+}
+h1 em{
+  color:#805307!important;
+  font-weight:800!important;
+}
+.lead{
+  max-width:620px!important;
+  color:#2e2a24!important;
+  font-size:19px!important;
+  line-height:1.78!important;
+  font-weight:720!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.92);
+}
+.state-card{
+  margin-top:24px!important;
+  border:1px solid rgba(158,109,16,.24)!important;
+  background:rgba(255,255,255,.92)!important;
+  box-shadow:0 18px 42px rgba(105,72,11,.11)!important;
+  backdrop-filter:blur(14px) saturate(1.08)!important;
+}
+.state-label{
+  color:#3d372f!important;
+  font-size:14px!important;
+  font-weight:900!important;
+}
+.state-current{
+  color:#402b04!important;
+  font-size:16px!important;
+  font-weight:950!important;
+}
+.state-bottom{
+  color:#443e35!important;
+  font-size:13px!important;
+  font-weight:850!important;
+}
+.timer{
+  color:#5d3d04!important;
+  font-size:18px!important;
+  font-weight:950!important;
+}
+.progress-track{
+  height:11px!important;
+  background:#efe6d2!important;
+  box-shadow:inset 0 1px 2px rgba(104,71,10,.08);
+}
+.progress-bar{
+  background:linear-gradient(90deg,#8a5705,#d3a02b,#f0ce6b)!important;
+  box-shadow:0 0 18px rgba(187,130,22,.28)!important;
+}
+.steps{
+  grid-template-columns:repeat(2,1fr)!important;
+  gap:9px!important;
+}
+.step{
+  min-height:82px!important;
+  border:1px solid rgba(150,105,19,.18)!important;
+  background:rgba(255,255,255,.88)!important;
+  box-shadow:0 9px 25px rgba(110,74,10,.06)!important;
+}
+.step strong{
+  color:#211d18!important;
+  font-size:13px!important;
+  font-weight:950!important;
+}
+.step span{
+  color:#403a31!important;
+  font-size:11.5px!important;
+  font-weight:700!important;
+}
+.step.active{
+  border-color:rgba(163,111,14,.36)!important;
+  background:rgba(255,246,214,.94)!important;
+}
+.notice{
+  color:#413a31!important;
+  font-size:11.5px!important;
+  font-weight:700!important;
+  background:rgba(255,255,255,.89)!important;
+  border-color:rgba(155,109,20,.18)!important;
+}
+.notice b{color:#362302!important;font-weight:950!important}
+
+/* Animated overlays above the 4D hero artwork */
+.hero-motion{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  overflow:hidden;
+}
+.motion-ring{
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(194,139,25,.28);
+  box-shadow:0 0 28px rgba(217,169,57,.10);
+  animation:heroPulse 3.6s ease-out infinite;
+}
+.motion-ring.r1{width:170px;height:170px;right:10%;top:11%}
+.motion-ring.r2{width:250px;height:250px;right:6%;top:5%;animation-delay:1.15s}
+.motion-ring.r3{width:330px;height:330px;right:2%;top:-1%;animation-delay:2.25s}
+@keyframes heroPulse{
+  0%{opacity:.12;transform:scale(.82)}
+  45%{opacity:.55}
+  100%{opacity:0;transform:scale(1.12)}
+}
+.motion-scan{
+  position:absolute;
+  width:38%;
+  height:2px;
+  right:7%;
+  top:30%;
+  background:linear-gradient(90deg,transparent,#e1b64c,transparent);
+  box-shadow:0 0 18px rgba(206,156,40,.42);
+  animation:heroScan 4.8s ease-in-out infinite;
+}
+@keyframes heroScan{
+  0%,100%{transform:translateY(-55px);opacity:.05}
+  25%,75%{opacity:.7}
+  50%{transform:translateY(230px);opacity:.85}
+}
+.motion-spark{
+  position:absolute;
+  width:8px;height:8px;border-radius:50%;
+  background:#e1b64d;
+  box-shadow:0 0 0 7px rgba(225,182,77,.10),0 0 22px rgba(225,182,77,.40);
+  animation:sparkFloat 4.2s ease-in-out infinite;
+}
+.motion-spark.s1{right:34%;top:18%}
+.motion-spark.s2{right:13%;top:55%;animation-delay:1.3s}
+.motion-spark.s3{right:28%;bottom:13%;animation-delay:2.2s}
+@keyframes sparkFloat{50%{transform:translateY(-12px) scale(1.1)}}
+
+@media(max-width:900px){
+  .hero{min-height:auto}
+  .hero-grid{min-height:auto}
+  .hero-bg{
+    position:relative;
+    height:auto;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+  }
+  .hero-shade{
+    background:linear-gradient(180deg,rgba(255,255,255,0) 0 35%,rgba(255,253,247,.92) 64%,#fffdf8 78% 100%);
+  }
+  .copy{
+    width:100%;
+    min-height:auto;
+    padding:28px 24px 30px;
+    margin-top:-14%;
+    background:linear-gradient(180deg,transparent,#fffdf8 15%);
+  }
+  .hero-motion{height:46%}
+  .motion-ring.r1{right:8%;top:12%}
+  .motion-ring.r2{right:2%;top:5%}
+  .motion-ring.r3{right:-8%;top:-4%}
+  .motion-scan{width:48%;right:5%}
+}
+@media(max-width:560px){
+  .hero{border-radius:25px}
+  .copy{padding:22px 18px 25px;margin-top:-10%}
+  h1{font-size:46px!important}
+  .lead{font-size:17px!important;line-height:1.72!important}
+  .state-current{font-size:15px!important}
+  .steps{grid-template-columns:1fr!important}
+  .step{min-height:76px!important}
+  .notice{font-size:11px!important}
+  .motion-ring.r1{width:120px;height:120px}
+  .motion-ring.r2{width:180px;height:180px}
+  .motion-ring.r3{width:240px;height:240px}
+}
+
+
+/* ===== HERO 4D MOTION FIX — gerakan dibuat jelas ===== */
+.hero{
+  perspective:1400px;
+}
+.hero-bg{
+  transform-origin:72% 46%;
+  will-change:transform,filter;
+  animation:heroImageMotion 9s cubic-bezier(.42,0,.35,1) infinite alternate;
+}
+@keyframes heroImageMotion{
+  0%{
+    transform:scale(1.015) translate3d(0,0,0);
+    filter:saturate(1.03) contrast(1.03) brightness(1.01);
+  }
+  35%{
+    transform:scale(1.045) translate3d(-8px,-5px,0);
+    filter:saturate(1.07) contrast(1.04) brightness(1.025);
+  }
+  70%{
+    transform:scale(1.065) translate3d(-17px,4px,0);
+    filter:saturate(1.09) contrast(1.04) brightness(1.02);
+  }
+  100%{
+    transform:scale(1.04) translate3d(-5px,9px,0);
+    filter:saturate(1.06) contrast(1.035) brightness(1.03);
+  }
+}
+
+.hero-glow{
+  animation:heroGlowBreath 4.2s ease-in-out infinite;
+}
+@keyframes heroGlowBreath{
+  0%,100%{opacity:.64;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.025)}
+}
+
+.hero-motion{
+  z-index:4;
+  height:100%;
+}
+.motion-ring{
+  border-width:2px;
+  border-color:rgba(171,115,10,.36);
+  box-shadow:0 0 34px rgba(214,160,37,.18);
+}
+.motion-scan{
+  height:4px;
+  width:42%;
+  right:4%;
+  background:linear-gradient(90deg,transparent,rgba(199,139,22,.35),#ffdc78,rgba(199,139,22,.35),transparent);
+  box-shadow:0 0 14px rgba(204,146,31,.62),0 0 30px rgba(242,194,77,.26);
+  animation:heroScanStrong 3.5s ease-in-out infinite;
+}
+@keyframes heroScanStrong{
+  0%{transform:translateY(-80px) scaleX(.86);opacity:0}
+  18%{opacity:.82}
+  50%{transform:translateY(245px) scaleX(1);opacity:1}
+  82%{opacity:.72}
+  100%{transform:translateY(430px) scaleX(.9);opacity:0}
+}
+
+.motion-spark{
+  width:10px;height:10px;
+  background:#d6a52d;
+  box-shadow:0 0 0 8px rgba(214,165,45,.12),0 0 28px rgba(214,165,45,.52);
+  animation:sparkFloatStrong 3.4s ease-in-out infinite;
+}
+@keyframes sparkFloatStrong{
+  0%,100%{transform:translate3d(0,0,0) scale(.88);opacity:.65}
+  50%{transform:translate3d(-10px,-18px,0) scale(1.18);opacity:1}
+}
+
+/* Floating document layers */
+.hero-float-doc{
+  position:absolute;
+  z-index:4;
+  width:82px;
+  height:108px;
+  border-radius:12px;
+  background:
+    linear-gradient(#b98918 0 0) 14px 18px/46px 4px no-repeat,
+    linear-gradient(#d6c39d 0 0) 14px 32px/54px 3px no-repeat,
+    linear-gradient(#d6c39d 0 0) 14px 43px/43px 3px no-repeat,
+    linear-gradient(#d6c39d 0 0) 14px 54px/50px 3px no-repeat,
+    linear-gradient(160deg,rgba(255,255,255,.98),rgba(255,245,216,.95));
+  border:1px solid rgba(173,119,16,.24);
+  box-shadow:0 16px 36px rgba(111,75,10,.16);
+  pointer-events:none;
+}
+.hero-float-doc::after{
+  content:"✓";
+  position:absolute;
+  right:10px;bottom:9px;
+  width:22px;height:22px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#d3a129;color:#fff;
+  font-size:12px;font-weight:900;
+}
+.hero-float-doc.doc1{
+  right:31%;
+  top:12%;
+  transform:rotate(-12deg);
+  animation:floatDocOne 5.2s ease-in-out infinite;
+}
+.hero-float-doc.doc2{
+  right:7%;
+  bottom:11%;
+  width:68px;height:90px;
+  transform:rotate(11deg);
+  animation:floatDocTwo 5.8s ease-in-out infinite .8s;
+}
+@keyframes floatDocOne{
+  0%,100%{transform:translate3d(0,0,0) rotate(-12deg)}
+  50%{transform:translate3d(-18px,-22px,0) rotate(-5deg)}
+}
+@keyframes floatDocTwo{
+  0%,100%{transform:translate3d(0,0,0) rotate(11deg)}
+  50%{transform:translate3d(13px,-18px,0) rotate(5deg)}
+}
+
+/* Visible magnifier overlay */
+.hero-loupe{
+  position:absolute;
+  z-index:5;
+  right:22%;
+  top:30%;
+  width:112px;height:112px;
+  border-radius:50%;
+  border:4px solid rgba(172,116,14,.68);
+  background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.6),rgba(255,225,139,.12) 48%,rgba(255,255,255,.05));
+  box-shadow:0 14px 35px rgba(104,69,7,.18),inset 0 0 28px rgba(255,211,91,.16);
+  backdrop-filter:blur(1px);
+  pointer-events:none;
+  animation:loupeSweep 5s cubic-bezier(.48,.05,.31,.98) infinite alternate;
+}
+.hero-loupe::after{
+  content:"";
+  position:absolute;
+  width:70px;height:15px;
+  border-radius:999px;
+  right:-52px;bottom:-24px;
+  transform:rotate(45deg);
+  background:linear-gradient(90deg,#d8aa3d,#815205);
+  box-shadow:0 7px 16px rgba(93,61,7,.18);
+}
+.hero-loupe::before{
+  content:"";
+  position:absolute;inset:13px;border-radius:50%;
+  background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.55) 40%,transparent 58%);
+}
+@keyframes loupeSweep{
+  0%{transform:translate3d(-35px,-45px,0) rotate(-7deg)}
+  45%{transform:translate3d(50px,42px,0) rotate(5deg)}
+  100%{transform:translate3d(-5px,135px,0) rotate(-2deg)}
+}
+
+/* Small floating status cards */
+.hero-float-card{
+  position:absolute;
+  z-index:5;
+  min-width:122px;
+  padding:10px 12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.91);
+  border:1px solid rgba(168,116,17,.20);
+  box-shadow:0 14px 32px rgba(104,69,8,.12);
+  backdrop-filter:blur(10px);
+  color:#51432b;
+  font-size:10px;
+  font-weight:800;
+  pointer-events:none;
+}
+.hero-float-card strong{
+  display:block;
+  margin-bottom:3px;
+  color:#704a06;
+  font-size:11px;
+}
+.hero-float-card.card1{
+  right:3%;
+  top:16%;
+  animation:cardDriftOne 4.1s ease-in-out infinite;
+}
+.hero-float-card.card2{
+  right:31%;
+  bottom:8%;
+  animation:cardDriftTwo 4.7s ease-in-out infinite .7s;
+}
+@keyframes cardDriftOne{50%{transform:translate3d(-9px,-13px,0)}}
+@keyframes cardDriftTwo{50%{transform:translate3d(11px,-12px,0)}}
+
+/* Mobile: keep motion clearly visible */
+@media(max-width:900px){
+  .hero-bg{animation-duration:7s}
+  .hero-motion{height:54%}
+  .hero-loupe{width:86px;height:86px;right:21%;top:20%}
+  .hero-loupe::after{width:52px;height:12px;right:-39px;bottom:-18px}
+  .hero-float-doc.doc1{right:42%;top:8%;width:62px;height:82px}
+  .hero-float-doc.doc2{right:5%;bottom:10%;width:55px;height:73px}
+  .hero-float-card{font-size:8.5px;min-width:100px;padding:8px 9px}
+  .hero-float-card strong{font-size:9.5px}
+}
+@media(max-width:560px){
+  .hero-motion{height:47%}
+  .hero-loupe{width:70px;height:70px;right:22%;top:19%}
+  .hero-float-card.card1{right:1%;top:10%}
+  .hero-float-card.card2{right:35%;bottom:4%}
+}
+
+/* Respect reduced-motion, but keep the hero visually present */
+@media(prefers-reduced-motion:reduce){
+  .hero-bg,
+  .hero-glow,
+  .motion-ring,
+  .motion-scan,
+  .motion-spark,
+  .hero-float-doc,
+  .hero-loupe,
+  .hero-float-card{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+  }
+}
+
+
+/* ===== MODERN DIGITAL LOAN STATUS ===== */
+.digital-status-card{
+  position:relative;
+  overflow:hidden;
+  padding:20px!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(255,216,103,.22),transparent 32%),
+    linear-gradient(145deg,rgba(255,255,255,.97),rgba(255,249,231,.94))!important;
+  border:1px solid rgba(160,111,17,.24)!important;
+  box-shadow:
+    0 18px 44px rgba(115,78,10,.11),
+    0 0 0 1px rgba(255,255,255,.85) inset!important;
+}
+.digital-status-card::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:3px;
+  background:linear-gradient(90deg,#7f5105,#d6a52c,#f4d778,#b8790d,#7f5105);
+}
+.digital-status-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+.digital-status-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+.digital-icon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  background:linear-gradient(145deg,#e2ba50,#b77a10 58%,#765006);
+  box-shadow:0 10px 24px rgba(153,103,14,.20),0 0 0 1px rgba(255,255,255,.28) inset;
+}
+.digital-icon svg{width:23px;height:23px}
+.digital-kicker{
+  display:block;
+  margin-bottom:2px;
+  color:#8a6113;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.digital-main-title{
+  display:block;
+  color:#17130c;
+  font-size:16px;
+  line-height:1.25;
+  font-weight:950;
+}
+.digital-live{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 10px;
+  border-radius:999px;
+  background:#f6fbf5;
+  border:1px solid #cfe0cb;
+  color:#3d6d41;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+.digital-live i{
+  width:7px;height:7px;border-radius:50%;
+  background:#5da665;
+  box-shadow:0 0 0 5px rgba(93,166,101,.10);
+  animation:digitalLivePulse 1.7s ease-out infinite;
+}
+@keyframes digitalLivePulse{
+  0%{box-shadow:0 0 0 4px rgba(93,166,101,.14)}
+  100%{box-shadow:0 0 0 10px rgba(93,166,101,0)}
+}
+
+.digital-status-body{
+  display:grid;
+  grid-template-columns:112px minmax(0,1fr);
+  gap:18px;
+  align-items:center;
+  margin-top:18px;
+}
+.digital-progress-ring{
+  --p:0;
+  width:104px;
+  aspect-ratio:1;
+  border-radius:50%;
+  padding:9px;
+  background:conic-gradient(#c38a18 calc(var(--p)*1%),#ece2cc 0);
+  box-shadow:0 10px 28px rgba(132,89,12,.10);
+  transition:background .6s ease;
+}
+.digital-ring-inner{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  display:grid;
+  place-content:center;
+  text-align:center;
+  background:linear-gradient(160deg,#fff,#fff8e7);
+  border:1px solid rgba(158,108,16,.12);
+}
+.digital-ring-inner strong{
+  color:#5f3f05;
+  font-size:23px;
+  line-height:1;
+  font-weight:950;
+  font-variant-numeric:tabular-nums;
+}
+.digital-ring-inner span{
+  margin-top:4px;
+  color:#796f60;
+  font-size:9px;
+  font-weight:850;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.digital-stage-info{min-width:0}
+.digital-stage-index{
+  display:inline-block;
+  margin-bottom:6px;
+  color:#82601a;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.digital-status-card .state-current{
+  display:block;
+  text-align:left!important;
+  color:#201b13!important;
+  font-size:17px!important;
+  font-weight:950!important;
+  line-height:1.35!important;
+}
+.digital-stage-note{
+  display:block;
+  margin-top:4px;
+  color:#51493e;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.55;
+}
+.digital-status-card .progress-track{
+  height:9px!important;
+  margin-top:12px!important;
+  background:#ece2cd!important;
+}
+.digital-status-card .state-bottom{
+  margin-top:9px!important;
+  color:#51493d!important;
+  font-size:11px!important;
+  font-weight:800!important;
+}
+.digital-time-label{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.digital-status-card .timer{
+  color:#664405!important;
+  font-size:15px!important;
+  font-weight:950!important;
+}
+
+.digital-status-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:15px;
+  padding-top:13px;
+  border-top:1px solid rgba(139,99,25,.11);
+}
+.digital-status-chips span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.76);
+  border:1px solid rgba(144,100,20,.12);
+  color:#615846;
+  font-size:9px;
+  font-weight:850;
+}
+.digital-status-chips i{
+  width:6px;height:6px;border-radius:50%;
+  background:#c58e20;
+}
+
+@media(max-width:560px){
+  .digital-status-card{padding:16px!important}
+  .digital-status-head{align-items:flex-start}
+  .digital-main-title{font-size:15px}
+  .digital-icon{width:40px;height:40px;border-radius:13px}
+  .digital-status-body{
+    grid-template-columns:82px minmax(0,1fr);
+    gap:12px;
+  }
+  .digital-progress-ring{width:80px;padding:7px}
+  .digital-ring-inner strong{font-size:19px}
+  .digital-status-card .state-current{font-size:15px!important}
+  .digital-stage-note{font-size:11px}
+  .digital-status-chips span{font-size:8.5px}
+}
+
+
+/* ===== DIGITAL LOAN TRACKER — NEXT REVISION ===== */
+.loan-rail{
+  margin-top:14px;
+  padding:17px;
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(255,250,236,.92));
+  border:1px solid rgba(154,107,17,.18);
+  box-shadow:0 12px 30px rgba(108,73,10,.07);
+}
+.rail-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:15px;
+}
+.rail-kicker{
+  display:block;
+  color:#8b6112;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.rail-title{
+  display:block;
+  margin-top:2px;
+  color:#1b1710;
+  font-size:15px;
+  font-weight:950;
+}
+.rail-secure{
+  flex:0 0 auto;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#f7faf6;
+  border:1px solid #d7e4d2;
+  color:#456c47;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.rail-track{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+.rail-track::before{
+  content:"";
+  position:absolute;
+  left:7%;
+  right:7%;
+  top:18px;
+  height:2px;
+  background:#e8dcc3;
+  z-index:0;
+}
+.rail-step{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr);
+  gap:9px;
+  align-items:start;
+  min-width:0;
+  padding:8px;
+  border-radius:14px;
+  transition:background .3s ease,border-color .3s ease;
+}
+.rail-node{
+  width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#f1e9d9;
+  border:2px solid #ddd0b4;
+  color:#81735b;
+  font-size:11px;
+  font-weight:950;
+  box-shadow:0 0 0 4px rgba(255,255,255,.92);
+}
+.rail-step strong{
+  display:block;
+  margin-top:2px;
+  color:#302a20;
+  font-size:12px;
+  font-weight:950;
+}
+.rail-step span:not(.rail-node){
+  display:block;
+  margin-top:3px;
+  color:#655c4d;
+  font-size:10px;
+  font-weight:700;
+  line-height:1.35;
+}
+.rail-step.active{
+  background:#fff6dc;
+}
+.rail-step.active .rail-node{
+  color:#fff;
+  background:linear-gradient(145deg,#e3b94d,#ad7310);
+  border-color:#c58c1a;
+  box-shadow:0 0 0 5px rgba(202,146,30,.10),0 0 0 4px #fff;
+  animation:railPulse 1.8s ease-out infinite;
+}
+.rail-step.done .rail-node{
+  color:#fff;
+  background:#5d9764;
+  border-color:#5d9764;
+}
+.rail-step.done .rail-node b{font-size:0}
+.rail-step.done .rail-node b::after{
+  content:"✓";
+  font-size:14px;
+}
+@keyframes railPulse{
+  0%{box-shadow:0 0 0 4px rgba(202,146,30,.15),0 0 0 4px #fff}
+  100%{box-shadow:0 0 0 12px rgba(202,146,30,0),0 0 0 4px #fff}
+}
+
+/* Sharper, senior-friendly hierarchy */
+.digital-main-title{font-size:17px!important}
+.digital-stage-note{font-size:13px!important;color:#40392f!important}
+.digital-status-chips span{font-size:9.5px!important}
+.step strong{font-size:13.5px!important}
+.step span{font-size:12px!important;line-height:1.55!important}
+
+@media(max-width:760px){
+  .rail-track{
+    grid-template-columns:1fr 1fr;
+  }
+  .rail-track::before{display:none}
+}
+@media(max-width:480px){
+  .loan-rail{padding:14px}
+  .rail-head{align-items:flex-start;flex-direction:column}
+  .rail-track{grid-template-columns:1fr}
+  .rail-step{
+    grid-template-columns:40px minmax(0,1fr);
+    padding:9px 7px;
+  }
+  .rail-step strong{font-size:13px}
+  .rail-step span:not(.rail-node){font-size:11px}
+}
+
+
+/* ===== HASIL PRA-KELAYAKAN — hanya area hasil, desain lain dipertahankan ===== */
+.complete-panel{
+  display:none;
+  margin-top:16px;
+  padding:18px;
+  border-radius:18px;
+  font-size:13px;
+  line-height:1.65;
+  font-weight:700;
+}
+.complete-panel.show{display:block}
+.complete-panel.is-eligible{
+  background:linear-gradient(145deg,#f3fff3,#e9fbe8);
+  border:1px solid rgba(45,145,58,.34);
+  box-shadow:0 12px 34px rgba(39,145,55,.10),0 0 28px rgba(77,220,88,.08) inset;
+  color:#174d20;
+}
+.complete-panel.is-rejected{
+  background:linear-gradient(145deg,#fff7f5,#fff0ed);
+  border:1px solid rgba(182,57,44,.30);
+  color:#76271f;
+}
+.complete-panel.is-unknown{
+  background:#fffaf0;
+  border:1px solid rgba(161,114,20,.24);
+  color:#5a4518;
+}
+.result-kicker{
+  display:block;margin-bottom:4px;font-size:10px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;opacity:.72
+}
+.result-title{display:block;font-size:16px;font-weight:950;line-height:1.35;color:inherit}
+.result-emphasis{display:block;margin:8px 0 4px;font-size:20px;font-weight:1000;line-height:1.25;letter-spacing:.01em}
+.is-eligible .result-emphasis{
+  color:#16a326;
+  text-shadow:0 0 10px rgba(25,205,49,.24),0 0 22px rgba(25,205,49,.14);
+  animation:eligibleGlow 1.8s ease-in-out infinite alternate;
+}
+.is-rejected .result-emphasis{color:#c4382a}
+@keyframes eligibleGlow{from{filter:brightness(1)}to{filter:brightness(1.18)}}
+.result-copy{margin:6px 0 14px;font-size:13px;line-height:1.6;color:inherit}
+.dashboard-button{
+  display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 17px;border-radius:14px;
+  text-decoration:none;font-size:12px;font-weight:950;
+  background:linear-gradient(135deg,#e3ba4f,#b7780d);color:#241603;
+  box-shadow:0 10px 24px rgba(153,103,14,.17);
+}
+.dashboard-button.is-disabled{pointer-events:none;opacity:.42;filter:grayscale(.45);box-shadow:none}
+.result-disclaimer{display:block;margin-top:11px;font-size:10px;line-height:1.5;opacity:.76}
+@media(max-width:560px){.result-emphasis{font-size:18px}.dashboard-button{display:flex;width:100%}}
+@media(prefers-reduced-motion:reduce){.is-eligible .result-emphasis{animation:none}}
+
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span>KB Bank Finance<small>Analisa Pengajuan · Prototype Lokal</small></span>
+    </div>
+    <div class="live-chip"><i aria-hidden="true"></i><span id="topStatus">Pemeriksaan berlangsung</span></div>
+  </header>
+
+  <section class="hero" aria-labelledby="pageTitle">
+    <img class="hero-bg" src="assets/hero-analisa-4d.png" alt="" aria-hidden="true">
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-motion" aria-hidden="true">
+      <span class="motion-ring r1"></span>
+      <span class="motion-ring r2"></span>
+      <span class="motion-ring r3"></span>
+      <span class="motion-scan"></span>
+      <span class="motion-spark s1"></span>
+      <span class="motion-spark s2"></span>
+      <span class="motion-spark s3"></span>
+      <span class="hero-float-doc doc1"></span>
+      <span class="hero-float-doc doc2"></span>
+      <span class="hero-loupe"></span>
+      <span class="hero-float-card card1"><strong>Verifikasi Data</strong>Sedang diperiksa</span>
+      <span class="hero-float-card card2"><strong>Analisa Pengajuan</strong>Proses berjalan</span>
+    </div>
+    <div class="hero-grid">
+      <div class="copy">
+        <div class="eyebrow">Tahap Analisa Pengajuan</div>
+        <h1 id="pageTitle">Pinjaman sedang <em>diperiksa.</em></h1>
+        <p class="lead">Harap menunggu sekitar 2 menit. Data pengajuan sedang diperiksa secara bertahap. Tetap berada di halaman ini sampai proses selesai.</p>
+
+        <div class="state-card digital-status-card">
+          <div class="digital-status-head">
+            <div class="digital-status-title">
+              <span class="digital-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3.5 19 7v5.2c0 4.1-2.6 7.2-7 8.3-4.4-1.1-7-4.2-7-8.3V7l7-3.5Z" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="m8.7 12.1 2.1 2.1 4.5-4.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <div>
+                <span class="digital-kicker">Digital Loan Processing</span>
+                <strong class="digital-main-title">Status Pemeriksaan Pengajuan</strong>
+              </div>
+            </div>
+            <span class="digital-live"><i aria-hidden="true"></i> LIVE</span>
+          </div>
+
+          <div class="digital-status-body">
+            <div class="digital-progress-ring" id="progressRing" style="--p:0">
+              <div class="digital-ring-inner">
+                <strong id="progressPercent">0%</strong>
+                <span>proses</span>
+              </div>
+            </div>
+
+            <div class="digital-stage-info">
+              <span class="digital-stage-index" id="stageIndex">Tahap 1 dari 4</span>
+              <strong class="state-current" id="stageText">Validasi kelengkapan data</strong>
+              <span class="digital-stage-note" id="stageNote">Memastikan informasi pengajuan telah terisi dengan lengkap.</span>
+
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-bar" id="progressBar"></div>
+              </div>
+
+              <div class="state-bottom">
+                <span id="progressText">0% selesai</span>
+                <span class="digital-time-label">Estimasi waktu <b class="timer" id="timer">02:00</b></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="digital-status-chips" aria-label="Informasi proses">
+            <span><i></i> Pemeriksaan digital</span>
+            <span><i></i> Proses bertahap</span>
+            <span><i></i> Sesi lokal prototype</span>
+          </div>
+        </div>
+
+        
+        <div class="loan-rail" aria-label="Tahapan Digital Loan">
+          <div class="rail-head">
+            <div>
+              <span class="rail-kicker">Alur Digital Loan</span>
+              <strong class="rail-title">Pemeriksaan berjalan secara bertahap</strong>
+            </div>
+            <span class="rail-secure">Secure Session</span>
+          </div>
+
+          <div class="rail-track" id="railTrack">
+            <div class="rail-step active" data-rail-step="0">
+              <span class="rail-node"><b>1</b></span>
+              <div>
+                <strong>Data</strong>
+                <span>Validasi kelengkapan</span>
+              </div>
+            </div>
+            <div class="rail-step" data-rail-step="1">
+              <span class="rail-node"><b>2</b></span>
+              <div>
+                <strong>Verifikasi</strong>
+                <span>Pencocokan informasi</span>
+              </div>
+            </div>
+            <div class="rail-step" data-rail-step="2">
+              <span class="rail-node"><b>3</b></span>
+              <div>
+                <strong>Analisa</strong>
+                <span>Parameter pinjaman</span>
+              </div>
+            </div>
+            <div class="rail-step" data-rail-step="3">
+              <span class="rail-node"><b>4</b></span>
+              <div>
+                <strong>Finalisasi</strong>
+                <span>Penyelesaian proses</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="steps" aria-label="Tahapan pemeriksaan">
+          <div class="step active" data-step="0"><strong>Validasi Data</strong><span>Memeriksa kelengkapan data pengajuan.</span></div>
+          <div class="step" data-step="1"><strong>Pencocokan Informasi</strong><span>Membandingkan data antarbagian pengajuan.</span></div>
+          <div class="step" data-step="2"><strong>Analisa Parameter</strong><span>Meninjau nominal, tenor, dan detail pengajuan.</span></div>
+          <div class="step" data-step="3"><strong>Finalisasi Digital</strong><span>Menyelesaikan pemeriksaan prototype.</span></div>
+        </div>
+
+        <div class="notice">
+          <span aria-hidden="true">◇</span>
+          <span><b>Prototype lokal.</b> Halaman ini menampilkan proses pemeriksaan visual dan tidak menghasilkan keputusan kredit bank yang sebenarnya.</span>
+        </div>
+
+        <div class="complete-panel" id="completePanel" role="status" aria-live="polite">
+          <span class="result-kicker" id="resultKicker">Hasil Pra-Kelayakan</span>
+          <strong class="result-title" id="resultTitle">Pemeriksaan selesai.</strong>
+          <span class="result-emphasis" id="resultEmphasis"></span>
+          <p class="result-copy" id="resultCopy">Menyiapkan hasil berdasarkan penghasilan bulanan dan nominal pinjaman.</p>
+          <a class="dashboard-button is-disabled" id="dashboardButton" href="dashboard-pinjaman.html" aria-disabled="true" tabindex="-1">Lanjut ke Dashboard Pengajuan →</a>
+          <small class="result-disclaimer">Status ini hanya hasil pra-kelayakan otomatis dan bukan keputusan kredit final bank.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="flow-state.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  const TOTAL_MS = 120000;
+  const key = 'kbPrototypeAnalysisStartedAt';
+  const now = Date.now();
+
+  let startedAt = now;
+  try {
+    const saved = Number(sessionStorage.getItem(key));
+    if (Number.isFinite(saved) && saved > 0 && saved <= now && now - saved < TOTAL_MS + 300000) {
+      startedAt = saved;
+    } else {
+      sessionStorage.setItem(key, String(startedAt));
+    }
+  } catch (_) {}
+
+  const timer = document.getElementById('timer');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const stageText = document.getElementById('stageText');
+  const stageIndex = document.getElementById('stageIndex');
+  const stageNote = document.getElementById('stageNote');
+  const progressRing = document.getElementById('progressRing');
+  const progressPercent = document.getElementById('progressPercent');
+  const topStatus = document.getElementById('topStatus');
+  const completePanel = document.getElementById('completePanel');
+  const resultKicker = document.getElementById('resultKicker');
+  const resultTitle = document.getElementById('resultTitle');
+  const resultEmphasis = document.getElementById('resultEmphasis');
+  const resultCopy = document.getElementById('resultCopy');
+  const dashboardButton = document.getElementById('dashboardButton');
+  const steps = [...document.querySelectorAll('.step')];
+  const railSteps = [...document.querySelectorAll('.rail-step')];
+
+  const stages = [
+    {
+      until: 30000,
+      text: 'Validasi kelengkapan data',
+      note: 'Memastikan informasi pengajuan telah terisi dengan lengkap.',
+      step: 0
+    },
+    {
+      until: 62000,
+      text: 'Pencocokan informasi pengajuan',
+      note: 'Membandingkan data antarbagian agar ringkasan tetap konsisten.',
+      step: 1
+    },
+    {
+      until: 96000,
+      text: 'Analisa parameter pinjaman digital',
+      note: 'Meninjau nominal, tenor, dan detail pengajuan pada prototype.',
+      step: 2
+    },
+    {
+      until: 120000,
+      text: 'Finalisasi pemeriksaan digital',
+      note: 'Menyelesaikan tahapan visual dan menyiapkan status akhir prototype.',
+      step: 3
+    }
+  ];
+
+  function formatTime(ms) {
+    const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  function currentEligibility() {
+    const employment = window.KBFlow?.get?.('employment', {}) || {};
+    const loanDetail = window.KBFlow?.get?.('loanDetail', {}) || {};
+    const result = window.KBFlow?.evaluateLoanEligibility?.(employment.monthlyIncome ?? '', loanDetail.loanAmount ?? '')
+      ?? { status:'rule_missing', eligible:null, monthlyIncome:0, requestedLoan:0 };
+    window.KBFlow?.write?.('eligibility', result);
+    return result;
+  }
+
+  function renderEligibilityResult() {
+    const result = currentEligibility();
+    completePanel.classList.remove('is-eligible','is-rejected','is-unknown');
+    dashboardButton.classList.add('is-disabled');
+    dashboardButton.setAttribute('aria-disabled','true');
+    dashboardButton.setAttribute('tabindex','-1');
+
+    if (result.eligible === true) {
+      completePanel.classList.add('is-eligible');
+      resultKicker.textContent = 'Hasil Pra-Kelayakan · Memenuhi Kriteria';
+      resultTitle.textContent = 'Pengajuan memenuhi kriteria awal.';
+      resultEmphasis.textContent = 'PINJAMAN ANDA DISETUJUI!';
+      resultCopy.textContent = 'Pengajuan dapat dilanjutkan ke tahap verifikasi berikutnya.';
+      dashboardButton.classList.remove('is-disabled');
+      dashboardButton.setAttribute('aria-disabled','false');
+      dashboardButton.removeAttribute('tabindex');
+      return result;
+    }
+
+    if (result.eligible === false) {
+      completePanel.classList.add('is-rejected');
+      resultKicker.textContent = 'Hasil Pra-Kelayakan · Belum Memenuhi';
+      resultTitle.textContent = 'Pengajuan belum memenuhi kriteria awal.';
+      resultEmphasis.textContent = 'PENGAJUAN ANDA DI TOLAK!';
+      resultCopy.textContent = 'Pengajuan belum memenuhi kriteria awal berdasarkan penghasilan dan nominal pinjaman yang dipilih.';
+      return result;
+    }
+
+    completePanel.classList.add('is-unknown');
+    resultKicker.textContent = 'Hasil Pra-Kelayakan · Rule Belum Tersedia';
+    resultTitle.textContent = 'Hasil belum dapat ditentukan otomatis.';
+    resultEmphasis.textContent = 'PERLU RULE PENGHASILAN TAMBAHAN';
+    resultCopy.textContent = 'Rentang penghasilan ini belum memiliki rule eksplisit. Sistem tidak menebak batas pinjaman.';
+    return result;
+  }
+
+  function render() {
+    const elapsed = Math.min(TOTAL_MS, Math.max(0, Date.now() - startedAt));
+    const remaining = TOTAL_MS - elapsed;
+    const percent = Math.min(100, Math.round((elapsed / TOTAL_MS) * 100));
+    const current = stages.find(stage => elapsed < stage.until) || stages[stages.length - 1];
+
+    timer.textContent = formatTime(remaining);
+    progressBar.style.width = `${percent}%`;
+    progressText.textContent = `${percent}% selesai`;
+    progressRing.style.setProperty('--p', percent);
+    progressPercent.textContent = `${percent}%`;
+    stageText.textContent = current.text;
+    stageIndex.textContent = `Tahap ${current.step + 1} dari 4`;
+    stageNote.textContent = current.note;
+
+    steps.forEach((step, index) => {
+      step.classList.toggle('active', index === current.step && elapsed < TOTAL_MS);
+      step.classList.toggle('done', index < current.step || elapsed >= TOTAL_MS);
+    });
+
+    railSteps.forEach((step, index) => {
+      step.classList.toggle('active', index === current.step && elapsed < TOTAL_MS);
+      step.classList.toggle('done', index < current.step || elapsed >= TOTAL_MS);
+    });
+
+    if (elapsed >= TOTAL_MS) {
+      timer.textContent = '00:00';
+      progressBar.style.width = '100%';
+      progressText.textContent = '100% selesai';
+      progressRing.style.setProperty('--p', 100);
+      progressPercent.textContent = '100%';
+      stageIndex.textContent = 'Tahap 4 dari 4';
+      stageText.textContent = 'Pemeriksaan digital prototype selesai';
+      stageNote.textContent = 'Seluruh tahapan pemeriksaan visual telah selesai.';
+      topStatus.textContent = 'Pemeriksaan selesai';
+      renderEligibilityResult();
+      completePanel.classList.add('show');
+      return;
+    }
+
+    window.setTimeout(render, 250);
+  }
+
+  dashboardButton.addEventListener('click', event => {
+    if (dashboardButton.getAttribute('aria-disabled') === 'true') event.preventDefault();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

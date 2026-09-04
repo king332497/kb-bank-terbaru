@@ -359,9 +359,11 @@ h1 em{font-style:normal;color:#a87616}
     event.preventDefault();
     if (continueButton.disabled) return;
     persistState();
-    status.innerHTML = '<strong>Kelengkapan pilihan sudah terisi.</strong> Setiap bagian telah memiliki media atau ditandai “Tidak ada”.';
+    status.innerHTML = '<strong>Kelengkapan pilihan sudah terisi.</strong> Membuka Informasi Detail Pinjaman …';
     status.classList.add('show');
     status.scrollIntoView({behavior:'smooth', block:'nearest'});
+    if (window.KBFlow) KBFlow.go('informasi-detail-pinjaman.html');
+    else window.setTimeout(() => { window.location.href = 'informasi-detail-pinjaman.html'; }, 420);
   });
 
   KEYS.forEach(renderItem);

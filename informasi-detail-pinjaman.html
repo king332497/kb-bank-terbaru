@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Informasi Detail Pinjaman — KB Bank Finance</title>
+<style>
+:root{
+  --ink:#171616;--muted:#706a61;--line:rgba(123,90,27,.16);--paper:#fffdf7;
+  --gold:#c99722;--gold-deep:#8f6412;--gold-soft:#f5e4ad;--success:#2f6b32;
+  --shadow:0 24px 70px rgba(92,65,14,.12);--focus:0 0 0 4px rgba(205,158,51,.18)
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:#f8f3e9}
+body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:
+radial-gradient(circle at 12% 8%,rgba(255,255,255,.98) 0 20%,transparent 43%),
+linear-gradient(135deg,#fffdf8 0%,#fbf4e5 44%,#f1dfb9 100%)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.72;background:
+linear-gradient(118deg,transparent 0 58%,rgba(197,146,38,.07) 58.2% 58.45%,transparent 58.7%),
+linear-gradient(118deg,transparent 0 66%,rgba(255,255,255,.7) 66.2% 66.8%,transparent 67%)}
+.shell{width:min(1180px,calc(100% - 40px));margin:auto;padding:28px 0 54px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:840;letter-spacing:-.03em}
+.brand-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#ffd952,#b47a0b);box-shadow:0 9px 24px rgba(166,112,12,.2);font-size:19px}
+.brand small{display:block;margin-top:2px;font-size:10px;letter-spacing:.14em;color:var(--muted);font-weight:750}
+.layout{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.6fr);gap:34px;align-items:start}
+.copy{padding:26px 8px;position:sticky;top:18px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:850;letter-spacing:.14em;color:#80590f;text-transform:uppercase}
+.eyebrow::before{content:"";width:26px;height:2px;border-radius:9px;background:linear-gradient(90deg,#d4a22f,#7f5508)}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,5vw,68px);line-height:.98;letter-spacing:-.045em;margin:18px 0 20px;font-weight:600}
+h1 em{font-style:normal;color:#a87616}
+.lead{max-width:520px;font-size:16px;line-height:1.72;color:#5f5a52;margin:0;font-weight:700}
+.card{position:relative;overflow:hidden;background:rgba(255,254,250,.96);border:1px solid rgba(152,109,22,.18);border-radius:28px;padding:30px;box-shadow:var(--shadow);backdrop-filter:blur(18px)}
+.card::after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-140px;top:-140px;background:radial-gradient(circle,rgba(239,191,82,.22),transparent 68%);pointer-events:none}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:24px;position:relative;z-index:1}
+.card h2{font-size:25px;letter-spacing:-.035em;margin:0 0 7px}.card-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.lock{width:44px;height:44px;flex:0 0 auto;border-radius:15px;display:grid;place-items:center;background:#fff8e2;border:1px solid #f0d98e;font-size:19px}
+.content{position:relative;z-index:1;display:grid;gap:20px}
+.section{display:grid;gap:12px}
+.section-title{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:13px;font-weight:850;letter-spacing:.04em;color:#604713;text-transform:uppercase}
+.section-title span{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:#f6d76f;color:#4f3808;font-size:11px}
+.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.info-item{min-width:0;padding:15px 16px;border:1px solid #e4dccb;border-radius:16px;background:#fff}
+.info-item.primary{background:linear-gradient(135deg,#2f260f,#6b4b0e);border-color:#6b4b0e;color:#fff}
+.info-item span{display:block;margin-bottom:6px;color:#81796f;font-size:11px;font-weight:760;letter-spacing:.035em;text-transform:uppercase}
+.info-item strong{display:block;font-size:15px;line-height:1.42;overflow-wrap:anywhere}
+.info-item.primary span{color:#f0dfb5}.info-item.primary strong{font-size:18px}
+.notice{display:none;padding:13px 14px;border-radius:14px;border:1px solid #ead5a5;background:#fff9e9;color:#6d531b;font-size:12px;line-height:1.55}
+.notice.show{display:block}
+.actions{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;margin-top:2px}
+.btn{min-height:52px;border-radius:15px;font-weight:820;font-size:14px;border:1px solid transparent;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:.18s ease}
+.btn:active{transform:translateY(1px)}
+.btn-ghost{background:#fff;border-color:#ded4c1;color:#4d463d}
+.btn-primary{background:linear-gradient(135deg,#e7bb45,#aa750d);color:#fff;box-shadow:0 12px 28px rgba(169,116,15,.22)}
+.privacy{margin-top:18px;padding-top:16px;border-top:1px solid rgba(122,92,35,.12);font-size:11px;line-height:1.6;color:#8a8379}
+@media(max-width:900px){.shell{width:min(100% - 28px,720px);padding-top:18px}.topbar{margin-bottom:12px}.layout{grid-template-columns:1fr;gap:18px}.copy{padding:18px 2px 6px;position:static}h1{font-size:48px}.lead{font-size:15px}.card{padding:22px;border-radius:23px}}
+@media(max-width:560px){.info-grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.shell{width:calc(100% - 24px);padding-bottom:32px}.brand{font-size:14px}.brand-mark{width:34px;height:34px}.card h2{font-size:22px}.card{padding:19px}h1{font-size:40px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span><span>KB Bank<small>FINANCE</small></span></div>
+  </header>
+
+  <section class="layout" aria-labelledby="pageTitle">
+    <div class="copy">
+      <div class="eyebrow">Informasi Detail Pinjaman</div>
+      <h1 id="pageTitle">Detail <em>Pinjaman</em></h1>
+      <p class="lead">Periksa kembali informasi pemohon, rekening, dan rincian pinjaman yang telah diisi.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div><h2>Informasi Detail Pinjaman</h2><p>Data ditampilkan sesuai informasi yang telah diisi pada tahapan sebelumnya.</p></div>
+        <div class="lock" aria-hidden="true">⌁</div>
+      </div>
+
+      <div class="content">
+        <div class="notice" id="missingNotice" role="status" aria-live="polite"></div>
+
+        <section class="section" aria-labelledby="applicantHeading">
+          <div class="section-title" id="applicantHeading"><span>1</span> Data Pemohon & Rekening</div>
+          <div class="info-grid">
+            <div class="info-item"><span>Nama Lengkap</span><strong id="fullName">—</strong></div>
+            <div class="info-item"><span>Nama Rekening</span><strong id="accountName">—</strong></div>
+            <div class="info-item"><span>Nomor Rekening KB BANK</span><strong id="accountNumber">—</strong></div>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="loanHeading">
+          <div class="section-title" id="loanHeading"><span>2</span> Informasi Pinjaman</div>
+          <div class="info-grid">
+            <div class="info-item"><span>Jenis Pinjaman</span><strong id="loanProduct">—</strong></div>
+            <div class="info-item"><span>Nominal Pengajuan</span><strong id="loanAmount">—</strong></div>
+            <div class="info-item"><span>Tenor</span><strong id="tenor">—</strong></div>
+            <div class="info-item"><span>Bunga</span><strong id="interestRate">—</strong></div>
+            <div class="info-item primary"><span>Estimasi Cicilan / Bulan</span><strong id="monthlyInstallment">—</strong></div>
+          </div>
+        </section>
+
+        <div class="actions">
+          <a class="btn btn-ghost" href="dokumen-pendukung-prototype.html">← Kembali</a>
+          <a class="btn btn-primary" href="pernyataan-persetujuan-prototype.html">Lanjut Aktivasi</a>
+        </div>
+      </div>
+
+      <div class="privacy">PT Bank KB Indonesia Tbk Berizin dan Diawasi oleh Otoritas Jasa Keuangan dan Bank Indonesia.</div>
+    </div>
+  </section>
+</main>
+<script src="flow-state.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  const fallbackRead = key => {
+    try {
+      const raw = sessionStorage.getItem(`kbPrototypeFlow.v1.${key}`);
+      return raw ? JSON.parse(raw) : {};
+    } catch (_) {
+      return {};
+    }
+  };
+
+  const read = key => (window.KBFlow ? KBFlow.get(key, {}) : fallbackRead(key)) || {};
+  const rawDigits = value => String(value ?? '').replace(/\D/g, '');
+  const hasValue = value => value != null && String(value).trim() !== '';
+  const setText = (id, value) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = hasValue(value) ? String(value) : 'Belum tersedia';
+  };
+
+  const formatRupiah = value => {
+    const digits = rawDigits(value);
+    if (!digits) return null;
+    const amount = Number(digits);
+    if (!Number.isFinite(amount)) return null;
+    return `Rp${amount.toLocaleString('id-ID')}`;
+  };
+
+  const formatTenor = value => {
+    const months = Number(rawDigits(value));
+    if (!months) return null;
+    if (months % 12 === 0) return `${months / 12} tahun (${months} bulan)`;
+    return `${months} bulan`;
+  };
+
+  const formatRate = value => {
+    const normalized = String(value ?? '').replace(',', '.').replace(/[^0-9.]/g, '');
+    if (!normalized) return null;
+    const rate = Number(normalized);
+    if (!Number.isFinite(rate)) return null;
+    return `${rate.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})}% per tahun`;
+  };
+
+  function renderLatestData() {
+    // Selalu baca ulang sessionStorage agar halaman ini menampilkan nilai TERBARU
+    // yang disimpan oleh formulir sebelumnya, termasuk setelah back/forward cache.
+    const identity = read('identity');
+    const applicant = read('applicant');
+    const financial = read('financial');
+    const loan = read('loanDetail');
+
+    const values = {
+      fullName: applicant.fullName || identity.fullName || null,
+      accountName: financial.accountName || null,
+      accountNumber: financial.accountNumber || null,
+      loanProduct: loan.loanProduct || null,
+      loanAmount: formatRupiah(loan.loanAmount),
+      tenor: formatTenor(loan.tenor),
+      interestRate: formatRate(loan.interestRate),
+      monthlyInstallment: formatRupiah(loan.estimatedMonthlyInstallment)
+    };
+
+    Object.entries(values).forEach(([id, value]) => setText(id, value));
+
+    const labels = {
+      fullName:'Nama Lengkap',
+      accountName:'Nama Rekening',
+      accountNumber:'Nomor Rekening',
+      loanProduct:'Jenis Pinjaman',
+      loanAmount:'Nominal Pengajuan',
+      tenor:'Tenor',
+      interestRate:'Bunga',
+      monthlyInstallment:'Cicilan'
+    };
+
+    const missing = Object.entries(values)
+      .filter(([,value]) => !hasValue(value))
+      .map(([key]) => labels[key]);
+
+    const notice = document.getElementById('missingNotice');
+    if (notice) {
+      if (missing.length) {
+        notice.textContent = `Data berikut belum tersedia dari tahapan sebelumnya: ${missing.join(', ')}.`;
+        notice.classList.add('show');
+      } else {
+        notice.textContent = '';
+        notice.classList.remove('show');
+      }
+    }
+  }
+
+  renderLatestData();
+  window.addEventListener('pageshow', renderLatestData);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) renderLatestData();
+  });
+})();
+</script>
+</body>
+</html>

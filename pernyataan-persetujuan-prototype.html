@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Pernyataan dan Persetujuan — Prototype</title>
+<style>
+:root{
+  --ink:#171616;--muted:#706a61;--line:rgba(123,90,27,.16);
+  --gold:#c99722;--gold-deep:#8f6412;--gold-soft:#f5e4ad;
+  --success:#2f6b32;--shadow:0 24px 70px rgba(92,65,14,.12);
+  --focus:0 0 0 4px rgba(205,158,51,.18)
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:#f8f3e9}
+body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 12% 8%,rgba(255,255,255,.98) 0 20%,transparent 43%),linear-gradient(135deg,#fffdf8 0%,#fbf4e5 44%,#f1dfb9 100%)}
+button{font:inherit}.shell{width:min(980px,calc(100% - 40px));margin:auto;padding:28px 0 54px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px;font-weight:840;letter-spacing:-.03em}.brand-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#ffd952,#b47a0b);box-shadow:0 9px 24px rgba(166,112,12,.2);font-size:19px}.brand small{display:block;margin-top:2px;font-size:10px;letter-spacing:.14em;color:var(--muted);font-weight:750}.card{background:rgba(255,254,250,.97);border:1px solid rgba(152,109,22,.18);border-radius:28px;padding:30px;box-shadow:var(--shadow)}.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:850;letter-spacing:.14em;color:#80590f;text-transform:uppercase}.eyebrow::before{content:"";width:26px;height:2px;border-radius:9px;background:linear-gradient(90deg,#d4a22f,#7f5508)}h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,5vw,58px);line-height:1;letter-spacing:-.045em;margin:16px 0 12px;font-weight:600}h1 em{font-style:normal;color:#a87616}.lead{font-size:15px;line-height:1.7;color:#5f5a52;margin:0 0 22px}.prototype-note{padding:13px 14px;border-radius:14px;background:#fff8e8;border:1px solid #ead38d;color:#68511b;font-size:12px;line-height:1.55;margin-bottom:22px}.consent-list{display:grid;gap:12px}.consent{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:flex-start;padding:16px;border:1px solid #e4dccb;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease}.consent:hover{border-color:#d0ba85}.consent:focus-within{box-shadow:var(--focus)}.consent input{width:20px;height:20px;margin:2px 0 0;accent-color:#b57f12}.consent strong{display:block;font-size:14px;line-height:1.35;margin-bottom:4px}.consent span{display:block;font-size:12px;line-height:1.55;color:var(--muted)}.progress{margin-top:18px;padding:13px 14px;border-radius:14px;background:#faf7ef;border:1px solid #e7dfcf;font-size:12px;color:#655f56}.actions{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;margin-top:20px}.btn{min-height:52px;border-radius:15px;font-weight:820;font-size:14px;cursor:pointer;border:1px solid transparent;text-decoration:none;display:flex;align-items:center;justify-content:center}.btn-ghost{background:#fff;border-color:#ded4c1;color:#4d463d}.btn-primary{background:linear-gradient(135deg,#e7bb45,#aa750d);color:#fff;box-shadow:0 12px 28px rgba(169,116,15,.22)}.btn-primary:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}.status{display:none;margin-top:16px;padding:14px 15px;border-radius:15px;background:#f7fbf5;border:1px solid #cfe2c8;color:#30592d;font-size:12px;line-height:1.55}.status.show{display:block}
+
+
+.pin-modal{
+  position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;
+  background:
+    radial-gradient(circle at 50% 12%,rgba(255,223,133,.18),transparent 34%),
+    linear-gradient(135deg,rgba(18,14,8,.72),rgba(40,27,7,.82));
+  backdrop-filter:blur(14px) saturate(1.08);
+}
+.pin-modal[hidden]{display:none}
+.pin-card{
+  width:min(468px,100%);position:relative;overflow:hidden;border-radius:30px;padding:30px;color:#241b0d;
+  background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(255,249,232,.97)),#fff;
+  border:1px solid rgba(213,165,53,.42);
+  box-shadow:0 38px 100px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.68) inset,0 18px 44px rgba(173,116,12,.12);
+  animation:pinCardIn .34s cubic-bezier(.2,.8,.2,1);
+}
+.pin-card::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,#7c5208,#f2cf69,#fff0ac,#c69222,#7c5208)}
+.pin-card::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-120px;top:-125px;pointer-events:none;background:radial-gradient(circle,rgba(239,190,72,.22),transparent 68%)}
+@keyframes pinCardIn{from{opacity:0;transform:translateY(18px) scale(.975)}to{opacity:1;transform:translateY(0) scale(1)}}
+.pin-close{position:absolute;right:16px;top:16px;z-index:2;width:40px;height:40px;border-radius:14px;border:1px solid rgba(138,100,26,.16);background:rgba(255,255,255,.78);color:#665536;font-size:20px;cursor:pointer;box-shadow:0 8px 22px rgba(70,48,8,.08);transition:.18s ease}
+.pin-close:hover{transform:translateY(-1px);border-color:#d0a13c;background:#fff}
+.pin-head{display:flex;align-items:center;gap:14px;padding-right:46px;margin-bottom:18px;position:relative;z-index:1}
+.pin-emblem{width:54px;height:54px;flex:0 0 auto;border-radius:18px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,#f3cb59 0%,#c48b17 55%,#815408 100%);box-shadow:0 14px 28px rgba(153,103,14,.24),0 0 0 1px rgba(255,255,255,.35) inset}
+.pin-emblem svg{width:25px;height:25px;display:block}
+.pin-kicker{font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#8a6111;margin:0 0 5px}
+.pin-card h2{margin:0;font-size:27px;letter-spacing:-.035em;line-height:1.05}
+.pin-copy{margin:0 0 18px;color:#6e665b;font-size:13px;line-height:1.65}
+.pin-trust{display:flex;align-items:flex-start;gap:10px;padding:12px 13px;border-radius:16px;background:linear-gradient(180deg,#fffaf0,#fff4d7);border:1px solid #ecd28b;color:#66501c;font-size:11px;line-height:1.52;margin-bottom:20px}
+.pin-trust-badge{flex:0 0 auto;margin-top:1px;padding:4px 7px;border-radius:999px;background:#2f291f;color:#f5d979;font-size:9px;font-weight:900;letter-spacing:.08em}
+.pin-label{display:block;font-size:11px;font-weight:850;letter-spacing:.03em;margin-bottom:9px;color:#4c402d}
+.pin-input{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;white-space:nowrap!important}
+.pin-display{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;cursor:text;padding:2px;border-radius:19px}
+.pin-slot{height:58px;border-radius:16px;display:grid;place-items:center;border:1px solid #d8ccb5;background:linear-gradient(180deg,#fff,#fffaf0);color:#9f741b;font-size:25px;font-weight:900;box-shadow:0 8px 22px rgba(77,54,12,.06),0 1px 0 rgba(255,255,255,.9) inset;transition:.18s ease}
+.pin-display.is-focused .pin-slot{border-color:#d0a13b;box-shadow:0 0 0 3px rgba(205,158,51,.12),0 8px 22px rgba(77,54,12,.06)}
+.pin-slot.is-filled{color:#5b3c05;background:linear-gradient(180deg,#fffaf0,#f9e6ad);border-color:#d5aa47}
+.pin-slot.is-current{transform:translateY(-2px);border-color:#b77e12}
+.pin-help{margin:9px 0 0;color:#81786c;font-size:10.5px;line-height:1.5}
+.pin-security{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:15px;padding-top:14px;border-top:1px solid rgba(133,99,34,.12);color:#887d6e;font-size:10px;font-weight:700}
+.pin-security-dot{width:7px;height:7px;border-radius:50%;background:#4d8b50;box-shadow:0 0 0 4px rgba(77,139,80,.1)}
+.pin-actions{display:grid;grid-template-columns:.9fr 1.5fr;gap:10px;margin-top:20px}
+.pin-actions .btn{min-height:54px;border-radius:16px}
+.pin-actions .btn-primary{position:relative;overflow:hidden;background:linear-gradient(135deg,#ecc85a 0%,#c28a17 48%,#845607 100%);box-shadow:0 14px 30px rgba(157,105,12,.22)}
+.pin-actions .btn-primary::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 15%,rgba(255,255,255,.26) 45%,transparent 72%);transform:translateX(-120%);transition:transform .5s ease}
+.pin-actions .btn-primary:not(:disabled):hover::after{transform:translateX(120%)}
+.pin-complete{display:none;margin-top:15px;padding:13px 14px;border-radius:15px;background:#f4faf1;border:1px solid #c8dfc1;color:#31592e;font-size:11px;line-height:1.55}
+.pin-complete.show{display:block}
+@media(max-width:480px){
+  .pin-modal{padding:12px}.pin-card{padding:23px 18px;border-radius:25px}.pin-head{gap:11px}.pin-emblem{width:48px;height:48px;border-radius:16px}
+  .pin-card h2{font-size:24px}.pin-display{gap:6px}.pin-slot{height:52px;border-radius:14px;font-size:22px}.pin-actions{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .pin-card{animation:none}.pin-close,.pin-slot,.pin-actions .btn-primary::after{transition:none}
+}
+
+@media(max-width:600px){.shell{width:calc(100% - 24px);padding-top:18px}.card{padding:20px;border-radius:22px}.actions{grid-template-columns:1fr}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span><span>Prototype Pengajuan<small>PERNYATAAN & PERSETUJUAN</small></span></div>
+  </header>
+
+  <section class="card" aria-labelledby="pageTitle">
+    <div class="eyebrow">Tahap Lanjutan · Persetujuan</div>
+    <h1 id="pageTitle">Pernyataan dan <em>Persetujuan</em></h1>
+    <p class="lead">Baca setiap pernyataan dengan saksama. Seluruh pilihan harus dicentang sebelum melanjutkan pada prototype ini.</p>
+
+    <div class="prototype-note" role="note">
+      <strong>Prototype lokal non-operasional.</strong> Halaman ini hanya mendemonstrasikan UI persetujuan dan tidak mengirim persetujuan atau data pribadi ke server, API, atau pihak eksternal.
+    </div>
+
+    <form id="consentForm" novalidate>
+      <div class="consent-list">
+        <label class="consent">
+          <input type="checkbox" name="personalDataProcessing" required>
+          <span><strong>Persetujuan pemrosesan data pribadi</strong><span>Saya memahami dan menyetujui pemrosesan data pribadi sesuai tujuan yang dijelaskan dalam prototype ini.</span></span>
+        </label>
+
+        <label class="consent">
+          <input type="checkbox" name="dataAccuracy" required>
+          <span><strong>Pernyataan bahwa data yang diberikan benar</strong><span>Saya menyatakan bahwa informasi yang saya isi adalah benar dan sesuai dengan data yang saya berikan.</span></span>
+        </label>
+
+        <label class="consent">
+          <input type="checkbox" name="informationVerification" required>
+          <span><strong>Persetujuan verifikasi informasi</strong><span>Saya menyetujui pemeriksaan konsistensi informasi yang telah saya masukkan pada alur prototype ini.</span></span>
+        </label>
+
+        <label class="consent">
+          <input type="checkbox" name="termsAgreement" required>
+          <span><strong>Persetujuan terhadap syarat dan ketentuan</strong><span>Saya telah membaca dan menyetujui syarat dan ketentuan yang berlaku untuk penggunaan prototype ini.</span></span>
+        </label>
+
+        <label class="consent">
+          <input type="checkbox" name="privacyPolicy" required>
+          <span><strong>Persetujuan kebijakan privasi</strong><span>Saya telah membaca dan menyetujui kebijakan privasi yang ditampilkan untuk prototype ini.</span></span>
+        </label>
+      </div>
+
+      <div class="progress" id="progress" role="status" aria-live="polite">0 dari 5 persetujuan dipilih.</div>
+
+      <div class="actions">
+        <button class="btn btn-ghost" type="button" onclick="history.back()">← Kembali</button>
+        <button class="btn btn-primary" id="continueButton" type="submit" disabled>Setujui & Lanjutkan</button>
+      </div>
+    </form>
+
+    <div class="status" id="status" role="status" aria-live="polite"><strong>Persetujuan lengkap.</strong> Semua checkbox telah dipilih. Tidak ada data yang dikirim dari halaman prototype ini.</div>
+  </section>
+</main>
+
+<div class="pin-modal" id="pinModal" role="dialog" aria-modal="true" aria-labelledby="pinTitle" hidden>
+  <section class="pin-card">
+    <button class="pin-close" id="pinClose" type="button" aria-label="Tutup">×</button>
+
+    <div class="pin-head">
+      <div class="pin-emblem" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M7.5 10V7.8a4.5 4.5 0 0 1 9 0V10" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+          <rect x="5.3" y="10" width="13.4" height="10" rx="3" stroke="currentColor" stroke-width="1.9"/>
+          <circle cx="12" cy="15" r="1.35" fill="currentColor"/>
+        </svg>
+      </div>
+      <div>
+        <div class="pin-kicker">Konfirmasi akhir · Prototype lokal</div>
+        <h2 id="pinTitle">Konfirmasi PIN</h2>
+      </div>
+    </div>
+
+    <p class="pin-copy">Masukkan 6 digit PIN konfirmasi prototype untuk menyelesaikan tahapan persetujuan.</p>
+
+    <div class="pin-trust" role="note">
+      <span class="pin-trust-badge">AMAN</span>
+      <span><strong>Jangan gunakan PIN ATM, kartu debit, KBstar, atau PIN perbankan asli.</strong> PIN contoh ini hanya diproses sementara pada halaman dan langsung dihapus setelah konfirmasi.</span>
+    </div>
+
+    <form id="pinForm" novalidate>
+      <label class="pin-label" for="confirmationPin">PIN KONFIRMASI PROTOTYPE</label>
+      <input class="pin-input" id="confirmationPin" name="confirmationPin" type="password"
+             inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{6}"
+             aria-describedby="pinHelp" required>
+
+      <label class="pin-display" id="pinDisplay" for="confirmationPin" aria-hidden="true">
+        <span class="pin-slot"></span><span class="pin-slot"></span><span class="pin-slot"></span>
+        <span class="pin-slot"></span><span class="pin-slot"></span><span class="pin-slot"></span>
+      </label>
+
+      <p class="pin-help" id="pinHelp">Masukkan tepat 6 digit angka contoh.</p>
+
+      <div class="pin-security">
+        <span class="pin-security-dot" aria-hidden="true"></span>
+        Tidak disimpan · Tidak dikirim ke server
+      </div>
+
+      <div class="pin-actions">
+        <button class="btn btn-ghost" id="pinCancel" type="button">Batal</button>
+        <button class="btn btn-primary" id="pinConfirm" type="submit" disabled>Konfirmasi & Selesaikan</button>
+      </div>
+
+      <div class="pin-complete" id="pinComplete" role="status" aria-live="polite">
+        <strong>Konfirmasi prototype selesai.</strong> PIN telah dihapus dari kolom dan tidak disimpan.
+      </div>
+    </form>
+  </section>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const form = document.getElementById('consentForm');
+  const boxes = [...form.querySelectorAll('input[type="checkbox"]')];
+  const button = document.getElementById('continueButton');
+  const progress = document.getElementById('progress');
+  const status = document.getElementById('status');
+
+  const pinModal = document.getElementById('pinModal');
+  const pinForm = document.getElementById('pinForm');
+  const pinInput = document.getElementById('confirmationPin');
+  const pinConfirm = document.getElementById('pinConfirm');
+  const pinClose = document.getElementById('pinClose');
+  const pinCancel = document.getElementById('pinCancel');
+  const pinComplete = document.getElementById('pinComplete');
+  const pinDisplay = document.getElementById('pinDisplay');
+  const pinSlots = [...pinDisplay.querySelectorAll('.pin-slot')];
+
+  function renderPinDisplay() {
+    const length = pinInput.value.length;
+    pinSlots.forEach((slot, index) => {
+      slot.textContent = index < length ? '•' : '';
+      slot.classList.toggle('is-filled', index < length);
+      slot.classList.toggle('is-current', index === length && length < 6 && document.activeElement === pinInput);
+    });
+  }
+
+  function sync() {
+    const checked = boxes.filter(box => box.checked).length;
+    progress.textContent = `${checked} dari ${boxes.length} persetujuan dipilih.`;
+    button.disabled = checked !== boxes.length;
+    status.classList.remove('show');
+  }
+
+  function openPinModal() {
+    pinComplete.classList.remove('show');
+    pinInput.value = '';
+    pinConfirm.disabled = true;
+    renderPinDisplay();
+    pinModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    window.setTimeout(() => pinInput.focus(), 30);
+  }
+
+  function closePinModal() {
+    pinInput.value = '';
+    pinConfirm.disabled = true;
+    renderPinDisplay();
+    pinComplete.classList.remove('show');
+    pinModal.hidden = true;
+    document.body.style.overflow = '';
+    button.focus();
+  }
+
+  boxes.forEach(box => box.addEventListener('change', sync));
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (button.disabled) return;
+    status.classList.add('show');
+    openPinModal();
+  });
+
+  pinInput.addEventListener('input', () => {
+    pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 6);
+    pinConfirm.disabled = pinInput.value.length !== 6;
+    renderPinDisplay();
+    pinComplete.classList.remove('show');
+  });
+
+  pinInput.addEventListener('focus', () => {
+    pinDisplay.classList.add('is-focused');
+    renderPinDisplay();
+  });
+
+  pinInput.addEventListener('blur', () => {
+    pinDisplay.classList.remove('is-focused');
+    renderPinDisplay();
+  });
+
+  pinDisplay.addEventListener('click', () => pinInput.focus());
+
+  pinForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!/^\d{6}$/.test(pinInput.value)) {
+      pinInput.focus();
+      return;
+    }
+
+    // PIN sengaja tidak disimpan. Hanya waktu mulai analisa prototype yang dicatat.
+    pinInput.value = '';
+    pinConfirm.disabled = true;
+    renderPinDisplay();
+    pinComplete.innerHTML = '<strong>Konfirmasi selesai.</strong> Membuka halaman analisa pengajuan…';
+    pinComplete.classList.add('show');
+
+    try {
+      sessionStorage.setItem('kbPrototypeAnalysisStartedAt', String(Date.now()));
+    } catch (_) {}
+
+    window.setTimeout(() => {
+      window.location.href = 'analisa-pengajuan-prototype.html';
+    }, 650);
+  });
+
+  pinClose.addEventListener('click', closePinModal);
+  pinCancel.addEventListener('click', closePinModal);
+
+  pinModal.addEventListener('click', event => {
+    if (event.target === pinModal) closePinModal();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !pinModal.hidden) closePinModal();
+  });
+
+  renderPinDisplay();
+  sync();
+})();
+</script>
+</body>
+</html>

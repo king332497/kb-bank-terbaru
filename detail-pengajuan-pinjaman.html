@@ -219,6 +219,9 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
   const Flow = window.KBFlow || {
     restoreForm: () => ({}),
     saveForm: () => true,
+    get: () => ({}),
+    write: () => false,
+    evaluateLoanEligibility: () => ({status:'rule_missing', eligible:null}),
     go: (url, delay = 420) => window.setTimeout(() => { window.location.href = url; }, delay)
   };
   Flow.restoreForm(form, 'loanDetail');
@@ -276,6 +279,14 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
 
   function currentRate() {
     return AUTO_ANNUAL_RATE;
+  }
+
+  function syncPreEligibility() {
+    const employment = Flow.get?.('employment', {}) || {};
+    const result = Flow.evaluateLoanEligibility?.(employment.monthlyIncome ?? '', currentAmount())
+      ?? { status:'rule_missing', eligible:null };
+    Flow.write?.('eligibility', result);
+    return result;
   }
 
   function clearCalculation() {
@@ -354,6 +365,7 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
     // Render langsung dan satu frame berikutnya untuk menghindari state select yang terlambat di beberapa browser.
     renderCalculation();
     window.requestAnimationFrame(renderCalculation);
+    syncPreEligibility();
   }
 
   loanAmount.addEventListener('change', syncAmountCalculation);
@@ -407,6 +419,7 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
     if (results.every(Boolean) && calc) {
       interestRate.value = AUTO_ANNUAL_RATE.toFixed(2);
       Flow.saveForm(form, 'loanDetail');
+      syncPreEligibility();
       status.innerHTML = '<strong>Data telah lengkap.</strong> Bunga dan estimasi cicilan telah disinkronkan. Membuka Tahap 8 — Informasi Keuangan …';
       status.classList.add('show');
       status.scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -434,6 +447,7 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
 
   bootCalculator();
   window.addEventListener('pageshow', bootCalculator);
+  syncPreEligibility();
 })();
 </script>
 </body>
