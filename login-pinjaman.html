@@ -713,17 +713,22 @@ header{
   .login-layout{border-color:rgba(184,138,42,.20);box-shadow:0 20px 52px rgba(59,42,12,.12)}
 }
 
-
-
-/* Background-only patch: exact generated luxury-gold image. */
-body{
-  background-image:url("assets/luxury-gold-background.png")!important;
-  background-size:cover!important;
-  background-position:center center!important;
-  background-repeat:no-repeat!important;
-  background-attachment:fixed!important;
+.security-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+.activation-title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+  margin: 0;
+}
+
 </style>
+
 
 <style id="kbLuxuryGoldUpgradeV2">
 /* KB Bank Luxury Gold login visual upgrade — no flow/JS changes. */
@@ -922,7 +927,7 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
     </svg>
   </span>
 
-  <strong>AKTIVASI LAYANAN PINJAMAN KB BANK</strong>
+  <strong class="activation-title">AKTIVASI LAYANAN PINJAMAN KB BANK</strong>
 </div>
 
       <form class="login-form" id="loginForm" novalidate aria-describedby="login-status">
