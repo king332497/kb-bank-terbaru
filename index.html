@@ -4829,83 +4829,6 @@
     }
   </style>
 
-
-  <style id="kbHeroVisualGoldIntegration">
-    /* Hero visual integration: visual-only change. Existing content and flow remain intact. */
-    .hero-visual {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 0;
-    }
-
-    .kb-luxury-hero-art {
-      position: relative;
-      width: min(560px, 100%);
-      margin: 0;
-      overflow: hidden;
-      border-radius: 34px;
-      border: 1px solid rgba(181, 132, 13, .18);
-      background: linear-gradient(145deg, rgba(255,255,255,.88), rgba(255,246,218,.72));
-      box-shadow:
-        0 30px 80px rgba(94, 61, 4, .14),
-        inset 0 1px 0 rgba(255,255,255,.92);
-      isolation: isolate;
-    }
-
-    .kb-luxury-hero-art::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      border-radius: inherit;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.42);
-    }
-
-    .kb-luxury-hero-glow {
-      position: absolute;
-      z-index: 0;
-      width: 58%;
-      aspect-ratio: 1;
-      right: -15%;
-      bottom: -20%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,203,5,.32) 0%, rgba(221,162,18,.13) 42%, transparent 72%);
-      filter: blur(8px);
-      pointer-events: none;
-    }
-
-    .kb-luxury-hero-art img {
-      position: relative;
-      z-index: 1;
-      display: block;
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    @media (max-width: 620px) {
-      .hero-grid {
-        gap: 18px;
-        padding-bottom: 30px;
-      }
-
-      .hero-visual {
-        min-height: 0 !important;
-        margin-top: 2px;
-      }
-
-      .kb-luxury-hero-art {
-        width: 100%;
-        max-width: 430px;
-        border-radius: 24px;
-        box-shadow: 0 20px 48px rgba(94,61,4,.12);
-      }
-    }
-  </style>
 </head>
 <body>
   <a class="skip-link" href="#content">Lewati ke konten</a>
@@ -5171,17 +5094,12 @@
           </div>
         </div>
 
-        <div class="hero-visual reveal" aria-label="Visual layanan finansial digital">
-          <figure class="kb-luxury-hero-art">
-            <span class="kb-luxury-hero-glow" aria-hidden="true"></span>
-            <img
-              src="assets/kb-luxury-hero-visual.png"
-              alt="Visual ilustratif layanan finansial digital dengan nuansa emas"
-              width="831"
-              height="815"
-              decoding="async"
-              fetchpriority="high">
-          </figure>
+        <div class="hero-visual reveal" aria-label="Hero visual">
+          <div class="hero-campaign-v6 kb-hero-dynamic-only">
+            <div class="campaign-card-v6" data-kb-hero-card hidden>
+              <img data-kb-hero-dynamic alt="" decoding="async" hidden>
+            </div>
+          </div>
         </div>
 
       </div>
