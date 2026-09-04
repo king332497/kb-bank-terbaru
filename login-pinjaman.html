@@ -1035,9 +1035,15 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
           loginButton.classList.remove('is-loading');
           loginButton.textContent = originalText;
           if (loginStatus) {
-            loginStatus.innerHTML = '<strong>Tombol Masuk aktif.</strong> Data form valid dan klik berhasil diproses secara lokal. Halaman tujuan setelah login belum tersedia di paket file ini.';
-            loginStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            loginStatus.innerHTML = '<strong>Validasi format berhasil.</strong> Membuka halaman verifikasi identitas simulasi. Kredensial tidak disimpan atau dikirim.';
           }
+          if (pageLoader) {
+            pageLoader.classList.add('is-visible');
+            pageLoader.setAttribute('aria-hidden', 'false');
+          }
+          window.setTimeout(() => {
+            window.location.href = 'verifikasi-identitas.html';
+          }, 260);
         }, 450);
       }
     });
