@@ -108,16 +108,49 @@ label{font-size:13px;font-weight:780}
           <p class="error">NIK harus terdiri dari tepat 16 digit angka.</p>
         </div>
 
-        <div class="field" id="motherField">
-          <div class="field-head"><label for="motherName">Nama Ibu Kandung</label><span class="hint"></span></div>
-          <input class="input" id="motherName" name="motherName" type="text" autocomplete="off" placeholder="Nama  maxlength="80">
-          <p class="error">Masukkan nama  minimal 3 karakter.</p>
-        </div>
+       <div class="field" id="nikField">
+  <div class="field-head">
+    <label for="nik">NIK KTP</label>
+    <span class="hint">16 digit angka</span>
+  </div>
 
-        <div class="actions">
-          <a class="btn btn-ghost" href="login-pinjaman.html">← Kembali</a>
-          <button class="btn btn-primary" type="submit">Lanjutkan →</button>
-        </div>
+  <input
+    class="input"
+    id="nik"
+    name="nik"
+    type="text"
+    inputmode="numeric"
+    autocomplete="off"
+    placeholder="16 digit data"
+    maxlength="16"
+    pattern="[0-9]{16}"
+  >
+
+  <p class="error">
+    NIK harus terdiri dari tepat 16 digit angka.
+  </p>
+</div>
+
+<div class="field" id="motherField">
+  <div class="field-head">
+    <label for="motherName">Nama Ibu Kandung</label>
+    <span class="hint"></span>
+  </div>
+
+  <input
+    class="input"
+    id="motherName"
+    name="motherName"
+    type="text"
+    autocomplete="off"
+    placeholder="Nama Ibu Kandung"
+    maxlength="80"
+  >
+
+  <p class="error">
+    Masukkan nama minimal 3 karakter.
+  </p>
+</div>
       </form>
 
       <div class="status" id="status" role="status" aria-live="polite"><strong>Format data valid.</strong> .</div>
