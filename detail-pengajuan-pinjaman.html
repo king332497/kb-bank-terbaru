@@ -57,8 +57,14 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
 .btn:active{transform:translateY(1px)}.btn-ghost{background:#fff;border-color:#ded4c1;color:#4d463d}.btn-primary{background:linear-gradient(135deg,#e7bb45,#aa750d);color:#fff;box-shadow:0 12px 28px rgba(169,116,15,.22)}
 .status{display:none;margin-top:18px;padding:14px 15px;border-radius:15px;background:#f7fbf5;border:1px solid #cfe2c8;color:#30592d;font-size:12px;line-height:1.55}.status.show{display:block}
 .privacy{margin-top:18px;padding-top:16px;border-top:1px solid rgba(122,92,35,.12);font-size:11px;line-height:1.6;color:#8a8379}
+.product-meta{margin:2px 0 0!important;padding:10px 12px;border-radius:12px;background:#fff9e9;border:1px solid #ead7a2;color:#6f551c!important;font-size:11px!important;line-height:1.55!important}
+.calc-card{grid-column:1/-1;border:1px solid #e0cf9f;border-radius:19px;background:linear-gradient(180deg,#fffdf8 0%,#fff8e6 100%);padding:17px;display:grid;gap:14px}
+.calc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.calc-head strong{font-size:14px}.calc-head small{font-size:10px;line-height:1.45;color:#81786c;text-align:right}
+.calc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.calc-item{padding:12px 13px;border-radius:14px;background:#fff;border:1px solid #ede4d1;min-width:0}.calc-item span{display:block;font-size:10px;color:#82796d;font-weight:750;margin-bottom:5px}.calc-item strong{display:block;font-size:14px;line-height:1.25;overflow-wrap:anywhere}.calc-item.primary{background:linear-gradient(135deg,#2f260f,#6b4b0e);border-color:#6b4b0e;color:#fff}.calc-item.primary span{color:#f0dfb5}.calc-item.primary strong{font-size:18px}
+.calc-foot{margin:0!important;padding-top:2px;color:#756c60!important;font-size:10px!important;line-height:1.55!important}
 @media(max-width:900px){.shell{width:min(100% - 28px,720px);padding-top:18px}.topbar{margin-bottom:12px}.layout{grid-template-columns:1fr;gap:18px}.copy{padding:18px 2px 6px;position:static}h1{font-size:48px}.lead{font-size:15px}.card{padding:22px;border-radius:23px}}
-@media(max-width:560px){.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.actions{grid-template-columns:1fr}.shell{width:calc(100% - 24px);padding-bottom:32px}.brand{font-size:14px}.brand-mark{width:34px;height:34px}.card h2{font-size:22px}.card{padding:19px}.input{height:52px;font-size:16px}.textarea{font-size:16px}h1{font-size:40px}}
+@media(max-width:560px){.grid,.calc-grid{grid-template-columns:1fr}.field.full,.calc-card{grid-column:auto}.actions{grid-template-columns:1fr}.shell{width:calc(100% - 24px);padding-bottom:32px}.brand{font-size:14px}.brand-mark{width:34px;height:34px}.card h2{font-size:22px}.card{padding:19px}.input{height:52px;font-size:16px}.textarea{font-size:16px}h1{font-size:40px}.calc-head{display:grid}.calc-head small{text-align:left}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
@@ -72,13 +78,13 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
     <div class="copy">
       <div class="eyebrow">Tahap 7 · Detail Pengajuan</div>
       <h1 id="pageTitle">Detail <em>Pengajuan Pinjaman</em></h1>
-      <p class="lead">Lengkapi rincian pengajuan untuk menentukan kebutuhan pembiayaan, tenor, tujuan penggunaan dana, dan kemampuan angsuran.</p>
+      <p class="lead">Lengkapi rincian pengajuan untuk menentukan produk, kebutuhan pembiayaan, tenor, bunga, estimasi cicilan, dan tujuan penggunaan dana.</p>
       <div class="secure-note" role="note"><strong>Pratinjau formulir lokal.</strong> Data pada halaman ini tidak dikirim ke server, API, atau penyimpanan eksternal.</div>
     </div>
 
     <div class="card">
       <div class="card-head">
-        <div><h2>Detail Pengajuan Pinjaman</h2><p>Isi seluruh informasi sesuai rencana pengajuan Anda.</p></div>
+        <div><h2>Detail Pengajuan Pinjaman</h2><p>Nominal, tenor, bunga, dan estimasi cicilan dihitung otomatis dari nilai form saat ini.</p></div>
         <div class="lock" aria-hidden="true">⌁</div>
       </div>
 
@@ -87,21 +93,87 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
         <div class="grid">
           <div class="field" id="loanProductField">
             <div class="field-head"><label for="loanProduct">Jenis produk pinjaman</label><span class="hint">Wajib</span></div>
-            <input class="input" id="loanProduct" name="loanProduct" type="text" maxlength="100" placeholder="Masukkan jenis produk pinjaman" required>
-            <p class="error">Masukkan jenis produk pinjaman.</p>
+            <select class="input" id="loanProduct" name="loanProduct" required>
+              <option value="">Pilih jenis produk pinjaman</option>
+              <option value="Kredit Pensiunan" data-scale="Kecil" data-use="Kebutuhan pribadi/pensiunan" data-full="Kredit Pensiunan">Pensiunan</option>
+              <option value="Kredit Pra Pensiun" data-scale="Kecil" data-use="Pegawai menjelang pensiun" data-full="Kredit Pra Pensiun">Pra Pensiun</option>
+              <option value="Kredit PNS Aktif" data-scale="Kecil–Menengah" data-use="Kebutuhan pegawai/PNS" data-full="Kredit PNS Aktif">PNS Aktif</option>
+              <option value="Kredit Serba Guna (KSG)" data-scale="Kecil–Menengah" data-use="Kebutuhan konsumtif/multiguna" data-full="Kredit Serba Guna (KSG)">Serba Guna</option>
+              <option value="Kredit Usaha Rakyat (KUR)" data-scale="Kecil–Menengah" data-use="Modal kerja/investasi UMKM" data-full="Kredit Usaha Rakyat (KUR)">KUR</option>
+              <option value="Kredit Kepemilikan Mobil" data-scale="Menengah" data-use="Pembelian kendaraan" data-full="Kredit Kepemilikan Mobil">Mobil</option>
+              <option value="Kredit Kepemilikan Rumah/Apartemen" data-scale="Menengah–Besar" data-use="Pembelian rumah/apartemen" data-full="Kredit Kepemilikan Rumah/Apartemen">KPR/KPA</option>
+              <option value="SME Mortgage" data-scale="Menengah–Besar" data-use="Pembiayaan usaha berbasis properti" data-full="SME Mortgage">SME Mortgage</option>
+              <option value="Kredit Modal Kerja (KMK)" data-scale="Besar" data-use="Operasional dan modal bisnis" data-full="Kredit Modal Kerja (KMK)">Modal Kerja</option>
+              <option value="Kredit Investasi" data-scale="Besar" data-use="Ekspansi, aset, mesin, bangunan, atau proyek" data-full="Kredit Investasi">Investasi</option>
+            </select>
+            <p class="product-meta" id="productMeta">Pilih produk untuk melihat skala dan penggunaan umumnya.</p>
+            <p class="error">Pilih jenis produk pinjaman.</p>
           </div>
 
           <div class="field" id="loanAmountField">
-            <div class="field-head"><label for="loanAmount">Jumlah pinjaman yang diajukan</label><span class="hint">Rupiah</span></div>
-            <div class="money-shell"><span class="money-prefix">Rp</span><input class="input money-input" id="loanAmount" name="loanAmount" type="text" inputmode="numeric" maxlength="18" required></div>
-            <p class="error">Masukkan jumlah pinjaman yang diajukan.</p>
+            <div class="field-head"><label for="loanAmount">Nominal pengajuan</label><span class="hint">Pilihan nominal</span></div>
+            <select class="input" id="loanAmount" name="loanAmount" required>
+              <option value="">Pilih nominal pengajuan</option>
+              <option value="5000000">Rp5 juta</option>
+              <option value="10000000">Rp10 juta</option>
+              <option value="25000000">Rp25 juta</option>
+              <option value="50000000">Rp50 juta</option>
+              <option value="100000000">Rp100 juta</option>
+              <option value="200000000">Rp200 juta</option>
+              <option value="300000000">Rp300 juta</option>
+              <option value="500000000">Rp500 juta</option>
+              <option value="1000000000">Rp1 miliar</option>
+              <option value="5000000000">Rp5 miliar</option>
+              <option value="10000000000">Rp10 miliar</option>
+              <option value="30000000000">Rp30 miliar+</option>
+            </select>
+            <p class="product-meta" id="amountMeta">Nominal di atas adalah pilihan nilai pengajuan, bukan pernyataan plafon setiap produk. Plafon aktual bergantung pada produk dan hasil analisis kredit.</p>
+            <p class="error">Pilih nominal pengajuan.</p>
           </div>
 
           <div class="field" id="tenorField">
-            <div class="field-head"><label for="tenor">Tenor</label><span class="hint">Dalam bulan</span></div>
-            <div class="suffix-shell"><input class="input" id="tenor" name="tenor" type="text" inputmode="numeric" maxlength="3" required><span class="input-suffix">bulan</span></div>
-            <p class="error">Masukkan tenor dalam jumlah bulan.</p>
+            <div class="field-head"><label for="tenor">Tenor</label><span class="hint">1 tahun hingga 10 tahun</span></div>
+            <select class="select" id="tenor" name="tenor" required>
+              <option value="12">1 tahun</option>
+              <option value="24">2 tahun</option>
+              <option value="36">3 tahun</option>
+              <option value="48">4 tahun</option>
+              <option value="60">5 tahun</option>
+              <option value="72">6 tahun</option>
+              <option value="84">7 tahun</option>
+              <option value="96">8 tahun</option>
+              <option value="108">9 tahun</option>
+              <option value="120">10 tahun</option>
+            </select>
+            <p class="error">Pilih tenor antara 1 tahun dan 10 tahun.</p>
           </div>
+
+          <div class="field" id="interestRateField">
+            <div class="field-head"><label for="interestRate">Bunga estimasi otomatis</label><span class="hint">Efektif · parameter kalkulator</span></div>
+            <div class="suffix-shell"><input class="input" id="interestRate" name="interestRate" type="text" value="12.00" readonly aria-readonly="true" tabindex="-1"><span class="input-suffix">% / thn</span></div>
+            <p class="product-meta">Nilai ini digunakan otomatis untuk kalkulasi dan bukan pernyataan suku bunga resmi produk KB Bank.</p>
+          </div>
+
+          <div class="calc-card" aria-live="polite" aria-label="Ringkasan estimasi pinjaman">
+            <div class="calc-head">
+              <strong>Ringkasan Perhitungan</strong>
+              <small>Metode anuitas efektif. Setelah nominal dipilih, bunga dan cicilan langsung dihitung otomatis; perubahan tenor menghitung ulang cicilan.</small>
+            </div>
+            <div class="calc-grid">
+              <div class="calc-item"><span>Pokok pinjaman</span><strong id="summaryPrincipal">—</strong></div>
+              <div class="calc-item"><span>Bunga / tahun</span><strong id="summaryAnnualRate">12,00%</strong></div>
+              <div class="calc-item"><span>Total bunga estimasi</span><strong id="summaryInterest">—</strong></div>
+              <div class="calc-item primary"><span>Estimasi cicilan / bulan</span><strong id="summaryInstallment">—</strong></div>
+              <div class="calc-item"><span>Total pembayaran estimasi</span><strong id="summaryTotal">—</strong></div>
+              <div class="calc-item"><span>Tenor</span><strong id="summaryTenor">—</strong></div>
+            </div>
+            <p class="calc-foot" id="calculationNote">Pilih nominal pengajuan. Tenor dapat dipilih dari 1 tahun hingga 10 tahun.</p>
+          </div>
+
+          <input type="hidden" id="estimatedMonthlyInstallment" name="estimatedMonthlyInstallment" value="">
+          <input type="hidden" id="estimatedTotalInterest" name="estimatedTotalInterest" value="">
+          <input type="hidden" id="estimatedTotalPayment" name="estimatedTotalPayment" value="">
+          <input type="hidden" id="interestMethod" name="interestMethod" value="annuity-effective">
 
           <div class="field" id="repaymentSourceField">
             <div class="field-head"><label for="repaymentSource">Sumber pembayaran angsuran</label><span class="hint">Wajib</span></div>
@@ -115,11 +187,6 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
             <p class="error">Jelaskan tujuan penggunaan dana.</p>
           </div>
 
-          <div class="field full" id="monthlyCapacityField">
-            <div class="field-head"><label for="monthlyCapacity">Perkiraan kemampuan angsuran per bulan</label><span class="hint">Rupiah</span></div>
-            <div class="money-shell"><span class="money-prefix">Rp</span><input class="input money-input" id="monthlyCapacity" name="monthlyCapacity" type="text" inputmode="numeric" maxlength="18" required></div>
-            <p class="error">Masukkan perkiraan kemampuan angsuran per bulan.</p>
-          </div>
         </div>
 
         <div class="actions">
@@ -128,8 +195,8 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
         </div>
       </form>
 
-      <div class="status" id="status" role="status" aria-live="polite"><strong>Data telah lengkap.</strong> Validasi format selesai pada halaman lokal ini.</div>
-      <div class="privacy">Data prototype disimpan sementara di sessionStorage browser agar tetap konsisten saat berpindah halaman. Tidak menggunakan fetch, XMLHttpRequest, WebSocket, cookie, atau integrasi backend.</div>
+      <div class="status" id="status" role="status" aria-live="polite"><strong>Data telah lengkap.</strong> Bunga dan estimasi cicilan telah dihitung ulang dari nilai form saat ini.</div>
+      <div class="privacy">Pilihan nominal pengajuan bukan pernyataan plafon setiap produk; plafon aktual bergantung pada produk dan hasil analisis kredit. Untuk opsi Rp30 miliar+, estimasi menggunakan Rp30 miliar sebagai nilai referensi minimum. Bunga 12% per tahun adalah parameter kalkulator otomatis untuk menghasilkan estimasi matematis dan bukan pernyataan suku bunga resmi produk KB Bank. Data prototype disimpan sementara di sessionStorage browser agar tetap konsisten saat berpindah halaman. Tidak menggunakan fetch, XMLHttpRequest, WebSocket, cookie, atau integrasi backend.</div>
     </div>
   </section>
 </main>
@@ -137,53 +204,173 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
 <script>
 (() => {
   'use strict';
+
+  const MAX_TENOR = 120;
+  const MAX_ANNUAL_RATE = 60;
+  const AUTO_ANNUAL_RATE = 12;
+  const DEFAULT_TENOR_MONTHS = 12;
+  const ALLOWED_AMOUNTS = new Set([
+    5000000, 10000000, 25000000, 50000000, 100000000, 200000000,
+    300000000, 500000000, 1000000000, 5000000000, 10000000000, 30000000000
+  ]);
+
   const form = document.getElementById('loanDetailForm');
   const status = document.getElementById('status');
-  KBFlow.restoreForm(form, 'loanDetail');
-  const moneyInputs = [...form.querySelectorAll('.money-input')];
-  const tenor = document.getElementById('tenor');
 
-  const rawDigits = value => value.replace(/\D/g, '');
-  const formatRupiahDigits = value => {
-    const digits = rawDigits(value).slice(0, 15);
-    if (!digits) return '';
-    return Number(digits).toLocaleString('id-ID');
+  // Kalkulator tidak boleh gagal hanya karena helper eksternal tidak tersedia.
+  const Flow = window.KBFlow || {
+    restoreForm: () => ({}),
+    saveForm: () => true,
+    go: (url, delay = 420) => window.setTimeout(() => { window.location.href = url; }, delay)
   };
+  Flow.restoreForm(form, 'loanDetail');
 
-  moneyInputs.forEach(input => {
-    input.addEventListener('input', () => {
-      input.value = formatRupiahDigits(input.value);
-      input.closest('.field')?.classList.remove('is-error');
-      input.removeAttribute('aria-invalid');
-      status.classList.remove('show');
-    });
-  });
+  const loanProduct = document.getElementById('loanProduct');
+  const productMeta = document.getElementById('productMeta');
+  const loanAmount = document.getElementById('loanAmount');
+  const tenor = document.getElementById('tenor');
+  const interestRate = document.getElementById('interestRate');
+  const summaryPrincipal = document.getElementById('summaryPrincipal');
+  const summaryAnnualRate = document.getElementById('summaryAnnualRate');
+  const summaryInterest = document.getElementById('summaryInterest');
+  const summaryInstallment = document.getElementById('summaryInstallment');
+  const summaryTotal = document.getElementById('summaryTotal');
+  const summaryTenor = document.getElementById('summaryTenor');
+  const calculationNote = document.getElementById('calculationNote');
+  const estimatedMonthlyInstallment = document.getElementById('estimatedMonthlyInstallment');
+  const estimatedTotalInterest = document.getElementById('estimatedTotalInterest');
+  const estimatedTotalPayment = document.getElementById('estimatedTotalPayment');
 
-  tenor.addEventListener('input', () => {
-    tenor.value = rawDigits(tenor.value).slice(0, 3);
-    tenor.closest('.field')?.classList.remove('is-error');
-    tenor.removeAttribute('aria-invalid');
+  const rawDigits = value => String(value ?? '').replace(/\D/g, '');
+  const formatInteger = value => Math.round(Number(value) || 0).toLocaleString('id-ID');
+  const formatRupiah = value => `Rp${formatInteger(value)}`;
+  const parseDecimal = value => {
+    const normalized = String(value ?? '').replace(',', '.').replace(/[^0-9.]/g, '');
+    const parts = normalized.split('.');
+    if (parts.length > 2) return Number(`${parts.shift()}.${parts.join('')}`);
+    return Number(normalized);
+  };
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  const formatPercent = value => Number(value || 0).toLocaleString('id-ID', {minimumFractionDigits:2, maximumFractionDigits:2}) + '%';
+
+  function calculateLoan(principal, months, annualRatePercent) {
+    const safePrincipal = Math.max(0, Math.round(principal));
+    const safeMonths = Math.max(1, Math.round(months));
+    const monthlyRate = Math.max(0, annualRatePercent) / 100 / 12;
+    const exactInstallment = monthlyRate === 0
+      ? safePrincipal / safeMonths
+      : safePrincipal * monthlyRate / (1 - Math.pow(1 + monthlyRate, -safeMonths));
+    const installment = Math.round(exactInstallment);
+    const totalPayment = Math.round(exactInstallment * safeMonths);
+    const totalInterest = Math.max(0, totalPayment - safePrincipal);
+    return { principal:safePrincipal, months:safeMonths, annualRatePercent, monthlyRate, installment, totalPayment, totalInterest };
+  }
+
+  function currentAmount() {
+    const raw = loanAmount?.selectedOptions?.[0]?.value ?? loanAmount?.value ?? '';
+    const amount = Number(String(raw).replace(/[^0-9]/g, '')) || 0;
+    return ALLOWED_AMOUNTS.has(amount) ? amount : 0;
+  }
+
+  function currentTenor() {
+    return Number(rawDigits(tenor.value)) || 0;
+  }
+
+  function currentRate() {
+    return AUTO_ANNUAL_RATE;
+  }
+
+  function clearCalculation() {
+    summaryPrincipal.textContent = '—';
+    summaryInterest.textContent = '—';
+    summaryInstallment.textContent = '—';
+    summaryTotal.textContent = '—';
+    summaryTenor.textContent = '—';
+    estimatedMonthlyInstallment.value = '';
+    estimatedTotalInterest.value = '';
+    estimatedTotalPayment.value = '';
+    calculationNote.textContent = 'Pilih nominal pengajuan. Tenor dapat dipilih dari 1 tahun hingga 10 tahun.';
+  }
+
+  function renderCalculation() {
+    const principal = currentAmount();
+    const months = currentTenor();
+    const annualRate = clamp(currentRate(), 0, MAX_ANNUAL_RATE);
+
+    summaryAnnualRate.textContent = formatPercent(annualRate);
+
+    if (principal <= 0 || months < 12 || months > MAX_TENOR || months % 12 !== 0) {
+      clearCalculation();
+      return null;
+    }
+
+    const calc = calculateLoan(principal, months, annualRate);
+    summaryPrincipal.textContent = formatRupiah(calc.principal);
+    summaryTenor.textContent = `${calc.months / 12} tahun (${calc.months} bulan)`;
+    summaryInterest.textContent = formatRupiah(calc.totalInterest);
+    summaryInstallment.textContent = formatRupiah(calc.installment);
+    summaryTotal.textContent = formatRupiah(calc.totalPayment);
+
+    estimatedMonthlyInstallment.value = String(calc.installment);
+    estimatedTotalInterest.value = String(calc.totalInterest);
+    estimatedTotalPayment.value = String(calc.totalPayment);
+
+    const amountQualifier = calc.principal === 30000000000
+      ? ' Untuk opsi Rp30 miliar+, perhitungan menggunakan Rp30 miliar sebagai nilai referensi minimum.'
+      : '';
+    calculationNote.textContent = `Estimasi tenor ${calc.months / 12} tahun (${calc.months} bulan), sekitar ${formatRupiah(calc.installment)} per bulan. Total bunga sekitar ${formatRupiah(calc.totalInterest)} dan total pembayaran sekitar ${formatRupiah(calc.totalPayment)}.${amountQualifier}`;
+    return calc;
+  }
+
+  function updateProductMeta() {
+    const option = loanProduct.selectedOptions[0];
+    const fullName = option?.dataset?.full;
+    const scale = option?.dataset?.scale;
+    const use = option?.dataset?.use;
+    productMeta.textContent = fullName && scale && use
+      ? `${fullName} · Skala ${scale} · Umumnya untuk ${use}.`
+      : 'Pilih produk untuk melihat skala dan penggunaan umumnya.';
+  }
+
+  loanProduct.addEventListener('change', () => {
+    updateProductMeta();
+    loanProduct.closest('.field')?.classList.remove('is-error');
+    loanProduct.removeAttribute('aria-invalid');
     status.classList.remove('show');
   });
 
-  const validators = {
-    loanProduct: value => value.trim().length >= 2,
-    loanAmount: value => Number(rawDigits(value)) > 0,
-    tenor: value => Number(value) > 0,
-    repaymentSource: value => value.trim().length >= 2,
-    fundPurpose: value => value.trim().length >= 5,
-    monthlyCapacity: value => Number(rawDigits(value)) > 0
-  };
+  function syncAmountCalculation() {
+    loanAmount.closest('.field')?.classList.remove('is-error');
+    loanAmount.removeAttribute('aria-invalid');
+    status.classList.remove('show');
 
-  function validateField(field) {
-    const control = field.querySelector('input,textarea');
-    if (!control) return true;
-    const validate = validators[control.id] || (value => value.trim().length > 0);
-    const ok = validate(control.value);
-    field.classList.toggle('is-error', !ok);
-    control.setAttribute('aria-invalid', ok ? 'false' : 'true');
-    return ok;
+    const principal = currentAmount();
+    if (principal > 0) {
+      const months = currentTenor();
+      if (months < 12 || months > MAX_TENOR || months % 12 !== 0) {
+        tenor.value = String(DEFAULT_TENOR_MONTHS);
+      }
+      interestRate.value = AUTO_ANNUAL_RATE.toFixed(2);
+    }
+
+    // Render langsung dan satu frame berikutnya untuk menghindari state select yang terlambat di beberapa browser.
+    renderCalculation();
+    window.requestAnimationFrame(renderCalculation);
   }
+
+  loanAmount.addEventListener('change', syncAmountCalculation);
+  loanAmount.addEventListener('input', syncAmountCalculation);
+
+
+  tenor.addEventListener('change', () => {
+    tenor.closest('.field')?.classList.remove('is-error');
+    tenor.removeAttribute('aria-invalid');
+    status.classList.remove('show');
+    renderCalculation();
+  });
+
+  // Bunga dikunci sebagai parameter kalkulator otomatis; pengguna tidak perlu mengisi secara manual.
+
 
   form.addEventListener('input', event => {
     const field = event.target.closest('.field');
@@ -192,20 +379,63 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
     status.classList.remove('show');
   });
 
+  const validators = {
+    loanProduct: value => value.trim().length >= 2,
+    loanAmount: value => ALLOWED_AMOUNTS.has(Number(value)),
+    tenor: value => {
+      const months = Number(value);
+      return months >= 12 && months <= MAX_TENOR && months % 12 === 0;
+    },
+    interestRate: () => currentRate() === AUTO_ANNUAL_RATE,
+    repaymentSource: value => value.trim().length >= 2,
+    fundPurpose: value => value.trim().length >= 5
+  };
+
+  function validateField(field) {
+    const control = field.querySelector('input,textarea,select');
+    if (!control) return true;
+    const validate = validators[control.id] || (value => value.trim().length > 0);
+    const ok = validate(control.value);
+    field.classList.toggle('is-error', !ok);
+    control.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    return ok;
+  }
+
   form.addEventListener('submit', event => {
     event.preventDefault();
     const fields = [...form.querySelectorAll('.field')];
     const results = fields.map(validateField);
-    if (results.every(Boolean)) {
-      KBFlow.saveForm(form, 'loanDetail');
-      status.innerHTML = '<strong>Data telah lengkap.</strong> Membuka Tahap 8 — Informasi Keuangan …';
+    const calc = renderCalculation();
+    if (results.every(Boolean) && calc) {
+      interestRate.value = AUTO_ANNUAL_RATE.toFixed(2);
+      Flow.saveForm(form, 'loanDetail');
+      status.innerHTML = '<strong>Data telah lengkap.</strong> Bunga dan estimasi cicilan telah disinkronkan. Membuka Tahap 8 — Informasi Keuangan …';
       status.classList.add('show');
       status.scrollIntoView({behavior:'smooth',block:'nearest'});
-      KBFlow.go('informasi-keuangan-v2.html');
+      Flow.go('informasi-keuangan-v2.html');
       return;
     }
-    form.querySelector('.field.is-error input,.field.is-error textarea')?.focus();
+    form.querySelector('.field.is-error input,.field.is-error textarea,.field.is-error select')?.focus();
   });
+
+  function bootCalculator() {
+    updateProductMeta();
+    interestRate.value = AUTO_ANNUAL_RATE.toFixed(2);
+
+    if (loanAmount.value && !ALLOWED_AMOUNTS.has(Number(String(loanAmount.value).replace(/[^0-9]/g, '')))) {
+      loanAmount.value = '';
+    }
+
+    const restoredTenor = currentTenor();
+    if (restoredTenor < 12 || restoredTenor > MAX_TENOR || restoredTenor % 12 !== 0) {
+      tenor.value = String(DEFAULT_TENOR_MONTHS);
+    }
+
+    renderCalculation();
+  }
+
+  bootCalculator();
+  window.addEventListener('pageshow', bootCalculator);
 })();
 </script>
 </body>
