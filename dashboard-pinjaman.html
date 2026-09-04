@@ -3,11 +3,1044 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#6d28d9">
-<title>Dashboard Pinjaman</title>
+<meta name="theme-color" content="#6f18bd">
+<title>KB Bank Finance — Dashboard Pinjaman</title>
 <style>
-:root{--bg:#f4f7fb;--s:#fff;--t:#172033;--m:#6b7280;--l:#e7ecf3;--p:#6d28d9;--p2:#8b5cf6;--ok:#059669;--warn:#d97706;--sh:0 18px 45px rgba(30,41,59,.10);--r:22px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--t);background:radial-gradient(circle at top left,rgba(139,92,246,.12),transparent 32%),var(--bg)}button,a{font:inherit}a{text-decoration:none;color:inherit}.app{min-height:100vh;display:grid;grid-template-columns:270px 1fr}.sidebar{position:sticky;top:0;height:100vh;padding:24px 18px;color:#fff;background:linear-gradient(180deg,#4c1d95,#6d28d9 55%,#7c3aed);overflow:hidden}.sidebar:after{content:"";position:absolute;width:260px;height:260px;right:-120px;bottom:-80px;border:38px solid rgba(255,255,255,.06);border-radius:50%}.brand,.profile,.nav,.side-note{position:relative;z-index:1}.brand{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding:0 8px}.mark{width:44px;height:44px;display:grid;place-items:center;border-radius:15px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.2);font-weight:900}.brand strong,.profile strong{display:block}.brand span,.profile span{font-size:11px;color:rgba(255,255,255,.72)}.profile{display:flex;align-items:center;gap:12px;padding:14px;margin-bottom:22px;border-radius:18px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.14)}.avatar{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:#fff;color:var(--p);font-weight:900}.nav{display:grid;gap:8px}.nav a{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;color:rgba(255,255,255,.8);font-size:13px}.nav a.active,.nav a:hover{color:#fff;background:rgba(255,255,255,.15)}.side-note{position:absolute;left:18px;right:18px;bottom:22px;padding:14px;border-radius:16px;background:rgba(17,24,39,.18);font-size:10px;line-height:1.5;color:rgba(255,255,255,.78)}.main{min-width:0;padding:26px 30px 42px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:24px}.top h1{margin:0;font-size:28px}.top p{margin:6px 0 0;color:var(--m);font-size:13px}.icon{width:44px;height:44px;border:0;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(30,41,59,.08);cursor:pointer}.menu{display:none}.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:20px;margin-bottom:20px}.loan{position:relative;overflow:hidden;min-height:250px;padding:28px;border-radius:var(--r);color:#fff;background:linear-gradient(135deg,#4c1d95,#7c3aed 54%,#8b5cf6);box-shadow:var(--sh)}.loan:before,.loan:after{content:"";position:absolute;border-radius:50%;border:36px solid rgba(255,255,255,.07)}.loan:before{width:250px;height:250px;right:-80px;top:-100px}.loan:after{width:170px;height:170px;right:30px;bottom:-130px}.loan>*{position:relative;z-index:1}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.14em;color:rgba(255,255,255,.72)}.amount{margin:15px 0 8px;font-size:39px;font-weight:900}.meta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.meta div{min-width:130px;padding:12px 14px;border-radius:15px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14)}.meta span{display:block;margin-bottom:5px;font-size:10px;color:rgba(255,255,255,.68)}.card{border:1px solid rgba(231,236,243,.9);border-radius:var(--r);background:rgba(255,255,255,.92);box-shadow:var(--sh)}.status{padding:22px}.head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.head h2{margin:0;font-size:17px}.pill{padding:7px 10px;border-radius:999px;color:#166534;background:#ecfdf3;font-size:11px;font-weight:900}.summary-list{display:grid;gap:10px}.summary-item{display:flex;justify-content:space-between;gap:16px;padding:12px;border-radius:14px;background:#f8fafc;font-size:12px}.summary-item span{color:var(--m)}.summary-item strong{text-align:right}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.stat{padding:20px}.stat i{width:42px;height:42px;display:grid;place-items:center;margin-bottom:14px;border-radius:13px;background:#f3e8ff;color:var(--p);font-style:normal}.stat span{display:block;color:var(--m);font-size:11px}.stat strong{display:block;margin-top:7px;font-size:20px}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}.panel{padding:22px}.timeline{display:grid}.line{display:grid;grid-template-columns:32px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--l)}.line:last-child{border-bottom:0}.dot{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#ecfdf5;color:var(--ok);font-weight:900}.line strong{font-size:13px}.line p{margin:5px 0 0;color:var(--m);font-size:11px}.detail{display:grid;gap:11px}.detail-row{display:flex;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid var(--l);font-size:12px}.detail-row:last-child{border-bottom:0}.detail-row span{color:var(--m)}.detail-row strong{text-align:right}.guard{max-width:520px;margin:80px auto;padding:28px;text-align:center}.guard h1{margin:0 0 10px}.guard p{color:var(--m)}.guard button{min-height:48px;padding:0 18px;border:0;border-radius:14px;color:#fff;background:linear-gradient(135deg,var(--p2),var(--p));font-weight:900;cursor:pointer}.hidden{display:none!important}@media(max-width:980px){.app{grid-template-columns:1fr}.sidebar{position:fixed;left:-290px;z-index:20;width:270px;transition:.25s}.sidebar.open{left:0}.main{padding:20px}.menu{display:inline-grid;place-items:center}.hero-grid,.grid{grid-template-columns:1fr}}@media(max-width:680px){.main{padding:16px}.stats{grid-template-columns:1fr}.loan{padding:22px}.amount{font-size:31px}.top{align-items:flex-start}}
+:root{
+  --purple:#7217bf;
+  --purple2:#9b2fe2;
+  --purple3:#5f0da8;
+  --ink:#17131b;
+  --muted:#746d79;
+  --line:#eee8f1;
+  --bg:#f7f6f8;
+  --surface:#fff;
+  --gold:#f2bf48;
+  --ok:#2d9d61;
+  --shadow:0 14px 34px rgba(55,25,82,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 15% 0%,rgba(154,47,226,.10),transparent 28%),
+    #f5f3f7;
+}
+button,a{font:inherit}
+a{text-decoration:none;color:inherit}
+.hidden{display:none!important}
+
+/* Guard keeps existing eligibility behavior */
+.guard{
+  max-width:520px;
+  margin:70px auto;
+  padding:30px;
+  border:1px solid #e8d9f2;
+  border-radius:24px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+.guard h1{margin:0 0 10px;font-size:24px}
+.guard p{color:var(--muted);line-height:1.6}
+.guard button{
+  min-height:48px;
+  padding:0 20px;
+  border:0;
+  border-radius:14px;
+  color:#fff;
+  background:linear-gradient(135deg,var(--purple2),var(--purple3));
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* App shell */
+.app{
+  width:min(1180px,100%);
+  min-height:100vh;
+  margin:0 auto;
+  background:var(--surface);
+  box-shadow:0 0 70px rgba(42,12,72,.10);
+}
+.sidebar{display:none}
+.main{
+  min-width:0;
+  padding:0 0 86px;
+}
+
+/* Purple mobile-banking top */
+.top{
+  min-height:180px;
+  margin:0;
+  padding:22px clamp(18px,4vw,42px) 82px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 88% 5%,rgba(255,255,255,.10),transparent 28%),
+    radial-gradient(circle at 20% 120%,rgba(184,66,244,.24),transparent 45%),
+    linear-gradient(135deg,#5f149f,#7e1dc7 55%,#9427da);
+  position:relative;
+  overflow:hidden;
+}
+.top::after{
+  content:"";
+  position:absolute;
+  width:260px;height:260px;
+  right:-70px;bottom:-170px;
+  border:38px solid rgba(255,255,255,.045);
+  border-radius:50%;
+}
+.top-copy{position:relative;z-index:1}
+.brand-mini{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:26px;
+}
+.brand-star{
+  display:inline-flex;
+  align-items:flex-end;
+  font-size:31px;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+.brand-star .kb{color:#f2bb37}
+.brand-star .star{color:#fff}
+.brand-star sup{color:#ffd95e;font-size:12px;top:-1.1em;position:relative}
+.brand-sub{
+  display:block;
+  margin-top:-4px;
+  color:rgba(255,255,255,.76);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.06em;
+}
+.hello{
+  margin:0;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:none;
+  color:rgba(255,255,255,.88);
+}
+.hello strong{color:#fff}
+.top-actions{
+  position:relative;
+  z-index:1;
+  display:flex;
+  gap:10px;
+}
+.icon{
+  width:44px;height:44px;
+  display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.20);
+  border-radius:14px;
+  color:#fff;
+  background:rgba(255,255,255,.08);
+  cursor:pointer;
+  box-shadow:none;
+}
+.menu{display:none}
+
+/* Main account / loan card */
+.hero-grid{
+  position:relative;
+  z-index:3;
+  display:block;
+  margin:-58px clamp(14px,3vw,28px) 0;
+}
+.loan{
+  position:relative;
+  min-height:218px;
+  padding:25px;
+  border-radius:28px;
+  overflow:hidden;
+  color:#fff;
+  background:
+    radial-gradient(circle at 83% 35%,rgba(255,255,255,.12),transparent 28%),
+    linear-gradient(135deg,#7916c5,#9428db 56%,#a83dec);
+  box-shadow:0 18px 38px rgba(101,25,157,.25);
+}
+.loan::after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  right:-45px;bottom:-90px;
+  border:32px solid rgba(255,255,255,.045);
+  border-radius:50%;
+}
+.loan>*{position:relative;z-index:1}
+.eyebrow{
+  color:rgba(255,255,255,.85);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.07em;
+}
+.amount{
+  margin:34px 0 5px;
+  font-size:38px;
+  font-weight:950;
+  letter-spacing:-.035em;
+}
+.loan-purpose{
+  margin:0;
+  color:rgba(255,255,255,.82);
+  font-size:12px;
+}
+.history-chip{
+  position:absolute!important;
+  right:22px;top:22px;
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.75);
+  border-radius:13px;
+  font-size:11px;
+  font-weight:700;
+  background:rgba(255,255,255,.05);
+}
+.meta{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-top:27px;
+}
+.meta div{
+  min-width:0;
+  padding:11px 12px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+}
+.meta span{
+  display:block;
+  margin-bottom:4px;
+  color:rgba(255,255,255,.68);
+  font-size:9px;
+}
+.meta strong{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:11px;
+}
+
+/* quick menus */
+.quick-section{
+  padding:24px clamp(15px,3vw,30px) 4px;
+}
+.quick-actions{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+}
+.quick{
+  border:0;
+  background:transparent;
+  color:var(--ink);
+  padding:0;
+  text-align:center;
+}
+.quick-icon{
+  width:72px;height:64px;
+  margin:0 auto 9px;
+  display:grid;place-items:center;
+  border:1px solid #f0ebf2;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 8px 22px rgba(55,25,82,.07);
+  font-size:25px;
+}
+.quick span{
+  display:block;
+  font-size:11px;
+  line-height:1.25;
+  color:#39333d;
+}
+
+/* news/promos */
+.content-wrap{padding:8px clamp(15px,3vw,30px) 0}
+.section-title{
+  margin:16px 0 13px;
+  font-size:21px;
+  letter-spacing:-.025em;
+}
+.promo-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.promo{
+  min-height:150px;
+  padding:17px;
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid #eee5f3;
+  background:
+    linear-gradient(145deg,#fffdf8 0%,#fff7e8 48%,#f9ecff 100%);
+  box-shadow:0 10px 24px rgba(58,26,87,.06);
+}
+.promo.purple{
+  background:linear-gradient(145deg,#f9f0ff,#fff 55%,#fff7e8);
+}
+.promo .promo-brand{
+  font-size:10px;
+  font-weight:950;
+  color:#715129;
+  letter-spacing:.04em;
+}
+.promo h3{
+  max-width:72%;
+  margin:10px 0 5px;
+  font-size:16px;
+  line-height:1.15;
+}
+.promo p{
+  max-width:68%;
+  margin:0;
+  color:#6d6470;
+  font-size:10px;
+  line-height:1.45;
+}
+.promo .rate{
+  margin-top:12px;
+  color:#781dbb;
+  font-size:22px;
+  font-weight:950;
+}
+.promo-art{
+  position:absolute;
+  right:13px;bottom:11px;
+  width:84px;height:84px;
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 37% 29%,#fff 0 8%,transparent 9%),
+    linear-gradient(145deg,#9a35dd,#6c12b4);
+  box-shadow:0 13px 25px rgba(107,18,180,.23);
+  transform:rotate(8deg);
+}
+.promo-art::after{
+  content:"Rp";
+  position:absolute;
+  inset:0;
+  display:grid;place-items:center;
+  color:#fff;
+  font-weight:950;
+  font-size:22px;
+}
+
+/* status + benefits */
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:14px;
+}
+.card{
+  border:1px solid #eee8f1;
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 10px 26px rgba(55,25,82,.055);
+}
+.status{padding:20px}
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:16px;
+}
+.head h2{margin:0;font-size:16px}
+.pill{
+  padding:7px 10px;
+  border-radius:999px;
+  color:#227846;
+  background:#eef9f1;
+  border:1px solid #d9eedf;
+  font-size:9px;
+  font-weight:900;
+}
+.summary-list{display:grid;gap:9px}
+.summary-item{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:11px 0;
+  border-bottom:1px solid #f0ebf2;
+  font-size:11px;
+}
+.summary-item:last-child{border-bottom:0}
+.summary-item span{color:var(--muted)}
+.summary-item strong{text-align:right}
+
+.benefit-card{padding:20px}
+.benefit-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.benefit-top h2{margin:0;font-size:16px}
+.level{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  font-weight:900;
+}
+.level i{
+  width:25px;height:25px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:linear-gradient(145deg,#ffd966,#e5a921);
+  color:#7f42bc;
+  font-style:normal;
+}
+.benefit-copy{
+  margin:20px 0 7px;
+  color:#7b737f;
+  font-size:12px;
+}
+.benefit-progress{
+  height:8px;
+  border-radius:999px;
+  background:#f0edf2;
+  overflow:hidden;
+}
+.benefit-progress i{
+  display:block;
+  width:68%;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#ffd85a,#f1b82f);
+}
+.benefit-meta{
+  display:flex;
+  justify-content:space-between;
+  margin-top:8px;
+  color:#8b838f;
+  font-size:10px;
+}
+
+/* existing stats/timeline/detail become secondary details */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:14px;
+}
+.stat{padding:17px}
+.stat i{
+  width:38px;height:38px;
+  display:grid;place-items:center;
+  margin-bottom:10px;
+  border-radius:12px;
+  color:#7717bd;
+  background:#f7ecff;
+  font-style:normal;
+  font-weight:900;
+}
+.stat span{display:block;color:var(--muted);font-size:10px}
+.stat strong{display:block;margin-top:6px;font-size:17px}
+.grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:14px;
+  margin-top:14px;
+}
+.panel{padding:20px}
+.timeline{display:grid}
+.line{
+  display:grid;
+  grid-template-columns:30px 1fr;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid #f0ebf2;
+}
+.line:last-child{border-bottom:0}
+.dot{
+  width:27px;height:27px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  color:#2b8e56;
+  background:#edf9f1;
+  font-weight:900;
+}
+.line strong{font-size:12px}
+.line p{margin:4px 0 0;color:var(--muted);font-size:10px;line-height:1.45}
+.detail{display:grid;gap:8px}
+.detail-row{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  padding:10px 0;
+  border-bottom:1px solid #f0ebf2;
+  font-size:11px;
+}
+.detail-row:last-child{border-bottom:0}
+.detail-row span{color:var(--muted)}
+.detail-row strong{text-align:right}
+
+/* bottom mobile navigation */
+.bottom-nav{
+  position:fixed;
+  z-index:30;
+  left:50%;
+  bottom:0;
+  width:min(1180px,100%);
+  transform:translateX(-50%);
+  display:grid;
+  grid-template-columns:1fr 1fr 1.15fr 1fr 1fr;
+  align-items:end;
+  min-height:76px;
+  padding:8px 14px max(8px,env(safe-area-inset-bottom));
+  border-top:1px solid #eee8f1;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(16px);
+}
+.bottom-nav a,.bottom-nav button{
+  min-height:54px;
+  border:0;
+  background:transparent;
+  display:grid;
+  place-items:center;
+  gap:3px;
+  color:#bbb5bf;
+  font-size:9px;
+  cursor:pointer;
+}
+.bottom-nav .active{color:#7919bf;font-weight:900}
+.bottom-nav .nav-ico{font-size:20px}
+.scan{
+  width:58px!important;
+  height:58px!important;
+  min-height:58px!important;
+  margin:-29px auto 0;
+  border-radius:19px!important;
+  color:#fff!important;
+  background:linear-gradient(145deg,#8f27d3,#6810ae)!important;
+  box-shadow:0 11px 25px rgba(105,16,174,.30);
+  font-size:24px!important;
+}
+
+@media(min-width:901px){
+  .app{border-left:1px solid #eee8f1;border-right:1px solid #eee8f1}
+  .top{min-height:210px;padding-left:52px;padding-right:52px}
+  .hero-grid{margin-left:48px;margin-right:48px}
+  .quick-section,.content-wrap{padding-left:48px;padding-right:48px}
+  .bottom-nav{max-width:1180px}
+}
+@media(max-width:720px){
+  body{background:#fff}
+  .app{width:100%;box-shadow:none}
+  .main{padding-bottom:82px}
+  .top{
+    min-height:165px;
+    padding:20px 18px 72px;
+  }
+  .brand-mini{margin-bottom:19px}
+  .brand-star{font-size:27px}
+  .hello{font-size:11px}
+  .hero-grid{margin:-55px 12px 0}
+  .loan{
+    min-height:205px;
+    padding:21px;
+    border-radius:26px;
+  }
+  .history-chip{right:17px;top:17px;padding:8px 10px;font-size:9px}
+  .amount{margin-top:32px;font-size:32px}
+  .meta{gap:6px;margin-top:23px}
+  .meta div{padding:9px 8px}
+  .meta span{font-size:8px}
+  .meta strong{font-size:9px}
+  .quick-section{padding:22px 11px 2px}
+  .quick-actions{gap:7px}
+  .quick-icon{
+    width:58px;height:56px;
+    border-radius:16px;
+    font-size:21px;
+  }
+  .quick span{font-size:9px}
+  .content-wrap{padding:3px 13px 0}
+  .section-title{font-size:19px}
+  .promo-row{gap:9px}
+  .promo{min-height:132px;padding:13px}
+  .promo h3{font-size:13px}
+  .promo p{font-size:8px}
+  .promo .rate{font-size:18px}
+  .promo-art{width:66px;height:66px;border-radius:19px}
+  .dashboard-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .stat{padding:13px}
+  .stat i{width:34px;height:34px}
+  .stat strong{font-size:13px}
+  .grid{grid-template-columns:1fr}
+  .panel,.status,.benefit-card{padding:17px}
+}
+@media(max-width:390px){
+  .quick-icon{width:53px;height:53px}
+  .quick span{font-size:8.5px}
+  .stats{grid-template-columns:1fr}
+}
+
+/* ===== SIAGA DIGITAL BALANCE CARD ===== */
+.siaga-card{
+  min-height:320px;
+  padding:24px;
+}
+.siaga-head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+}
+.account-label{
+  margin-top:10px;
+  color:rgba(255,255,255,.72);
+  font-size:10px;
+  font-weight:700;
+}
+.account-number{
+  display:block;
+  margin-top:4px;
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+.balance-stack{
+  display:grid;
+  gap:11px;
+  margin-top:28px;
+}
+.balance-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:14px 15px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:15px;
+  background:rgba(255,255,255,.09);
+}
+.balance-row span{
+  color:rgba(255,255,255,.76);
+  font-size:11px;
+}
+.balance-row strong{
+  color:#fff;
+  font-size:20px;
+  font-weight:950;
+  letter-spacing:-.02em;
+}
+.main-balance-row{
+  background:rgba(255,255,255,.13);
+}
+.move-balance-button{
+  width:100%;
+  min-height:50px;
+  margin-top:16px;
+  padding:12px 14px;
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:14px;
+  color:#6d16b4;
+  background:#fff;
+  box-shadow:0 10px 24px rgba(50,11,84,.16);
+  font-size:11px;
+  line-height:1.3;
+  font-weight:950;
+  letter-spacing:.025em;
+  cursor:pointer;
+  transition:transform .18s ease,opacity .18s ease;
+}
+.move-balance-button:active{transform:scale(.985)}
+.move-balance-button:disabled{
+  cursor:not-allowed;
+  opacity:.58;
+  transform:none;
+}
+.local-transfer-note{
+  margin:10px 0 0;
+  color:rgba(255,255,255,.68);
+  font-size:9px;
+  line-height:1.45;
+}
+.balance-success{
+  color:#dfffe8!important;
+}
+@media(max-width:720px){
+  .siaga-card{
+    min-height:308px;
+    padding:20px;
+  }
+  .account-number{font-size:16px}
+  .balance-row{padding:12px 13px}
+  .balance-row strong{font-size:18px}
+  .move-balance-button{
+    min-height:48px;
+    font-size:10px;
+  }
+}
+
+.legacy-sync-targets{display:none!important}
+
+/* ===== PINJAMAN BERHASIL — GREEN NEON ===== */
+.history-chip{
+  color:#c8ffd7!important;
+  background:linear-gradient(135deg,rgba(8,102,48,.72),rgba(10,153,71,.88))!important;
+  border:1px solid rgba(116,255,166,.82)!important;
+  font-weight:950!important;
+  letter-spacing:.045em!important;
+  text-shadow:
+    0 0 5px rgba(163,255,194,.95),
+    0 0 11px rgba(76,255,137,.72)!important;
+  box-shadow:
+    0 0 0 1px rgba(151,255,187,.12) inset,
+    0 0 12px rgba(25,222,96,.55),
+    0 0 24px rgba(25,222,96,.28)!important;
+  animation:successGlowPulse 1.8s ease-in-out infinite alternate;
+}
+@keyframes successGlowPulse{
+  from{
+    box-shadow:
+      0 0 0 1px rgba(151,255,187,.10) inset,
+      0 0 8px rgba(25,222,96,.42),
+      0 0 16px rgba(25,222,96,.20);
+  }
+  to{
+    box-shadow:
+      0 0 0 1px rgba(151,255,187,.16) inset,
+      0 0 16px rgba(25,222,96,.72),
+      0 0 30px rgba(25,222,96,.38);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .history-chip{animation:none}
+}
+
+
+/* ===== MODERN QUICK MENU ===== */
+.modern-quick-actions{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+}
+.modern-quick{
+  position:relative;
+  min-height:116px;
+  padding:15px 8px 12px;
+  border:1px solid rgba(122,25,191,.10);
+  border-radius:20px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.98),rgba(250,247,252,.98));
+  box-shadow:
+    0 9px 24px rgba(66,29,94,.07),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  overflow:hidden;
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
+  cursor:pointer;
+}
+.modern-quick::before{
+  content:"";
+  position:absolute;
+  width:60px;height:60px;
+  right:-27px;top:-28px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(153,47,226,.13),rgba(153,47,226,0) 70%);
+  pointer-events:none;
+}
+.modern-quick:hover{
+  transform:translateY(-3px);
+  border-color:rgba(122,25,191,.22);
+  box-shadow:0 15px 30px rgba(79,31,115,.11);
+}
+.modern-quick:active{
+  transform:scale(.98);
+}
+.modern-icon{
+  width:58px!important;
+  height:58px!important;
+  margin:0 auto 10px!important;
+  border:1px solid rgba(123,26,190,.12)!important;
+  border-radius:18px!important;
+  color:#7618bd;
+  background:
+    radial-gradient(circle at 30% 20%,rgba(255,255,255,.98),rgba(255,255,255,.58) 30%,transparent 31%),
+    linear-gradient(145deg,#f8edff,#eee0fb)!important;
+  box-shadow:
+    0 9px 20px rgba(107,24,164,.11),
+    inset 0 0 0 1px rgba(255,255,255,.65)!important;
+}
+.modern-icon svg{
+  width:27px;
+  height:27px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.quick-label{
+  display:block;
+  color:#2a2230!important;
+  font-size:11px!important;
+  font-weight:850;
+  line-height:1.2;
+}
+.modern-quick small{
+  display:block;
+  margin-top:4px;
+  color:#8a8190;
+  font-size:8.5px;
+  font-weight:600;
+  line-height:1.2;
+}
+.modern-quick:nth-child(1) .modern-icon{
+  color:#6f22bf;
+}
+.modern-quick:nth-child(2) .modern-icon{
+  color:#9b6517;
+  background:linear-gradient(145deg,#fff8e7,#f7ebcb)!important;
+}
+.modern-quick:nth-child(3) .modern-icon{
+  color:#285bb5;
+  background:linear-gradient(145deg,#edf4ff,#e2ecff)!important;
+}
+.modern-quick:nth-child(4) .modern-icon{
+  color:#3a8a5e;
+  background:linear-gradient(145deg,#edf9f1,#e0f1e6)!important;
+}
+.modern-quick:nth-child(5) .modern-icon{
+  color:#7a5a21;
+  background:linear-gradient(145deg,#fff7e4,#f6ebcf)!important;
+}
+@media(max-width:720px){
+  .modern-quick-actions{
+    gap:7px;
+  }
+  .modern-quick{
+    min-height:104px;
+    padding:12px 5px 9px;
+    border-radius:17px;
+  }
+  .modern-icon{
+    width:52px!important;
+    height:52px!important;
+    border-radius:16px!important;
+    margin-bottom:8px!important;
+  }
+  .modern-icon svg{
+    width:24px;
+    height:24px;
+  }
+  .quick-label{
+    font-size:9.5px!important;
+  }
+  .modern-quick small{
+    font-size:7.2px;
+  }
+}
+@media(max-width:390px){
+  .modern-quick-actions{
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:5px;
+  }
+  .modern-quick{
+    min-height:99px;
+    padding-left:3px;
+    padding-right:3px;
+  }
+  .modern-icon{
+    width:48px!important;
+    height:48px!important;
+  }
+  .quick-label{
+    font-size:8.8px!important;
+  }
+  .modern-quick small{
+    display:none;
+  }
+}
+
+
+/* ===== DORMANT INFORMATION MODAL ===== */
+.dormant-modal[hidden]{display:none!important}
+.dormant-modal{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  padding:18px;
+}
+.dormant-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(24,7,39,.68);
+  backdrop-filter:blur(7px);
+}
+.dormant-dialog{
+  position:relative;
+  z-index:1;
+  width:min(420px,100%);
+  padding:26px 22px 20px;
+  border:1px solid rgba(255,255,255,.32);
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(255,221,97,.16),transparent 32%),
+    linear-gradient(180deg,#fff,#fbf7fd);
+  box-shadow:
+    0 28px 70px rgba(34,7,57,.36),
+    0 0 0 1px rgba(126,29,199,.08);
+  text-align:center;
+  animation:dormantPop .22s ease-out;
+}
+@keyframes dormantPop{
+  from{opacity:0;transform:translateY(8px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.dormant-icon{
+  width:64px;height:64px;
+  margin:0 auto 13px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  color:#fff;
+  background:linear-gradient(145deg,#f5bd36,#db8c11);
+  box-shadow:0 12px 26px rgba(219,140,17,.28);
+  font-size:31px;
+  font-weight:950;
+}
+.dormant-kicker{
+  color:#8a5d17;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+.dormant-dialog h2{
+  margin:8px 0 10px;
+  color:#2d2133;
+  font-size:22px;
+  line-height:1.15;
+  letter-spacing:-.025em;
+}
+.dormant-dialog p{
+  margin:0;
+  color:#756d79;
+  font-size:12px;
+  line-height:1.6;
+}
+.dormant-account{
+  margin:18px 0 15px;
+  padding:13px 14px;
+  border:1px solid #ede2f4;
+  border-radius:16px;
+  background:#faf7fc;
+  text-align:left;
+}
+.dormant-account span{
+  display:block;
+  color:#8d8391;
+  font-size:9px;
+}
+.dormant-account strong{
+  display:block;
+  margin-top:4px;
+  color:#2b2130;
+  font-size:17px;
+  letter-spacing:.04em;
+}
+.dormant-close{
+  width:100%;
+  min-height:48px;
+  border:0;
+  border-radius:14px;
+  color:#fff;
+  background:linear-gradient(135deg,#8f27d3,#6710ac);
+  box-shadow:0 11px 23px rgba(103,16,172,.20);
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.055em;
+  cursor:pointer;
+}
+.dormant-dialog small{
+  display:block;
+  margin-top:11px;
+  color:#9b939e;
+  font-size:8.5px;
+  line-height:1.4;
+}
+@media(max-width:480px){
+  .dormant-dialog{
+    padding:24px 18px 18px;
+    border-radius:23px;
+  }
+  .dormant-dialog h2{font-size:20px}
+}
+@media(prefers-reduced-motion:reduce){
+  .dormant-dialog{animation:none}
+}
+
+
+/* ===== ONLY MOVE-BALANCE BUTTON IS INTERACTIVE ===== */
+.top-actions .icon:disabled,
+.modern-quick:disabled{
+  cursor:default!important;
+  pointer-events:none!important;
+  opacity:1!important;
+}
+.modern-quick:disabled:hover,
+.modern-quick:disabled:active{
+  transform:none!important;
+  box-shadow:
+    0 9px 24px rgba(66,29,94,.07),
+    inset 0 1px 0 rgba(255,255,255,.95)!important;
+}
+.history-chip{
+  cursor:default!important;
+  pointer-events:none!important;
+}
+.bottom-nav .inert-nav{
+  min-height:54px;
+  display:grid;
+  place-items:center;
+  gap:3px;
+  color:#bbb5bf;
+  font-size:9px;
+  pointer-events:none!important;
+  user-select:none;
+}
+.bottom-nav .inert-nav.active{
+  color:#7919bf;
+  font-weight:900;
+}
+.bottom-nav .scan.inert-nav{
+  width:58px!important;
+  height:58px!important;
+  min-height:58px!important;
+  margin:-29px auto 0;
+  border-radius:19px!important;
+  color:#fff!important;
+  background:linear-gradient(145deg,#8f27d3,#6810ae)!important;
+  box-shadow:0 11px 25px rgba(105,16,174,.30);
+  font-size:24px!important;
+}
+.dormant-backdrop{
+  pointer-events:none!important;
+}
+.move-balance-button{
+  pointer-events:auto!important;
+  cursor:pointer!important;
+}
+
 </style>
 </head>
 <body>
@@ -16,28 +1049,230 @@
   <p>Lengkapi Form Pinjaman terlebih dahulu untuk membuka Dashboard.</p>
   <button id="guardButton" type="button">Kembali ke Form Pinjaman</button>
 </div>
+
 <div id="dashboardApp" class="app hidden">
-  <aside class="sidebar" id="sidebar">
-    <div class="brand"><div class="mark">KB</div><div><strong>KB Bank Finance</strong><span>Dashboard Pinjaman</span></div></div>
-    <div class="profile"><div class="avatar" id="profileAvatar">N</div><div><strong id="profileName">Nasabah</strong><span>Pengajuan terbaru</span></div></div>
-    <nav class="nav"><a class="active" href="#"><span>⌂</span>Ringkasan</a><a href="#status"><span>◴</span>Status Pengajuan</a><a href="#detail"><span>▤</span>Detail Pengajuan</a></nav>
-    <div class="side-note">Informasi yang tampil berasal dari data Form Pinjaman pada perangkat ini.</div>
+  <aside class="sidebar" id="sidebar" aria-hidden="true">
+    <div class="profile">
+      <div class="avatar" id="profileAvatar">N</div>
+      <div><strong id="profileName">Nasabah</strong><span>Pengajuan terbaru</span></div>
+    </div>
   </aside>
+
   <main class="main">
-    <header class="top"><div><button class="icon menu" id="menuButton" type="button" aria-label="Buka menu">☰</button><h1>Dashboard Pinjaman</h1><p>Ringkasan data pengajuan yang telah Anda isi.</p></div><button class="icon" type="button" aria-label="Notifikasi">🔔</button></header>
-    <section class="hero-grid">
-      <article class="loan"><div class="eyebrow">NOMINAL PENGAJUAN</div><div class="amount" id="loanAmount">Rp0</div><div>Tujuan: <strong id="loanPurpose">-</strong></div><div class="meta"><div><span>Tenor</span><strong id="loanTenor">-</strong></div><div><span>Estimasi Angsuran</span><strong id="loanMonthly">Rp0</strong></div><div><span>Rekening Pencairan</span><strong id="loanAccount">-</strong></div></div></article>
-      <article class="status card" id="status"><div class="head"><h2>Status Pengajuan</h2><span class="pill" id="eligibilityPill">Form Lengkap</span></div><div class="summary-list"><div class="summary-item"><span>Dokumen</span><strong id="documentStatus">-</strong></div><div class="summary-item"><span>Data pinjaman</span><strong>Lengkap</strong></div><div class="summary-item"><span>Status proses</span><strong id="processStatus">-</strong></div></div></article>
+    <header class="top">
+      <div class="top-copy">
+        <div class="brand-mini">
+          <div>
+            <div class="brand-star"><span class="kb">KB</span><span class="star">star</span><sup>★</sup></div>
+            <span class="brand-sub">by KB Bank · Prototype Lokal</span>
+          </div>
+        </div>
+        <p class="hello">Halo, <strong id="headerName">Nasabah</strong></p>
+      </div>
+      <div class="top-actions">
+        <button class="icon" type="button" aria-label="Notifikasi" disabled aria-disabled="true" tabindex="-1">♧</button>
+      </div>
+    </header>
+
+    <section class="hero-grid" aria-label="Ringkasan pinjaman">
+      <article class="loan siaga-card">
+        <div class="siaga-head">
+          <div>
+            <div class="eyebrow">SIAGA DIGITAL</div>
+            <div class="account-label">Nomor rekening KB BANK</div>
+            <strong class="account-number" id="loanAccount">-</strong>
+          </div>
+          <span class="history-chip" aria-disabled="true">PINJAMAN BERHASIL</span>
+        </div>
+
+        <div class="balance-stack">
+          <div class="balance-row">
+            <span>Saldo Pinjaman</span>
+            <strong id="loanBalance">Rp0</strong>
+          </div>
+          <div class="balance-row main-balance-row">
+            <span>Saldo Utama</span>
+            <strong id="mainBalance">Rp0</strong>
+          </div>
+        </div>
+
+        <button class="move-balance-button" id="moveBalanceButton" type="button">
+          PINDAHKAN SALDO PINJAMAN KE SALDO UTAMA
+        </button>
+
+
+        <div class="legacy-sync-targets" aria-hidden="true">
+          <span id="loanAmount"></span>
+          <span id="loanPurpose"></span>
+          <span id="loanTenor"></span>
+          <span id="loanMonthly"></span>
+        </div>
+
+        <p class="local-transfer-note" id="balanceNote">
+          Prototype lokal — perpindahan saldo hanya terjadi pada tampilan browser ini.
+        </p>
+      </article>
     </section>
-    <section class="stats">
-      <article class="stat card"><i>✓</i><span>Form Pinjaman</span><strong>Lengkap</strong></article>
-      <article class="stat card"><i>Rp</i><span>Total Pembayaran</span><strong id="loanTotal">Rp0</strong></article>
-      <article class="stat card"><i>◷</i><span>Tenor</span><strong id="statTenor">-</strong></article>
+
+    <section class="quick-section" aria-label="Menu cepat">
+      <div class="quick-actions modern-quick-actions">
+
+        <button class="quick modern-quick" type="button" disabled aria-disabled="true" tabindex="-1" aria-label="Transfer">
+          <span class="quick-icon modern-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M7 7h11m0 0-3-3m3 3-3 3M17 17H6m0 0 3 3m-3-3 3-3"/>
+            </svg>
+          </span>
+          <span class="quick-label">Transfer</span>
+          <small>Kirim dana</small>
+        </button>
+
+        <button class="quick modern-quick" type="button" disabled aria-disabled="true" tabindex="-1" aria-label="Angsuran">
+          <span class="quick-icon modern-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="4" y="5" width="16" height="15" rx="3"/>
+              <path d="M8 3v4M16 3v4M7 11h10M8 15h3M14 15h2"/>
+            </svg>
+          </span>
+          <span class="quick-label">Angsuran</span>
+          <small>Jadwal bayar</small>
+        </button>
+
+        <button class="quick modern-quick" type="button" disabled aria-disabled="true" tabindex="-1" aria-label="Detail Pinjaman">
+          <span class="quick-icon modern-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="3" width="14" height="18" rx="3"/>
+              <path d="M9 8h6M9 12h6M9 16h4"/>
+            </svg>
+          </span>
+          <span class="quick-label">Detail</span>
+          <small>Info pinjaman</small>
+        </button>
+
+        <button class="quick modern-quick" type="button" disabled aria-disabled="true" tabindex="-1" aria-label="Dokumen">
+          <span class="quick-icon modern-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M7 3h7l4 4v14H7z"/>
+              <path d="M14 3v5h5M10 13h5M10 17h5"/>
+            </svg>
+          </span>
+          <span class="quick-label">Dokumen</span>
+          <small>Berkas Anda</small>
+        </button>
+
+        <button class="quick modern-quick" type="button" disabled aria-disabled="true" tabindex="-1" aria-label="Bantuan">
+          <span class="quick-icon modern-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M9.7 9a2.5 2.5 0 1 1 4.3 1.7c-.9.8-2 1.2-2 2.8M12 17h.01"/>
+            </svg>
+          </span>
+          <span class="quick-label">Bantuan</span>
+          <small>Pusat bantuan</small>
+        </button>
+
+      </div>
     </section>
-    <section class="grid">
-      <article class="panel card"><div class="head"><h2>Perkembangan Pengajuan</h2></div><div class="timeline"><div class="line"><div class="dot">✓</div><div><strong>Dokumen dipersiapkan</strong><p>Tiga dokumen telah dipilih pada halaman Upload Dokumen.</p></div></div><div class="line"><div class="dot">✓</div><div><strong>Form Pinjaman lengkap</strong><p>Data nominal, tenor, tujuan, dan rekening telah disimpan.</p></div></div><div class="line"><div class="dot">✓</div><div><strong id="resultTimelineTitle">Pra-Kelayakan</strong><p id="resultTimelineCopy">Menunggu hasil pra-kelayakan.</p></div></div></div></article>
-      <article class="panel card" id="detail"><div class="head"><h2>Detail Pengajuan</h2></div><div class="detail"><div class="detail-row"><span>Tujuan</span><strong id="detailPurpose">-</strong></div><div class="detail-row"><span>Nominal</span><strong id="detailAmount">Rp0</strong></div><div class="detail-row"><span>Tenor</span><strong id="detailTenor">-</strong></div><div class="detail-row"><span>Angsuran/bulan</span><strong id="detailMonthly">Rp0</strong></div><div class="detail-row"><span>Total estimasi</span><strong id="detailTotal">Rp0</strong></div><div class="detail-row"><span>Rekening</span><strong id="detailAccount">-</strong></div></div></article>
-    </section>
+
+    <div class="content-wrap">
+      <h2 class="section-title">Apa yang Baru</h2>
+      <section class="promo-row" aria-label="Informasi terbaru">
+        <article class="promo">
+          <div class="promo-brand">KB BANK FINANCE</div>
+          <h3>Kelola Pengajuan Lebih Praktis</h3>
+          <p>Pantau nominal, tenor, dan status pengajuan dalam satu halaman.</p>
+          <div class="rate">Digital</div>
+          <div class="promo-art" aria-hidden="true"></div>
+        </article>
+        <article class="promo purple">
+          <div class="promo-brand">DIGITAL LOAN</div>
+          <h3>Status Pengajuan Terintegrasi</h3>
+          <p>Informasi pra-kelayakan dan detail pinjaman tetap tersinkron.</p>
+          <div class="rate">LIVE</div>
+          <div class="promo-art" aria-hidden="true"></div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="status card" id="status">
+          <div class="head">
+            <h2>Status Pengajuan</h2>
+            <span class="pill" id="eligibilityPill">Form Lengkap</span>
+          </div>
+          <div class="summary-list">
+            <div class="summary-item"><span>Dokumen</span><strong id="documentStatus">-</strong></div>
+            <div class="summary-item"><span>Data pinjaman</span><strong>Lengkap</strong></div>
+            <div class="summary-item"><span>Status proses</span><strong id="processStatus">-</strong></div>
+          </div>
+        </article>
+
+        <article class="benefit-card card">
+          <div class="benefit-top">
+            <h2>Benefit Anda</h2>
+            <div class="level"><i>★</i> Rookie</div>
+          </div>
+          <p class="benefit-copy">Progress penggunaan layanan digital</p>
+          <div class="benefit-progress"><i></i></div>
+          <div class="benefit-meta"><span>Aktivitas digital</span><strong>68%</strong></div>
+        </article>
+      </section>
+
+      <section class="stats">
+        <article class="stat card"><i>✓</i><span>Form Pinjaman</span><strong>Lengkap</strong></article>
+        <article class="stat card"><i>Rp</i><span>Total Pembayaran</span><strong id="loanTotal">Rp0</strong></article>
+        <article class="stat card"><i>◷</i><span>Tenor</span><strong id="statTenor">-</strong></article>
+      </section>
+
+      <section class="grid">
+        <article class="panel card">
+          <div class="head"><h2>Perkembangan Pengajuan</h2></div>
+          <div class="timeline">
+            <div class="line"><div class="dot">✓</div><div><strong>Dokumen dipersiapkan</strong><p>Dokumen pendukung telah diselesaikan pada tahap sebelumnya.</p></div></div>
+            <div class="line"><div class="dot">✓</div><div><strong>Form Pinjaman lengkap</strong><p>Data nominal, tenor, tujuan, dan rekening telah disimpan.</p></div></div>
+            <div class="line"><div class="dot">✓</div><div><strong id="resultTimelineTitle">Pra-Kelayakan</strong><p id="resultTimelineCopy">Menunggu hasil pra-kelayakan.</p></div></div>
+          </div>
+        </article>
+
+        <article class="panel card" id="detail">
+          <div class="head"><h2>Detail Pengajuan</h2></div>
+          <div class="detail">
+            <div class="detail-row"><span>Tujuan</span><strong id="detailPurpose">-</strong></div>
+            <div class="detail-row"><span>Nominal</span><strong id="detailAmount">Rp0</strong></div>
+            <div class="detail-row"><span>Tenor</span><strong id="detailTenor">-</strong></div>
+            <div class="detail-row"><span>Angsuran/bulan</span><strong id="detailMonthly">Rp0</strong></div>
+            <div class="detail-row"><span>Total estimasi</span><strong id="detailTotal">Rp0</strong></div>
+            <div class="detail-row"><span>Rekening</span><strong id="detailAccount">-</strong></div>
+          </div>
+        </article>
+      </section>
+    </div>
+
+
+    <div class="dormant-modal" id="dormantModal" hidden>
+      <div class="dormant-backdrop" data-close-dormant></div>
+      <section class="dormant-dialog" role="dialog" aria-modal="true" aria-labelledby="dormantTitle">
+        <div class="dormant-icon" aria-hidden="true">!</div>
+        <div class="dormant-kicker">PEMBERITAHUAN</div>
+        <h2 id="dormantTitle">INFORMASI REKENING DORMANT</h2>
+        <p>
+          Rekening yang digunakan pada tampilan ini sedang berstatus dormant pada prototype lokal.
+          Perpindahan saldo tidak diproses.
+        </p>
+        <div class="dormant-account">
+          <span>Nomor rekening KB BANK</span>
+          <strong id="dormantAccountNumber">-</strong>
+        </div>
+        <small>Prototype lokal — bukan status rekening bank yang sebenarnya. Notifikasi akan tertutup otomatis.</small>
+      </section>
+    </div>
+
+    <nav class="bottom-nav" aria-label="Navigasi bawah">
+      <div class="active inert-nav"><span class="nav-ico">⌂</span><span>Home</span></div>
+      <div class="inert-nav"><span class="nav-ico">▤</span><span>Akun</span></div>
+      <div class="scan inert-nav" aria-hidden="true">⌗</div>
+      <div class="inert-nav"><span class="nav-ico">▣</span><span>Produk</span></div>
+      <div class="inert-nav"><span class="nav-ico">▦</span><span>Menu</span></div>
+    </nav>
   </main>
 </div>
 <script src="flow-state.js"></script>
@@ -82,6 +1317,22 @@ const tenor=Number(loan.tenor||0);
 const monthly=Number(loan.estimatedMonthlyInstallment||0);
 const total=Number(loan.estimatedTotalPayment||0);
 const account=financial.accountNumber||"";
+
+const BALANCE_KEY="dashboardBalance";
+let dashboardBalance=KBFlow.get(BALANCE_KEY,null);
+if(!dashboardBalance || typeof dashboardBalance!=="object"){
+  dashboardBalance={loanBalance:amount,mainBalance:0,moved:false};
+}
+const normalizeBalanceValue=value=>{
+  const n=Number(value);
+  return Number.isFinite(n)&&n>=0?n:0;
+};
+dashboardBalance.loanBalance=normalizeBalanceValue(dashboardBalance.loanBalance);
+dashboardBalance.mainBalance=normalizeBalanceValue(dashboardBalance.mainBalance);
+if(dashboardBalance.loanBalance+dashboardBalance.mainBalance!==amount){
+  dashboardBalance={loanBalance:amount,mainBalance:0,moved:false};
+}
+
 const resolvedDocs=Object.values(documents.items||{}).filter(v=>v==="uploaded"||v==="none").length+(documents.selfie==="uploaded"||documents.selfie==="none"?1:0);
 $("profileName").textContent=fullName;
 $("profileAvatar").textContent=initials(fullName);
@@ -89,7 +1340,7 @@ $("loanAmount").textContent=currency(amount);
 $("loanPurpose").textContent=purpose;
 $("loanTenor").textContent=tenor?tenor+" bulan":"-";
 $("loanMonthly").textContent=currency(monthly);
-$("loanAccount").textContent=maskAccount(account);
+$("loanAccount").textContent=account||"-";
 $("loanTotal").textContent=currency(total);
 $("statTenor").textContent=tenor?tenor+" bulan":"-";
 $("detailPurpose").textContent=purpose;
@@ -97,13 +1348,83 @@ $("detailAmount").textContent=currency(amount);
 $("detailTenor").textContent=tenor?tenor+" bulan":"-";
 $("detailMonthly").textContent=currency(monthly);
 $("detailTotal").textContent=currency(total);
-$("detailAccount").textContent=maskAccount(account);
+$("detailAccount").textContent=account||"-";
+
+const loanBalanceEl=$("loanBalance");
+const mainBalanceEl=$("mainBalance");
+const moveBalanceButton=$("moveBalanceButton");
+const balanceNote=$("balanceNote");
+
+function renderDashboardBalance(){
+  if(loanBalanceEl) loanBalanceEl.textContent=currency(dashboardBalance.loanBalance);
+  if(mainBalanceEl) mainBalanceEl.textContent=currency(dashboardBalance.mainBalance);
+  if(moveBalanceButton){
+    const empty=dashboardBalance.loanBalance<=0;
+    moveBalanceButton.disabled=empty;
+    moveBalanceButton.textContent=empty
+      ?"SALDO PINJAMAN SUDAH DIPINDAHKAN"
+      :"PINDAHKAN SALDO PINJAMAN KE SALDO UTAMA";
+  }
+  if(balanceNote && dashboardBalance.moved){
+    balanceNote.textContent="Prototype lokal — saldo telah dipindahkan pada tampilan browser ini.";
+    balanceNote.classList.add("balance-success");
+  }
+}
+
+renderDashboardBalance();
+
+const dormantModal=$("dormantModal");
+const dormantAccountNumber=$("dormantAccountNumber");
+
+let dormantAutoCloseTimer=null;
+
+function openDormantModal(){
+  if(dormantAccountNumber) dormantAccountNumber.textContent=account||"-";
+  if(dormantModal){
+    dormantModal.hidden=false;
+    document.body.style.overflow="hidden";
+    if(dormantAutoCloseTimer) clearTimeout(dormantAutoCloseTimer);
+    dormantAutoCloseTimer=setTimeout(()=>{
+      dormantModal.hidden=true;
+      document.body.style.overflow="";
+      dormantAutoCloseTimer=null;
+    },3500);
+  }
+}
+
+moveBalanceButton?.addEventListener("click",()=>{
+  openDormantModal();
+});
+
 $("eligibilityPill").textContent="Pra-Kelayakan Lolos";
 $("documentStatus").textContent=resolvedDocs+" item diselesaikan";
 $("processStatus").textContent="Memenuhi kriteria awal";
 $("resultTimelineTitle").textContent="Pra-Kelayakan memenuhi kriteria";
 $("resultTimelineCopy").textContent="Pengajuan memenuhi kriteria awal otomatis dan dapat dilanjutkan. Status ini bukan keputusan kredit final bank.";
 $("menuButton")?.addEventListener("click",()=>$("sidebar").classList.toggle("open"));
+})();
+</script>
+<script>
+(()=>{
+  const toDisplayFirstName=(fullName)=>{
+    const first=String(fullName||"")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)[0]||"Nasabah";
+    return first.charAt(0).toLocaleUpperCase("id-ID")
+      + first.slice(1).toLocaleLowerCase("id-ID");
+  };
+
+  const syncHeaderName=()=>{
+    const profileName=document.getElementById("profileName");
+    const headerName=document.getElementById("headerName");
+    if(profileName&&headerName){
+      headerName.textContent=toDisplayFirstName(profileName.textContent);
+    }
+  };
+
+  syncHeaderName();
+  queueMicrotask(syncHeaderName);
 })();
 </script>
 </body>
