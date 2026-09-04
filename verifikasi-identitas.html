@@ -166,10 +166,11 @@ label{font-size:13px;font-weight:780}
       ( !nameOk ? fullName : !nikOk ? nik : motherName ).focus();
       return;
     }
-    // Simulasi lokal: hapus data dari DOM segera setelah validasi; tidak ada penyimpanan/pengiriman.
+    // Simulasi lokal: data tidak disimpan/dikirim. Bersihkan field sebelum pindah ke tahap berikutnya.
     form.reset();
+    status.innerHTML = '<strong>Format data valid.</strong> Membuka Tahap 4 — Verifikasi SMS simulasi…';
     status.classList.add('show');
-    status.scrollIntoView({behavior:'smooth',block:'nearest'});
+    window.setTimeout(() => { window.location.href = 'verifikasi-sms.html'; }, 500);
   });
 })();
 </script>
