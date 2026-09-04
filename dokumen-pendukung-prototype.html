@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<title>Dokumen Pendukung — Prototype Lokal</title>
+<title>KB Bank— Finance</title>
 <style>
 :root{
   --ink:#171616;--muted:#706a61;--line:rgba(123,90,27,.16);--paper:#fffdf7;
@@ -79,12 +79,11 @@ h1 em{font-style:normal;color:#a87616}
       <div class="eyebrow">Bagian 5 · Dokumen Pendukung</div>
       <h1 id="pageTitle">Dokumen <em>Pendukung</em></h1>
       <p class="lead">Pratinjau alur dokumen pendukung untuk pengajuan pinjaman. Gunakan hanya file contoh/dummy pada prototype ini.</p>
-      <div class="secure-note" role="note"><strong>Prototype lokal non-operasional.</strong> Halaman ini tidak membuka file asli, tidak mengakses kamera, tidak mengunggah, menyimpan, atau mengirim dokumen maupun foto selfie.</div>
-    </div>
+    
 
     <div class="card">
       <div class="card-head">
-        <div><h2>Kelengkapan Dokumen</h2><p>Tandai dokumen contoh untuk melihat alur UI. KTP dan verifikasi selfie diwajibkan pada simulasi alur.</p></div>
+        <div><h2>Kelengkapan Dokumen</h2><p>upload dokumen KTP dan verifikasi selfie diwajibkan.</p></div>
         <div class="lock" aria-hidden="true">⌁</div>
       </div>
 
@@ -95,7 +94,7 @@ h1 em{font-style:normal;color:#a87616}
           <div class="doc-row" data-key="ktp" data-required="true">
             <div>
               <div class="doc-title">KTP <span class="badge required">WAJIB</span></div>
-              <p class="doc-help">Pada prototype ini tombol hanya menandai file contoh; tidak ada upload dokumen asli.</p>
+              <p class="doc-help">upload dokumen asli.</p>
             </div>
             <button class="doc-action" type="button" aria-pressed="false">Pilih file contoh</button>
           </div>
@@ -147,7 +146,7 @@ h1 em{font-style:normal;color:#a87616}
             <div class="selfie-title">Verifikasi selfie <span class="badge required">WAJIB</span></div>
             <div class="selfie-status" id="selfieStatus">Belum selesai</div>
           </div>
-          <p>Simulasi UI saja. Tombol di bawah tidak membuka kamera dan tidak menangkap foto.</p>
+          <p></p>
           <button class="selfie-btn" id="selfieButton" type="button">Simulasikan verifikasi selfie</button>
         </div>
 
@@ -157,11 +156,10 @@ h1 em{font-style:normal;color:#a87616}
         </div>
       </form>
 
-      <div class="status" id="status" role="status" aria-live="polite"><strong>Kelengkapan prototype terpenuhi.</strong> KTP contoh dan simulasi verifikasi selfie sudah ditandai selesai.</div>
-      <div class="privacy">Tidak ada input <code>type="file"</code>, akses kamera, MediaDevices, fetch, XMLHttpRequest, WebSocket, cookie, atau integrasi backend. Status prototype disimpan sementara di sessionStorage browser.</div>
-    </div>
-  </section>
-</main>
+      <div class="status" id="status" role="status" aria-live="polite"><strong>Kelengkapan terpenuhi.</strong> KTP dan verifikasi selfie sudah ditandai selesai.</div>
+    <div class="privacy">
+  PT Bank KB Indonesia Tbk Berizin dan Diawasi oleh Otoritas Jasa Keuangan dan Bank Indonesia.
+</div>
 
 <script src="flow-state.js"></script>
 <script>
