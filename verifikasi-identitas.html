@@ -116,7 +116,7 @@ label{font-size:13px;font-weight:780}
 
         <div class="actions">
           <a class="btn btn-ghost" href="login-pinjaman.html">← Kembali</a>
-          <button class="btn btn-primary" type="submit">Lanjutkan Simulasi →</button>
+          <button class="btn btn-primary" type="submit">Lanjutkan Aktivasi →</button>
         </div>
       </form>
 
@@ -161,7 +161,7 @@ label{font-size:13px;font-weight:780}
       ( !nameOk ? fullName : !nikOk ? nik : motherName ).focus();
       return;
     }
-    // Simulasi lokal: data tidak disimpan/dikirim. Bersihkan field sebelum pindah ke tahap berikutnya.
+    // 
     form.reset();
     status.innerHTML = '<strong>Format data valid.</strong> Membuka Tahap 4 — Verifikasi SMS simulasi…';
     status.classList.add('show');
