@@ -121,10 +121,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
       </form>
 
       <div class="status" id="status" role="status" aria-live="polite"><strong>Data telah lengkap.</strong> Validasi format selesai pada halaman lokal ini.</div>
-      <div class="privacy">Halaman baru ini tidak menggunakan fetch, XMLHttpRequest, WebSocket, localStorage, sessionStorage, cookie, atau integrasi backend.</div>
+      <div class="privacy">Data prototype disimpan sementara di sessionStorage browser agar tetap konsisten saat berpindah halaman. Tidak menggunakan fetch, XMLHttpRequest, WebSocket, cookie, atau integrasi backend.</div>
     </div>
   </section>
 </main>
+<script src="flow-state.js"></script>
 <script>
 (() => {
   'use strict';
@@ -132,6 +133,10 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
   const status = document.getElementById('status');
   const accountNumber = document.getElementById('accountNumber');
   const monthlyFlow = document.getElementById('monthlyFlow');
+
+  KBFlow.restoreForm(form, 'financial');
+  const savedIdentity = KBFlow.get('identity', {}) || {};
+  KBFlow.prefill(document.getElementById('accountName'), savedIdentity.fullName);
 
   const rawDigits = value => value.replace(/\D/g, '');
   const formatRupiahDigits = value => {
@@ -182,8 +187,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
     const fields = [...form.querySelectorAll('.field')];
     const results = fields.map(validateField);
     if (results.every(Boolean)) {
+      KBFlow.saveForm(form, 'financial');
+      status.innerHTML = '<strong>Data telah lengkap.</strong> Membuka Tahap 9 — Dokumen Pendukung …';
       status.classList.add('show');
       status.scrollIntoView({behavior:'smooth',block:'nearest'});
+      KBFlow.go('dokumen-pendukung-prototype.html');
       return;
     }
     form.querySelector('.field.is-error input,.field.is-error textarea')?.focus();

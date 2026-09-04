@@ -165,10 +165,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
       </form>
 
       <div class="status" id="status" role="status" aria-live="polite"><strong>Data telah lengkap.</strong> Validasi format selesai pada halaman lokal ini.</div>
-      <div class="privacy">Halaman baru ini tidak menggunakan fetch, XMLHttpRequest, WebSocket, localStorage, sessionStorage, cookie, atau integrasi backend.</div>
+      <div class="privacy">Data prototype disimpan sementara di sessionStorage browser agar tetap konsisten saat berpindah halaman. Tidak menggunakan fetch, XMLHttpRequest, WebSocket, cookie, atau integrasi backend.</div>
     </div>
   </section>
 </main>
+<script src="flow-state.js"></script>
 <script>
 (() => {
   'use strict';
@@ -176,6 +177,7 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
   const status = document.getElementById('status');
   const fields = [...form.querySelectorAll('.field')];
   const moneyInputs = [...form.querySelectorAll('.money-input')];
+  KBFlow.restoreForm(form, 'employment');
 
   const rawDigits = value => value.replace(/\D/g, '');
   const formatRupiahDigits = value => {
@@ -240,8 +242,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
       firstError?.focus();
       return;
     }
+    KBFlow.saveForm(form, 'employment');
+    status.innerHTML = '<strong>Data telah lengkap.</strong> Membuka Tahap 7 — Detail Pengajuan …';
     status.classList.add('show');
     status.scrollIntoView({behavior:'smooth',block:'nearest'});
+    KBFlow.go('detail-pengajuan-pinjaman.html');
   });
 })();
 </script>

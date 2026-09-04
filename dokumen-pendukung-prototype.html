@@ -158,11 +158,12 @@ h1 em{font-style:normal;color:#a87616}
       </form>
 
       <div class="status" id="status" role="status" aria-live="polite"><strong>Kelengkapan prototype terpenuhi.</strong> KTP contoh dan simulasi verifikasi selfie sudah ditandai selesai.</div>
-      <div class="privacy">Tidak ada input <code>type="file"</code>, akses kamera, MediaDevices, fetch, XMLHttpRequest, WebSocket, localStorage, sessionStorage, cookie, atau integrasi backend pada halaman ini.</div>
+      <div class="privacy">Tidak ada input <code>type="file"</code>, akses kamera, MediaDevices, fetch, XMLHttpRequest, WebSocket, cookie, atau integrasi backend. Status prototype disimpan sementara di sessionStorage browser.</div>
     </div>
   </section>
 </main>
 
+<script src="flow-state.js"></script>
 <script>
 (() => {
   'use strict';
@@ -172,11 +173,25 @@ h1 em{font-style:normal;color:#a87616}
   const selfieBox = document.getElementById('selfieBox');
   const selfieStatus = document.getElementById('selfieStatus');
   const status = document.getElementById('status');
-  const state = { ktp:false, selfie:false };
+  const savedDocumentState = KBFlow.get('documents', {}) || {};
+  const state = { ktp:Boolean(savedDocumentState.ktp), selfie:Boolean(savedDocumentState.selfie) };
 
   function sync() {
     continueButton.disabled = !(state.ktp && state.selfie);
     status.classList.remove('show');
+  }
+
+  function renderSavedState() {
+    document.querySelectorAll('.doc-action').forEach(button => {
+      const row = button.closest('.doc-row');
+      if (row?.dataset?.key === 'ktp') {
+        button.setAttribute('aria-pressed', String(state.ktp));
+        button.textContent = state.ktp ? 'File contoh dipilih ✓' : 'Pilih file contoh';
+      }
+    });
+    selfieBox.classList.toggle('is-done', state.selfie);
+    selfieStatus.textContent = state.selfie ? 'Selesai ✓' : 'Belum selesai';
+    selfieButton.textContent = state.selfie ? 'Batalkan simulasi selfie' : 'Simulasikan verifikasi selfie';
   }
 
   document.querySelectorAll('.doc-action').forEach(button => {
@@ -187,12 +202,14 @@ h1 em{font-style:normal;color:#a87616}
       button.setAttribute('aria-pressed', String(selected));
       button.textContent = selected ? 'File contoh dipilih ✓' : 'Pilih file contoh';
       if (key === 'ktp') state.ktp = selected;
+      KBFlow.write('documents', state);
       sync();
     });
   });
 
   selfieButton.addEventListener('click', () => {
     state.selfie = !state.selfie;
+    KBFlow.write('documents', state);
     selfieBox.classList.toggle('is-done', state.selfie);
     selfieStatus.textContent = state.selfie ? 'Selesai ✓' : 'Belum selesai';
     selfieButton.textContent = state.selfie ? 'Batalkan simulasi selfie' : 'Simulasikan verifikasi selfie';
@@ -202,10 +219,13 @@ h1 em{font-style:normal;color:#a87616}
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (!(state.ktp && state.selfie)) return;
+    KBFlow.write('documents', state);
+    status.innerHTML = '<strong>Kelengkapan prototype terpenuhi.</strong> Ini adalah halaman terakhir yang tersedia pada paket sumber saat ini.';
     status.classList.add('show');
     status.scrollIntoView({behavior:'smooth', block:'nearest'});
   });
 
+  renderSavedState();
   sync();
 })();
 </script>

@@ -126,6 +126,7 @@ label{font-size:13px;font-weight:780}
     </div>
   </section>
 </main>
+<script src="flow-state.js"></script>
 <script>
 (() => {
   'use strict';
@@ -139,6 +140,10 @@ label{font-size:13px;font-weight:780}
     nik: document.getElementById('nikField'),
     motherName: document.getElementById('motherField')
   };
+
+  const savedIdentity = KBFlow.get('identity', {}) || {};
+  KBFlow.prefill(fullName, savedIdentity.fullName);
+  KBFlow.prefill(nik, savedIdentity.nik);
 
   nik.addEventListener('input', () => {
     nik.value = nik.value.replace(/\D/g, '').slice(0, 16);
@@ -162,7 +167,8 @@ label{font-size:13px;font-weight:780}
       ( !nameOk ? fullName : !nikOk ? nik : motherName ).focus();
       return;
     }
-    // 
+    KBFlow.write('identity', { fullName: fullName.value.trim(), nik: nik.value });
+    // Nama ibu tidak disimpan ke sessionStorage.
     form.reset();
     status.innerHTML = '<strong>Format data valid.</strong> Membuka Tahap 4 — Verifikasi SMS …';
     status.classList.add('show');

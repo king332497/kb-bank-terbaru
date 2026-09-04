@@ -201,10 +201,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
       </form>
 
       <div class="status" id="status" role="status" aria-live="polite"><strong>Data telah lengkap.</strong> Nominal pinjaman, bunga, dan cicilan telah dihitung ulang dari nilai form saat ini.</div>
-      <div class="privacy">Bunga default 12% per tahun hanya parameter simulasi UI dan dapat diubah. Halaman tidak menggunakan fetch, XMLHttpRequest, WebSocket, localStorage, sessionStorage, cookie, atau integrasi backend.</div>
+      <div class="privacy">Bunga default 12% per tahun hanya parameter simulasi UI dan dapat diubah. Data prototype disimpan sementara di sessionStorage browser agar tetap konsisten saat berpindah halaman; tidak menggunakan fetch, XMLHttpRequest, WebSocket, cookie, atau integrasi backend.</div>
     </div>
   </section>
 </main>
+<script src="flow-state.js"></script>
 <script>
 (() => {
   'use strict';
@@ -217,6 +218,7 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
 
   const form = document.getElementById('loanDetailForm');
   const status = document.getElementById('status');
+  KBFlow.restoreForm(form, 'loanDetail');
   const loanProduct = document.getElementById('loanProduct');
   const productMeta = document.getElementById('productMeta');
   const loanAmount = document.getElementById('loanAmount');
@@ -451,8 +453,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
     const results = fields.map(validateField);
     if (results.every(Boolean)) {
       renderCalculation();
+      KBFlow.saveForm(form, 'loanDetail');
+      status.innerHTML = '<strong>Data telah lengkap.</strong> Membuka Tahap 8 — Informasi Keuangan …';
       status.classList.add('show');
       status.scrollIntoView({behavior:'smooth',block:'nearest'});
+      KBFlow.go('informasi-keuangan-v2.html');
       return;
     }
     form.querySelector('.field.is-error input,.field.is-error textarea,.field.is-error select')?.focus();

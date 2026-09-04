@@ -197,10 +197,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
       </form>
 
       <div class="status" id="status" role="status" aria-live="polite"><strong>Data telah lengkap.</strong> Validasi format selesai pada halaman lokal ini.</div>
-      <div class="privacy">Halaman baru ini tidak menggunakan fetch, XMLHttpRequest, WebSocket, localStorage, sessionStorage, cookie, atau integrasi backend.</div>
+      <div class="privacy">Data prototype disimpan sementara di sessionStorage browser agar tetap konsisten saat berpindah halaman. Tidak menggunakan fetch, XMLHttpRequest, WebSocket, cookie, atau integrasi backend.</div>
     </div>
   </section>
 </main>
+<script src="flow-state.js"></script>
 <script>
 (() => {
   'use strict';
@@ -210,6 +211,15 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
   const phone = document.getElementById('phone');
   const postalCode = document.getElementById('postalCode');
   const digitsOnly = (input, max) => { input.value = input.value.replace(/\D/g, '').slice(0, max); };
+
+  KBFlow.restoreForm(form, 'applicant');
+  const savedIdentity = KBFlow.get('identity', {}) || {};
+  const savedLogin = KBFlow.get('login', {}) || {};
+  KBFlow.prefill(document.getElementById('fullName'), savedIdentity.fullName);
+  KBFlow.prefill(document.getElementById('nik'), savedIdentity.nik);
+  KBFlow.prefill(document.getElementById('email'), savedLogin.email);
+
+
 
   nik.addEventListener('input', () => digitsOnly(nik, 16));
   phone.addEventListener('input', () => digitsOnly(phone, 15));
@@ -267,8 +277,11 @@ label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
       firstError?.focus();
       return;
     }
+    KBFlow.saveForm(form, 'applicant');
+    status.innerHTML = '<strong>Data telah lengkap.</strong> Membuka Tahap 6 — Pekerjaan / Usaha …';
     status.classList.add('show');
     status.scrollIntoView({behavior:'smooth',block:'nearest'});
+    KBFlow.go('informasi-pekerjaan-usaha.html');
   });
 })();
 </script>

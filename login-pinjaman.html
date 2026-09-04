@@ -983,6 +983,7 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
   </div>
 </div>
 
+<script src="flow-state.js"></script>
 <script>
 (() => {
   'use strict';
@@ -1011,6 +1012,9 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
     loginButton.setAttribute('aria-disabled', 'false');
   }
 
+  const savedLogin = KBFlow.get('login', {}) || {};
+  KBFlow.prefill(email, savedLogin.email);
+
   const isEmailValid = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 
   const setFieldState = (field, invalid) => {
@@ -1034,6 +1038,9 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
         (!emailOk ? email : password)?.focus();
         return;
       }
+
+      // Simpan email saja untuk prefill lintas halaman. Password tidak pernah disimpan.
+      KBFlow.write('login', { email: email.value.trim() });
 
       // Aksi klik yang terlihat. Tidak ada autentikasi palsu atau pengiriman kredensial.
       if (loginButton) {
