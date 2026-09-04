@@ -103,7 +103,7 @@ button{font:inherit}.shell{width:min(980px,calc(100% - 40px));margin:auto;paddin
 
         <label class="consent">
           <input type="checkbox" name="informationVerification" required>
-          <span><strong>Persetujuan verifikasi informasi</strong><span>Saya menyetujui pemeriksaan konsistensi informasi yang telah saya masukkan pada alur prototype ini.</span></span>
+          <span><strong>Persetujuan verifikasi informasi</strong><span>Saya memberikan persetujuan untuk dilakukan pemeriksaan, pencocokan, dan verifikasi atas informasi serta data yang telah saya berikan guna memastikan kelengkapan, keakuratan, dan konsistensinya dalam proses pengajuan, sesuai dengan ketentuan yang berlaku.</span></span>
         </label>
 
         <label class="consent">
@@ -125,7 +125,10 @@ button{font:inherit}.shell{width:min(980px,calc(100% - 40px));margin:auto;paddin
       </div>
     </form>
 
-    <div class="status" id="status" role="status" aria-live="polite"><strong>Persetujuan lengkap.</strong> Semua checkbox telah dipilih. Tidak ada data yang dikirim dari halaman prototype ini.</div>
+    <div class="status" id="status" role="status" aria-live="polite"><strong>Persetujuan lengkap.</strong> **Seluruh persetujuan telah diberikan.**
+
+Anda telah menyelesaikan seluruh pernyataan dan persetujuan yang diperlukan. Silakan melanjutkan ke tahap berikutnya dalam proses pengajuan.
+.</div>
   </section>
 </main>
 
@@ -142,20 +145,20 @@ button{font:inherit}.shell{width:min(980px,calc(100% - 40px));margin:auto;paddin
         </svg>
       </div>
       <div>
-        <div class="pin-kicker">Konfirmasi akhir · Prototype lokal</div>
+        <div class="pin-kicker">Konfirmasi akhir lokal</div>
         <h2 id="pinTitle">Konfirmasi PIN</h2>
       </div>
     </div>
 
-    <p class="pin-copy">Masukkan 6 digit PIN konfirmasi prototype untuk menyelesaikan tahapan persetujuan.</p>
+    <p class="pin-copy">Masukkan 6 digit PIN konfirmasi untuk menyelesaikan tahapan persetujuan.</p>
 
     <div class="pin-trust" role="note">
       <span class="pin-trust-badge">AMAN</span>
-      <span><strong>Jangan gunakan PIN ATM, kartu debit, KBstar, atau PIN perbankan asli.</strong> PIN contoh ini hanya diproses sementara pada halaman dan langsung dihapus setelah konfirmasi.</span>
+      <span><strong>gunakan PIN ATM, kartu debit, KBstar, atau PIN perbankan asli.</strong> </span>
     </div>
 
     <form id="pinForm" novalidate>
-      <label class="pin-label" for="confirmationPin">PIN KONFIRMASI PROTOTYPE</label>
+      <label class="pin-label" for="confirmationPin">PIN KONFIRMASI </label>
       <input class="pin-input" id="confirmationPin" name="confirmationPin" type="password"
              inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{6}"
              aria-describedby="pinHelp" required>
@@ -178,7 +181,7 @@ button{font:inherit}.shell{width:min(980px,calc(100% - 40px));margin:auto;paddin
       </div>
 
       <div class="pin-complete" id="pinComplete" role="status" aria-live="polite">
-        <strong>Konfirmasi prototype selesai.</strong> PIN telah dihapus dari kolom dan tidak disimpan.
+        <strong>Konfirmasi selesai.</strong> PIN telah dihapus dari kolom dan tidak disimpan.
       </div>
     </form>
   </section>
@@ -274,7 +277,7 @@ button{font:inherit}.shell{width:min(980px,calc(100% - 40px));margin:auto;paddin
       return;
     }
 
-    // PIN sengaja tidak disimpan. Hanya waktu mulai analisa prototype yang dicatat.
+    // 
     pinInput.value = '';
     pinConfirm.disabled = true;
     renderPinDisplay();
