@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Admin Chat — Simulasi Lokal</title>
+<style>
+:root{--ink:#171616;--muted:#746d61;--line:rgba(128,91,24,.16);--gold:#c99722;--gold2:#8f6412;--paper:#fffdf7;--bg:#f7f1e5;--shadow:0 24px 70px rgba(92,65,14,.12)}
+*{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffdf8,#f6ecd7 55%,#ead3a3)}
+.app{width:min(1180px,calc(100% - 28px));margin:auto;padding:24px 0 40px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:18px}.brand strong{display:block;font-size:20px}.brand span{font-size:12px;color:var(--muted)}.badge{padding:8px 11px;border-radius:999px;background:#fff7dc;border:1px solid #ead28e;color:#76520c;font-size:11px;font-weight:800}
+.grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;min-height:680px}.panel{background:rgba(255,254,250,.95);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.side-head,.chat-head{padding:18px 20px;border-bottom:1px solid var(--line)}.side-head h1{font-size:18px;margin:0 0 5px}.side-head p,.chat-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}.sessions{padding:10px;display:grid;gap:8px;max-height:610px;overflow:auto}.session{width:100%;text-align:left;border:1px solid transparent;background:transparent;border-radius:15px;padding:12px;cursor:pointer}.session:hover,.session.active{background:#fff8e8;border-color:#ead69f}.session strong{display:flex;justify-content:space-between;gap:8px;font-size:13px}.session small{display:block;margin-top:6px;color:var(--muted);font-size:11px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5aa15c;margin-right:6px}.dot.offline{background:#aaa}.count{min-width:21px;height:21px;padding:0 6px;border-radius:999px;background:#d6a22c;color:#fff;display:inline-grid;place-items:center;font-size:10px}
+.chat{display:grid;grid-template-rows:auto 1fr auto}.chat-head strong{font-size:16px}.messages{padding:20px;overflow:auto;display:flex;flex-direction:column;gap:10px;min-height:0}.empty{margin:auto;color:var(--muted);font-size:13px;text-align:center;max-width:360px}.row{display:flex}.row.user{justify-content:flex-start}.row.admin{justify-content:flex-end}.bubble{max-width:min(76%,520px);padding:11px 13px;border-radius:16px;background:#f3eee5;border:1px solid #e6ddcf;font-size:13px;line-height:1.5}.row.admin .bubble{background:linear-gradient(135deg,#f0c759,#b78014);color:#fff;border-color:transparent}.time{display:block;margin-top:6px;font-size:10px;opacity:.67}.composer{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px;border-top:1px solid var(--line)}.composer input{min-height:48px;border:1px solid #d9d0c1;border-radius:14px;padding:0 14px;font:inherit;outline:none}.composer input:focus{border-color:#b9851b;box-shadow:0 0 0 4px rgba(205,158,51,.15)}.composer button{min-width:104px;border:0;border-radius:14px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:800;cursor:pointer}.composer button:disabled{opacity:.45;cursor:not-allowed}.note{margin-top:14px;font-size:11px;color:#756e64;line-height:1.6}
+@media(max-width:780px){.grid{grid-template-columns:1fr;min-height:auto}.sessions{max-height:260px}.panel.chat{min-height:560px}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <div class="brand"><strong>Admin Chat</strong><span>Panel pengujian Live Chat lokal</span></div>
+    <div class="badge">SIMULASI LOKAL — TANPA SERVER</div>
+  </header>
+
+  <section class="grid">
+    <aside class="panel">
+      <div class="side-head"><h1>Sesi Chat</h1><p>Sesi dari halaman website pada origin/browser yang sama.</p></div>
+      <div class="sessions" id="sessionList"><div class="empty">Belum ada sesi. Buka Live Chat pada <code>index.html</code> terlebih dahulu.</div></div>
+    </aside>
+
+    <section class="panel chat">
+      <div class="chat-head"><strong id="chatTitle">Pilih sesi</strong><p id="chatSub">Pesan tidak dikirim ke jaringan eksternal.</p></div>
+      <div class="messages" id="messages"><div class="empty">Pilih sesi chat di sebelah kiri.</div></div>
+      <form class="composer" id="replyForm" autocomplete="off">
+        <input id="replyInput" maxlength="500" placeholder="Balas sebagai Admin Simulasi..." disabled>
+        <button id="replyBtn" type="submit" disabled>Kirim</button>
+      </form>
+    </section>
+  </section>
+  <p class="note">Catatan: sinkronisasi memakai localStorage + BroadcastChannel. Ini hanya bekerja pada browser/origin yang sama dan tidak menggantikan backend/WebSocket untuk realtime lintas perangkat.</p>
+</main>
+<script>
+(() => {
+  'use strict';
+  const KEYS={sessions:'kbchat-sessions-v1',messagesPrefix:'kbchat-messages-v1:'};
+  const listEl=document.getElementById('sessionList');
+  const messagesEl=document.getElementById('messages');
+  const titleEl=document.getElementById('chatTitle');
+  const subEl=document.getElementById('chatSub');
+  const form=document.getElementById('replyForm');
+  const input=document.getElementById('replyInput');
+  const button=document.getElementById('replyBtn');
+  const channel='BroadcastChannel' in window?new BroadcastChannel('kbchat-sim-v1'):null;
+  let selected=null;
+  const parse=(v,f)=>{try{return JSON.parse(v)}catch{return f}};
+  const load=(k,f)=>parse(localStorage.getItem(k),f);
+  const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+  const now=()=>new Date().toISOString();
+  const fmt=(iso)=>{const d=new Date(iso);return Number.isNaN(d.getTime())?'':d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})};
+  const short=id=>id?`${id.slice(0,8)}…${id.slice(-4)}`:'-';
+  const newId=()=>window.crypto?.randomUUID?window.crypto.randomUUID():`admin-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const sessions=()=>load(KEYS.sessions,[]).sort((a,b)=>String(b.lastAt).localeCompare(String(a.lastAt)));
+  const msgKey=id=>`${KEYS.messagesPrefix}${id}`;
+  const msgs=id=>load(msgKey(id),[]);
+  function updateSession(id,patch){const items=sessions();const cur=items.find(x=>x.id===id);if(!cur)return;Object.assign(cur,patch,{lastAt:patch.lastAt||now()});save(KEYS.sessions,[cur,...items.filter(x=>x.id!==id)].sort((a,b)=>String(b.lastAt).localeCompare(String(a.lastAt))));channel?.postMessage({type:'sessions-updated',sessionId:id});}
+  function renderSessions(){const items=sessions();listEl.innerHTML='';if(!items.length){listEl.innerHTML='<div class="empty">Belum ada sesi. Buka Live Chat pada <code>index.html</code> terlebih dahulu.</div>';return;}items.forEach(s=>{const btn=document.createElement('button');btn.type='button';btn.className=`session${selected===s.id?' active':''}`;const strong=document.createElement('strong');const name=document.createElement('span');name.textContent=`Sesi ${short(s.id)}`;strong.appendChild(name);if(Number(s.adminUnread||0)>0){const c=document.createElement('span');c.className='count';c.textContent=String(s.adminUnread);strong.appendChild(c)}const meta=document.createElement('small');const dot=document.createElement('span');dot.className=`dot${s.status==='offline'?' offline':''}`;meta.appendChild(dot);meta.append(document.createTextNode(`${s.status==='offline'?'Offline':'Online'} • ${fmt(s.lastAt)}`));btn.append(strong,meta);btn.addEventListener('click',()=>selectSession(s.id));listEl.appendChild(btn)});}
+  function renderMessages(){messagesEl.innerHTML='';if(!selected){messagesEl.innerHTML='<div class="empty">Pilih sesi chat di sebelah kiri.</div>';return;}const items=msgs(selected);if(!items.length){messagesEl.innerHTML='<div class="empty">Belum ada pesan pada sesi ini.</div>';return;}items.forEach(m=>{const row=document.createElement('div');row.className=`row ${m.author==='admin'?'admin':'user'}`;const bubble=document.createElement('div');bubble.className='bubble';bubble.append(document.createTextNode(m.text));const t=document.createElement('span');t.className='time';t.textContent=`${m.author==='admin'?'Admin Simulasi':'Pengguna'} • ${fmt(m.at)}`;bubble.appendChild(t);row.appendChild(bubble);messagesEl.appendChild(row)});messagesEl.scrollTop=messagesEl.scrollHeight;}
+  function selectSession(id){selected=id;const s=sessions().find(x=>x.id===id);titleEl.textContent=`Sesi ${short(id)}`;subEl.textContent='Terhubung lokal pada browser/origin yang sama.';input.disabled=false;button.disabled=!input.value.trim();updateSession(id,{adminUnread:0});renderSessions();renderMessages();input.focus();}
+  input.addEventListener('input',()=>{button.disabled=!selected||!input.value.trim()});
+  form.addEventListener('submit',e=>{e.preventDefault();if(!selected)return;const text=input.value.trim().slice(0,500);if(!text)return;const item={id:newId(),sessionId:selected,author:'admin',text,at:now()};const list=msgs(selected);list.push(item);save(msgKey(selected),list.slice(-250));const s=sessions().find(x=>x.id===selected)||{};updateSession(selected,{clientUnread:Number(s.clientUnread||0)+1});channel?.postMessage({type:'message',sessionId:selected,message:item});input.value='';button.disabled=true;renderMessages();renderSessions();input.focus();});
+  function refresh(data){renderSessions();if(selected&&(!data?.sessionId||data.sessionId===selected))renderMessages();}
+  channel?.addEventListener('message',e=>refresh(e.data||{}));
+  window.addEventListener('storage',e=>{if(e.key===KEYS.sessions||String(e.key||'').startsWith(KEYS.messagesPrefix))refresh()});
+  renderSessions();
+})();
+</script>
+</body>
+</html>
