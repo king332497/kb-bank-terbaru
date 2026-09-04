@@ -856,6 +856,12 @@ header{
 }
 </style>
 
+
+<style id="kb-login-active-fix">
+.field.is-error .form-control{border-color:#b42318!important;box-shadow:0 0 0 3px rgba(180,35,24,.08)!important}
+.field.is-error .field-error{display:block!important;color:#b42318}
+.login-btn[aria-disabled="false"]{cursor:pointer}
+</style>
 </head>
 <body>
 <header>
@@ -949,7 +955,7 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
           <span class="helper-link" aria-disabled="true">Lupa password?</span>
         </div>
 
-        <button class="login-btn" id="loginButton" type="submit" aria-disabled="true">Masuk</button>
+        <button class="login-btn" id="loginButton" type="submit" aria-disabled="false">Masuk</button>
       </form>
 
       <div class="status-note" id="login-status" role="status">
@@ -972,17 +978,17 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
 (() => {
   'use strict';
 
-  // UI-only guard: source version did not contain authentication logic.
-  // Credentials are not stored, logged, transmitted, or submitted here.
+  // Login UI lokal. Kredensial tidak disimpan, dicatat, atau dikirim ke jaringan.
   const form = document.getElementById('loginForm');
   const email = document.getElementById('email');
   const password = document.getElementById('password');
   const passwordToggle = document.getElementById('passwordToggle');
   const loginButton = document.getElementById('loginButton');
   const loginStatus = document.getElementById('login-status');
+  const emailField = document.getElementById('emailField');
+  const passwordField = document.getElementById('passwordField');
   const pageLoader = document.getElementById('pageLoader');
 
-  // Field login tetap lokal: tidak ada penyimpanan atau pengiriman kredensial.
   [email, password].forEach((input) => {
     if (!input) return;
     input.disabled = false;
@@ -990,31 +996,59 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
     input.removeAttribute('aria-disabled');
   });
 
+  // Tombol harus selalu dapat ditekan; validasi dilakukan setelah klik.
+  if (loginButton) {
+    loginButton.disabled = false;
+    loginButton.setAttribute('aria-disabled', 'false');
+  }
+
   const isEmailValid = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 
-  const updateLoginButton = () => {
-    if (!loginButton || !email || !password) return;
-    const ready = isEmailValid(email.value) && password.value.length >= 8;
-    loginButton.disabled = !ready;
-    loginButton.setAttribute('aria-disabled', String(!ready));
+  const setFieldState = (field, invalid) => {
+    if (!field) return;
+    field.classList.toggle('is-error', invalid);
   };
-
-  [email, password].forEach((input) => input?.addEventListener('input', updateLoginButton));
-  updateLoginButton();
 
   if (form) {
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      updateLoginButton();
-      if (!loginButton || loginButton.disabled) return;
 
-      // File ini belum memiliki backend autentikasi. Jangan kirim kredensial ke mana pun.
-      if (loginStatus) {
-        loginStatus.innerHTML = '<strong>Form siap digunakan.</strong> Tombol Masuk sudah aktif. Autentikasi akun belum terhubung ke backend pada file ini.';
-        loginStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const emailOk = !!email && isEmailValid(email.value);
+      const passwordOk = !!password && password.value.length >= 8;
+      setFieldState(emailField, !emailOk);
+      setFieldState(passwordField, !passwordOk);
+
+      if (!emailOk || !passwordOk) {
+        if (loginStatus) {
+          loginStatus.innerHTML = '<strong>Periksa data login.</strong> Gunakan alamat email yang valid dan password minimal 8 karakter.';
+        }
+        (!emailOk ? email : password)?.focus();
+        return;
+      }
+
+      // Aksi klik yang terlihat. Tidak ada autentikasi palsu atau pengiriman kredensial.
+      if (loginButton) {
+        const originalText = loginButton.textContent;
+        loginButton.classList.add('is-loading');
+        loginButton.textContent = 'Memproses…';
+        window.setTimeout(() => {
+          loginButton.classList.remove('is-loading');
+          loginButton.textContent = originalText;
+          if (loginStatus) {
+            loginStatus.innerHTML = '<strong>Tombol Masuk aktif.</strong> Data form valid dan klik berhasil diproses secara lokal. Halaman tujuan setelah login belum tersedia di paket file ini.';
+            loginStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 450);
       }
     });
   }
+
+  [email, password].forEach((input) => {
+    input?.addEventListener('input', () => {
+      if (input === email) setFieldState(emailField, false);
+      if (input === password) setFieldState(passwordField, false);
+    });
+  });
 
   if (password && passwordToggle) {
     passwordToggle.addEventListener('click', () => {
