@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Informasi Pekerjaan / Usaha</title>
+<style>
+:root{
+  --ink:#171616;--muted:#706a61;--line:rgba(123,90,27,.16);--paper:#fffdf7;
+  --gold:#c99722;--gold-deep:#8f6412;--gold-soft:#f5e4ad;--danger:#b42318;--success:#2f6b32;
+  --shadow:0 24px 70px rgba(92,65,14,.12);--focus:0 0 0 4px rgba(205,158,51,.18);
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:#f8f3e9}
+body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:
+radial-gradient(circle at 12% 8%,rgba(255,255,255,.98) 0 20%,transparent 43%),
+linear-gradient(135deg,#fffdf8 0%,#fbf4e5 44%,#f1dfb9 100%)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.72;background:
+linear-gradient(118deg,transparent 0 58%,rgba(197,146,38,.07) 58.2% 58.45%,transparent 58.7%),
+linear-gradient(118deg,transparent 0 66%,rgba(255,255,255,.7) 66.2% 66.8%,transparent 67%)}
+button,input,select,textarea{font:inherit}
+.shell{width:min(1180px,calc(100% - 40px));margin:auto;padding:28px 0 54px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:840;letter-spacing:-.03em}
+.brand-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#ffd952,#b47a0b);box-shadow:0 9px 24px rgba(166,112,12,.2);font-size:19px}
+.brand small{display:block;margin-top:2px;font-size:10px;letter-spacing:.14em;color:var(--muted);font-weight:750}
+.layout{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.6fr);gap:34px;align-items:start}
+.copy{padding:26px 8px;position:sticky;top:18px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:850;letter-spacing:.14em;color:#80590f;text-transform:uppercase}
+.eyebrow::before{content:"";width:26px;height:2px;border-radius:9px;background:linear-gradient(90deg,#d4a22f,#7f5508)}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,5vw,68px);line-height:.98;letter-spacing:-.045em;margin:18px 0 20px;font-weight:600}
+h1 em{font-style:normal;color:#a87616}
+.lead{max-width:520px;font-size:16px;line-height:1.72;color:#5f5a52;margin:0}
+.secure-note{margin-top:24px;padding:14px 15px;border-radius:15px;background:rgba(255,248,232,.78);border:1px solid #f2dfaa;color:#6f551c;font-size:12px;line-height:1.55;font-weight:650}
+.card{position:relative;overflow:hidden;background:rgba(255,254,250,.96);border:1px solid rgba(152,109,22,.18);border-radius:28px;padding:30px;box-shadow:var(--shadow);backdrop-filter:blur(18px)}
+.card::after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-140px;top:-140px;background:radial-gradient(circle,rgba(239,191,82,.22),transparent 68%);pointer-events:none}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:24px;position:relative;z-index:1}
+.card h2{font-size:25px;letter-spacing:-.035em;margin:0 0 7px}.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.lock{width:44px;height:44px;flex:0 0 auto;border-radius:15px;display:grid;place-items:center;background:#fff8e2;border:1px solid #f0d98e;font-size:19px}
+.form{position:relative;z-index:1;display:grid;gap:22px}
+.section-title{display:flex;align-items:center;gap:10px;margin-top:2px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:13px;font-weight:850;letter-spacing:.04em;color:#604713;text-transform:uppercase}
+.section-title span{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:#f6d76f;color:#4f3808;font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.field{display:grid;gap:8px}.field.full{grid-column:1/-1}
+.field-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
+.input,.select,.textarea{width:100%;border:1px solid #ddd5c6;border-radius:15px;background:#fff;color:var(--ink);outline:none;transition:.2s ease}
+.input,.select{height:54px;padding:0 15px}.textarea{min-height:96px;resize:vertical;padding:14px 15px;line-height:1.5}
+.input:hover,.select:hover,.textarea:hover{border-color:#c9b88f}.input:focus,.select:focus,.textarea:focus{border-color:#b8851c;box-shadow:var(--focus)}
+.money-shell{position:relative}.money-prefix{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:#79580f;pointer-events:none}.money-shell .input{padding-left:42px}
+.field.is-error .input,.field.is-error .select,.field.is-error .textarea{border-color:var(--danger);box-shadow:0 0 0 3px rgba(180,35,24,.08)}
+.error{display:none;color:var(--danger);font-size:11px;font-weight:650;margin:0}.field.is-error .error{display:block}
+.actions{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;margin-top:2px}
+.btn{min-height:52px;border-radius:15px;font-weight:820;font-size:14px;cursor:pointer;border:1px solid transparent;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:.18s ease}
+.btn:active{transform:translateY(1px)}.btn-ghost{background:#fff;border-color:#ded4c1;color:#4d463d}.btn-primary{background:linear-gradient(135deg,#e7bb45,#aa750d);color:#fff;box-shadow:0 12px 28px rgba(169,116,15,.22)}
+.status{display:none;margin-top:18px;padding:14px 15px;border-radius:15px;background:#f7fbf5;border:1px solid #cfe2c8;color:#30592d;font-size:12px;line-height:1.55}.status.show{display:block}
+.privacy{margin-top:18px;padding-top:16px;border-top:1px solid rgba(122,92,35,.12);font-size:11px;line-height:1.6;color:#8a8379}
+@media(max-width:900px){.shell{width:min(100% - 28px,720px);padding-top:18px}.topbar{margin-bottom:12px}.layout{grid-template-columns:1fr;gap:18px}.copy{padding:18px 2px 6px;position:static}h1{font-size:48px}.lead{font-size:15px}.card{padding:22px;border-radius:23px}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.actions{grid-template-columns:1fr}.shell{width:calc(100% - 24px);padding-bottom:32px}.brand{font-size:14px}.brand-mark{width:34px;height:34px}.card h2{font-size:22px}.card{padding:19px}.input,.select{height:52px;font-size:16px}.textarea{font-size:16px}h1{font-size:40px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span><span>KB Bank Finance<small>LAYANAN PINJAMAN</small></span></div>
+  </header>
+
+  <section class="layout" aria-labelledby="pageTitle">
+    <div class="copy">
+      <div class="eyebrow">Tahap 6 · Pekerjaan / Usaha</div>
+      <h1 id="pageTitle">Informasi <em>Pekerjaan / Usaha</em></h1>
+      <p class="lead">Lengkapi informasi pekerjaan atau usaha untuk melanjutkan proses pengisian data pengajuan.</p>
+      <div class="secure-note" role="note"><strong>Pratinjau formulir lokal.</strong> Data pada halaman ini tidak dikirim ke server, API, atau penyimpanan eksternal.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div><h2>Informasi Pekerjaan / Usaha</h2><p>Isi data sesuai kondisi pekerjaan atau usaha saat ini.</p></div>
+        <div class="lock" aria-hidden="true">⌁</div>
+      </div>
+
+      <form class="form" id="employmentForm" novalidate autocomplete="off">
+        <div class="section-title"><span>1</span> Profil Pekerjaan / Usaha</div>
+        <div class="grid">
+          <div class="field" id="employmentStatusField">
+            <div class="field-head"><label for="employmentStatus">Status pekerjaan</label><span class="hint">Pilih satu</span></div>
+            <select class="select" id="employmentStatus" name="employmentStatus" required>
+              <option value="">Pilih status pekerjaan</option>
+              <option value="Karyawan tetap">Karyawan tetap</option>
+              <option value="Karyawan kontrak">Karyawan kontrak</option>
+              <option value="ASN/PNS">ASN/PNS</option>
+              <option value="TNI/Polri">TNI/Polri</option>
+              <option value="Wiraswasta">Wiraswasta</option>
+              <option value="Profesional">Profesional</option>
+              <option value="Pensiunan">Pensiunan</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+            <p class="error">Pilih status pekerjaan.</p>
+          </div>
+
+          <div class="field" id="companyNameField">
+            <div class="field-head"><label for="companyName">Nama perusahaan/usaha</label><span class="hint">Wajib</span></div>
+            <input class="input" id="companyName" name="companyName" type="text" maxlength="100" required>
+            <p class="error">Masukkan nama perusahaan atau usaha.</p>
+          </div>
+
+          <div class="field" id="businessSectorField">
+            <div class="field-head"><label for="businessSector">Bidang usaha</label><span class="hint">Wajib</span></div>
+            <input class="input" id="businessSector" name="businessSector" type="text" maxlength="100" required>
+            <p class="error">Masukkan bidang usaha atau pekerjaan.</p>
+          </div>
+
+          <div class="field" id="positionField">
+            <div class="field-head"><label for="position">Jabatan/posisi</label><span class="hint">Wajib</span></div>
+            <input class="input" id="position" name="position" type="text" maxlength="80" required>
+            <p class="error">Masukkan jabatan atau posisi.</p>
+          </div>
+
+          <div class="field" id="workDurationField">
+            <div class="field-head"><label for="workDuration">Lama bekerja/usaha</label><span class="hint">Wajib</span></div>
+            <input class="input" id="workDuration" name="workDuration" type="text" maxlength="50" placeholder="Contoh: 4 tahun 6 bulan" required>
+            <p class="error">Masukkan lama bekerja atau usaha.</p>
+          </div>
+
+          <div class="field full" id="companyAddressField">
+            <div class="field-head"><label for="companyAddress">Alamat perusahaan/usaha</label><span class="hint">Wajib</span></div>
+            <textarea class="textarea" id="companyAddress" name="companyAddress" maxlength="240" required></textarea>
+            <p class="error">Masukkan alamat perusahaan atau usaha.</p>
+          </div>
+        </div>
+
+        <div class="section-title"><span>2</span> Informasi Keuangan</div>
+        <div class="grid">
+          <div class="field" id="monthlyIncomeField">
+            <div class="field-head"><label for="monthlyIncome">Penghasilan bulanan</label><span class="hint">Rupiah</span></div>
+            <div class="money-shell"><span class="money-prefix">Rp</span><input class="input money-input" id="monthlyIncome" name="monthlyIncome" type="text" inputmode="numeric" maxlength="18" required></div>
+            <p class="error">Masukkan penghasilan bulanan.</p>
+          </div>
+
+          <div class="field" id="additionalIncomeField">
+            <div class="field-head"><label for="additionalIncome">Penghasilan tambahan</label><span class="hint">Rupiah</span></div>
+            <div class="money-shell"><span class="money-prefix">Rp</span><input class="input money-input" id="additionalIncome" name="additionalIncome" type="text" inputmode="numeric" maxlength="18" required></div>
+            <p class="error">Masukkan penghasilan tambahan. Isi 0 jika tidak ada.</p>
+          </div>
+
+          <div class="field" id="monthlyExpensesField">
+            <div class="field-head"><label for="monthlyExpenses">Pengeluaran rutin bulanan</label><span class="hint">Rupiah</span></div>
+            <div class="money-shell"><span class="money-prefix">Rp</span><input class="input money-input" id="monthlyExpenses" name="monthlyExpenses" type="text" inputmode="numeric" maxlength="18" required></div>
+            <p class="error">Masukkan pengeluaran rutin bulanan.</p>
+          </div>
+
+          <div class="field" id="activeInstallmentsField">
+            <div class="field-head"><label for="activeInstallments">Total cicilan yang sedang berjalan</label><span class="hint">Rupiah</span></div>
+            <div class="money-shell"><span class="money-prefix">Rp</span><input class="input money-input" id="activeInstallments" name="activeInstallments" type="text" inputmode="numeric" maxlength="18" required></div>
+            <p class="error">Masukkan total cicilan berjalan. Isi 0 jika tidak ada.</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-ghost" href="data-pemohon.html">← Kembali</a>
+          <button class="btn btn-primary" type="submit">Lanjutkan →</button>
+        </div>
+      </form>
+
+      <div class="status" id="status" role="status" aria-live="polite"><strong>Data telah lengkap.</strong> Validasi format selesai pada halaman lokal ini.</div>
+      <div class="privacy">Halaman baru ini tidak menggunakan fetch, XMLHttpRequest, WebSocket, localStorage, sessionStorage, cookie, atau integrasi backend.</div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const form = document.getElementById('employmentForm');
+  const status = document.getElementById('status');
+  const fields = [...form.querySelectorAll('.field')];
+  const moneyInputs = [...form.querySelectorAll('.money-input')];
+
+  const rawDigits = value => value.replace(/\D/g, '');
+  const formatRupiahDigits = value => {
+    const digits = rawDigits(value).slice(0, 15);
+    if (!digits) return '';
+    return Number(digits).toLocaleString('id-ID');
+  };
+
+  moneyInputs.forEach(input => {
+    input.addEventListener('input', () => {
+      input.value = formatRupiahDigits(input.value);
+      const field = input.closest('.field');
+      field?.classList.remove('is-error');
+      input.removeAttribute('aria-invalid');
+      status.classList.remove('show');
+    });
+  });
+
+  const validators = {
+    employmentStatus: v => Boolean(v),
+    companyName: v => v.trim().length >= 2,
+    businessSector: v => v.trim().length >= 2,
+    position: v => v.trim().length >= 2,
+    workDuration: v => v.trim().length >= 1,
+    companyAddress: v => v.trim().length >= 8,
+    monthlyIncome: v => rawDigits(v).length > 0 && Number(rawDigits(v)) > 0,
+    additionalIncome: v => rawDigits(v).length > 0,
+    monthlyExpenses: v => rawDigits(v).length > 0,
+    activeInstallments: v => rawDigits(v).length > 0
+  };
+
+  function validateField(field) {
+    const control = field.querySelector('input,select,textarea');
+    if (!control) return true;
+    const validate = validators[control.id] || (v => v.trim().length > 0);
+    const ok = validate(control.value, control);
+    field.classList.toggle('is-error', !ok);
+    control.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    return ok;
+  }
+
+  form.addEventListener('input', event => {
+    const field = event.target.closest('.field');
+    if (field) {
+      field.classList.remove('is-error');
+      event.target.removeAttribute('aria-invalid');
+    }
+    status.classList.remove('show');
+  });
+
+  form.addEventListener('change', event => {
+    const field = event.target.closest('.field');
+    if (field) validateField(field);
+    status.classList.remove('show');
+  });
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const results = fields.map(validateField);
+    if (results.some(ok => !ok)) {
+      const firstError = form.querySelector('.field.is-error input,.field.is-error select,.field.is-error textarea');
+      firstError?.focus();
+      return;
+    }
+    status.classList.add('show');
+    status.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+})();
+</script>
+</body>
+</html>

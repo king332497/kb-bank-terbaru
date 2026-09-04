@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Informasi Keuangan</title>
+<style>
+:root{
+  --ink:#171616;--muted:#706a61;--line:rgba(123,90,27,.16);--paper:#fffdf7;
+  --gold:#c99722;--gold-deep:#8f6412;--gold-soft:#f5e4ad;--danger:#b42318;--success:#2f6b32;
+  --shadow:0 24px 70px rgba(92,65,14,.12);--focus:0 0 0 4px rgba(205,158,51,.18);
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:#f8f3e9}
+body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:
+radial-gradient(circle at 12% 8%,rgba(255,255,255,.98) 0 20%,transparent 43%),
+linear-gradient(135deg,#fffdf8 0%,#fbf4e5 44%,#f1dfb9 100%)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.72;background:
+linear-gradient(118deg,transparent 0 58%,rgba(197,146,38,.07) 58.2% 58.45%,transparent 58.7%),
+linear-gradient(118deg,transparent 0 66%,rgba(255,255,255,.7) 66.2% 66.8%,transparent 67%)}
+button,input,select,textarea{font:inherit}
+.shell{width:min(1180px,calc(100% - 40px));margin:auto;padding:28px 0 54px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:840;letter-spacing:-.03em}
+.brand-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#ffd952,#b47a0b);box-shadow:0 9px 24px rgba(166,112,12,.2);font-size:19px}
+.brand small{display:block;margin-top:2px;font-size:10px;letter-spacing:.14em;color:var(--muted);font-weight:750}
+.layout{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.6fr);gap:34px;align-items:start}
+.copy{padding:26px 8px;position:sticky;top:18px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:850;letter-spacing:.14em;color:#80590f;text-transform:uppercase}
+.eyebrow::before{content:"";width:26px;height:2px;border-radius:9px;background:linear-gradient(90deg,#d4a22f,#7f5508)}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(42px,5vw,68px);line-height:.98;letter-spacing:-.045em;margin:18px 0 20px;font-weight:600}
+h1 em{font-style:normal;color:#a87616}
+.lead{max-width:520px;font-size:16px;line-height:1.72;color:#5f5a52;margin:0}
+.secure-note{margin-top:24px;padding:14px 15px;border-radius:15px;background:rgba(255,248,232,.78);border:1px solid #f2dfaa;color:#6f551c;font-size:12px;line-height:1.55;font-weight:650}
+.card{position:relative;overflow:hidden;background:rgba(255,254,250,.96);border:1px solid rgba(152,109,22,.18);border-radius:28px;padding:30px;box-shadow:var(--shadow);backdrop-filter:blur(18px)}
+.card::after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-140px;top:-140px;background:radial-gradient(circle,rgba(239,191,82,.22),transparent 68%);pointer-events:none}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:24px;position:relative;z-index:1}
+.card h2{font-size:25px;letter-spacing:-.035em;margin:0 0 7px}.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.lock{width:44px;height:44px;flex:0 0 auto;border-radius:15px;display:grid;place-items:center;background:#fff8e2;border:1px solid #f0d98e;font-size:19px}
+.form{position:relative;z-index:1;display:grid;gap:22px}
+.section-title{display:flex;align-items:center;gap:10px;margin-top:2px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:13px;font-weight:850;letter-spacing:.04em;color:#604713;text-transform:uppercase}
+.section-title span{width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:#f6d76f;color:#4f3808;font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.field{display:grid;gap:8px}.field.full{grid-column:1/-1}
+.field-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+label{font-size:13px;font-weight:780}.hint{font-size:11px;color:#8d867d}
+.input,.textarea{width:100%;border:1px solid #ddd5c6;border-radius:15px;background:#fff;color:var(--ink);outline:none;transition:.2s ease}
+.input{height:54px;padding:0 15px}.textarea{min-height:104px;resize:vertical;padding:14px 15px;line-height:1.5}
+.input:hover,.textarea:hover{border-color:#c9b88f}.input:focus,.textarea:focus{border-color:#b8851c;box-shadow:var(--focus)}
+.input[readonly]{background:#fbf7ed;color:#5f5134;cursor:default;font-weight:780}
+.money-shell{position:relative}.money-prefix{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:#79580f;pointer-events:none}.money-shell .input{padding-left:42px}
+.field.is-error .input,.field.is-error .textarea{border-color:var(--danger);box-shadow:0 0 0 3px rgba(180,35,24,.08)}
+.error{display:none;color:var(--danger);font-size:11px;font-weight:650;margin:0}.field.is-error .error{display:block}
+.actions{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;margin-top:2px}
+.btn{min-height:52px;border-radius:15px;font-weight:820;font-size:14px;cursor:pointer;border:1px solid transparent;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:.18s ease}
+.btn:active{transform:translateY(1px)}.btn-ghost{background:#fff;border-color:#ded4c1;color:#4d463d}.btn-primary{background:linear-gradient(135deg,#e7bb45,#aa750d);color:#fff;box-shadow:0 12px 28px rgba(169,116,15,.22)}
+.status{display:none;margin-top:18px;padding:14px 15px;border-radius:15px;background:#f7fbf5;border:1px solid #cfe2c8;color:#30592d;font-size:12px;line-height:1.55}.status.show{display:block}
+.privacy{margin-top:18px;padding-top:16px;border-top:1px solid rgba(122,92,35,.12);font-size:11px;line-height:1.6;color:#8a8379}
+@media(max-width:900px){.shell{width:min(100% - 28px,720px);padding-top:18px}.topbar{margin-bottom:12px}.layout{grid-template-columns:1fr;gap:18px}.copy{padding:18px 2px 6px;position:static}h1{font-size:48px}.lead{font-size:15px}.card{padding:22px;border-radius:23px}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.actions{grid-template-columns:1fr}.shell{width:calc(100% - 24px);padding-bottom:32px}.brand{font-size:14px}.brand-mark{width:34px;height:34px}.card h2{font-size:22px}.card{padding:19px}.input{height:52px;font-size:16px}.textarea{font-size:16px}h1{font-size:40px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span><span>KB Bank Finance<small>LAYANAN PINJAMAN</small></span></div>
+  </header>
+
+  <section class="layout" aria-labelledby="pageTitle">
+    <div class="copy">
+      <div class="eyebrow">Tahap 8 · Informasi Keuangan</div>
+      <h1 id="pageTitle">Informasi <em>Keuangan</em></h1>
+      <p class="lead">Lengkapi informasi rekening dan gambaran keuangan untuk melanjutkan tahapan pengajuan.</p>
+      <div class="secure-note" role="note"><strong>Pratinjau formulir lokal.</strong> Isian pada halaman ini tidak dikirim ke server, API, atau penyimpanan eksternal.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div><h2>Informasi Keuangan</h2><p>Isi informasi rekening KB Bank dan kondisi keuangan sesuai data Anda.</p></div>
+        <div class="lock" aria-hidden="true">⌁</div>
+      </div>
+
+      <form class="form" id="financialForm" novalidate autocomplete="off">
+        <div class="section-title"><span>1</span> Rekening & Keuangan</div>
+        <div class="grid">
+          <div class="field" id="bankNameField">
+            <div class="field-head"><label for="bankName">Nama bank</label><span class="hint">Tetap</span></div>
+            <input class="input" id="bankName" name="bankName" type="text" value="KB BANK" readonly aria-readonly="true">
+          </div>
+
+          <div class="field" id="accountNameField">
+            <div class="field-head"><label for="accountName">Nama rekening</label><span class="hint">Wajib</span></div>
+            <input class="input" id="accountName" name="accountName" type="text" autocomplete="name" maxlength="100" placeholder="Masukkan nama pemilik rekening" required>
+            <p class="error">Masukkan nama pemilik rekening KB BANK.</p>
+          </div>
+
+          <div class="field" id="accountNumberField">
+            <div class="field-head"><label for="accountNumber">Nomor rekening KB BANK</label><span class="hint">Wajib</span></div>
+            <input class="input" id="accountNumber" name="accountNumber" type="text" inputmode="numeric" autocomplete="off" maxlength="24" placeholder="Masukkan nomor rekening KB BANK" required>
+            <p class="error">Masukkan nomor rekening KB BANK.</p>
+          </div>
+
+          <div class="field" id="accountAgeField">
+            <div class="field-head"><label for="accountAge">Lama kepemilikan rekening</label><span class="hint">Nasabah baru diperbolehkan</span></div>
+            <input class="input" id="accountAge" name="accountAge" type="text" maxlength="80" placeholder="Contoh: Nasabah baru / 2 tahun" required>
+            <p class="error">Masukkan lama kepemilikan rekening atau tulis “Nasabah baru”.</p>
+          </div>
+
+          <div class="field" id="monthlyFlowField">
+            <div class="field-head"><label for="monthlyFlow">Kisaran saldo / pemasukan bulanan</label><span class="hint">Rupiah</span></div>
+            <div class="money-shell"><span class="money-prefix">Rp</span><input class="input money-input" id="monthlyFlow" name="monthlyFlow" type="text" inputmode="numeric" maxlength="18" required></div>
+            <p class="error">Masukkan kisaran saldo atau pemasukan bulanan.</p>
+          </div>
+
+          <div class="field full" id="otherLoansField">
+            <div class="field-head"><label for="otherLoans">Pinjaman aktif di lembaga keuangan lain</label><span class="hint">Opsional · boleh dikosongkan</span></div>
+            <textarea class="textarea" id="otherLoans" name="otherLoans" maxlength="300" placeholder="Kosongkan jika tidak ada"></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-ghost" href="detail-pengajuan-pinjaman.html">← Kembali</a>
+          <button class="btn btn-primary" type="submit">Lanjutkan →</button>
+        </div>
+      </form>
+
+      <div class="status" id="status" role="status" aria-live="polite"><strong>Data telah lengkap.</strong> Validasi format selesai pada halaman lokal ini.</div>
+      <div class="privacy">Halaman baru ini tidak menggunakan fetch, XMLHttpRequest, WebSocket, localStorage, sessionStorage, cookie, atau integrasi backend.</div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const form = document.getElementById('financialForm');
+  const status = document.getElementById('status');
+  const accountNumber = document.getElementById('accountNumber');
+  const monthlyFlow = document.getElementById('monthlyFlow');
+
+  const rawDigits = value => value.replace(/\D/g, '');
+  const formatRupiahDigits = value => {
+    const digits = rawDigits(value).slice(0, 15);
+    if (!digits) return '';
+    return Number(digits).toLocaleString('id-ID');
+  };
+
+  accountNumber.addEventListener('input', () => {
+    accountNumber.value = rawDigits(accountNumber.value).slice(0, 24);
+    accountNumber.closest('.field')?.classList.remove('is-error');
+    accountNumber.removeAttribute('aria-invalid');
+    status.classList.remove('show');
+  });
+
+  monthlyFlow.addEventListener('input', () => {
+    monthlyFlow.value = formatRupiahDigits(monthlyFlow.value);
+    monthlyFlow.closest('.field')?.classList.remove('is-error');
+    monthlyFlow.removeAttribute('aria-invalid');
+    status.classList.remove('show');
+  });
+
+  const validators = {
+    accountName: value => value.trim().length >= 3,
+    accountNumber: value => /^\d+$/.test(value),
+    accountAge: value => value.trim().length >= 2,
+    monthlyFlow: value => Number(rawDigits(value)) > 0
+  };
+
+  function validateField(field) {
+    const control = field.querySelector('input:not([readonly]),textarea');
+    if (!control || control.id === 'otherLoans') return true;
+    const validate = validators[control.id] || (value => value.trim().length > 0);
+    const ok = validate(control.value);
+    field.classList.toggle('is-error', !ok);
+    control.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    return ok;
+  }
+
+  form.addEventListener('input', event => {
+    const field = event.target.closest('.field');
+    field?.classList.remove('is-error');
+    event.target.removeAttribute('aria-invalid');
+    status.classList.remove('show');
+  });
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const fields = [...form.querySelectorAll('.field')];
+    const results = fields.map(validateField);
+    if (results.every(Boolean)) {
+      status.classList.add('show');
+      status.scrollIntoView({behavior:'smooth',block:'nearest'});
+      return;
+    }
+    form.querySelector('.field.is-error input,.field.is-error textarea')?.focus();
+  });
+})();
+</script>
+</body>
+</html>
