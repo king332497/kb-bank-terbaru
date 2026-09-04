@@ -70,9 +70,9 @@ h1 em{font-style:normal;color:#a87616}
     <div class="copy">
       <div class="eyebrow">Tahap 4 · Verifikasi</div>
       <h1 id="pageTitle">Verifikasi <em>SMS</em></h1>
-      <p class="lead">Masukkan kode verifikasi 6 digit untuk mencoba alur antarmuka. Kode dibuat sepenuhnya di browser dan tidak pernah dikirim melalui SMS.</p>
+      <p class="lead">Masukkan 6 digit angka bebas untuk mencoba alur antarmuka verifikasi. Angka hanya diproses sementara di browser dan tidak pernah dikirim melalui SMS.</p>
       <div class="steps" aria-label="Informasi simulasi">
-        <span class="step"><b>1</b> Kode lokal</span>
+        <span class="step"><b>1</b> Angka bebas</span>
         <span class="step"><b>2</b> 6 digit</span>
         <span class="step"><b>3</b> Tanpa jaringan</span>
       </div>
@@ -80,16 +80,12 @@ h1 em{font-style:normal;color:#a87616}
 
     <div class="card">
       <div class="card-head">
-        <div><h2>Masukkan kode verifikasi</h2><p>Gunakan kode simulasi yang ditampilkan di bawah.</p></div>
+        <div><h2>Masukkan kode verifikasi</h2><p>Masukkan angka 6 digit bebas untuk melanjutkan simulasi.</p></div>
         <div class="phone-icon" aria-hidden="true">▣</div>
       </div>
 
       <div class="notice" role="note"><span aria-hidden="true">ⓘ</span><span><strong>Mode simulasi.</strong> Halaman ini tidak meminta atau membaca SMS asli, tidak mengakses nomor telepon, dan tidak mengirim kode ke server.</span></div>
 
-      <div class="demo-code" aria-live="polite">
-        <span>Kode simulasi saat ini</span>
-        <strong id="demoCode">------</strong>
-      </div>
 
       <form class="form" id="otpForm" novalidate>
         <div class="field-title">Kode verifikasi 6 digit</div>
@@ -101,12 +97,8 @@ h1 em{font-style:normal;color:#a87616}
           <input aria-label="Digit 5" inputmode="numeric" autocomplete="off" maxlength="1">
           <input aria-label="Digit 6" inputmode="numeric" autocomplete="off" maxlength="1">
         </div>
-        <div class="error-msg" id="errorMsg">Kode tidak sesuai. Gunakan kode simulasi yang tampil pada halaman.</div>
+        <div class="error-msg" id="errorMsg">Masukkan 6 digit angka untuk melanjutkan.</div>
 
-        <div class="meta">
-          <span id="timerText">Kode baru dapat dibuat dalam 30 detik.</span>
-          <button class="resend" id="resendBtn" type="button" disabled>Buat kode baru</button>
-        </div>
 
         <div class="actions">
           <a class="btn btn-ghost" href="verifikasi-identitas.html">← Kembali</a>
@@ -114,7 +106,7 @@ h1 em{font-style:normal;color:#a87616}
         </div>
       </form>
 
-      <div class="status" id="status" role="status" aria-live="polite"><strong>Kode simulasi berhasil diverifikasi.</strong> Tahap 4 selesai. Tidak ada SMS, nomor telepon, atau kode yang disimpan.</div>
+      <div class="status" id="status" role="status" aria-live="polite"><strong>Verifikasi simulasi berhasil.</strong> Tahap 4 selesai. Angka tidak dikirim atau disimpan.</div>
       <div class="privacy">Jangan masukkan OTP atau kode SMS asli dari bank, dompet digital, email, maupun layanan lain ke halaman simulasi ini.</div>
     </div>
   </section>
@@ -126,26 +118,8 @@ h1 em{font-style:normal;color:#a87616}
   const group = document.getElementById('otpGroup');
   const form = document.getElementById('otpForm');
   const verifyBtn = document.getElementById('verifyBtn');
-  const resendBtn = document.getElementById('resendBtn');
-  const timerText = document.getElementById('timerText');
-  const demoCode = document.getElementById('demoCode');
   const errorMsg = document.getElementById('errorMsg');
   const status = document.getElementById('status');
-  let currentCode = '';
-  let seconds = 30;
-  let timerId = null;
-
-  function makeCode() {
-    const values = new Uint32Array(1);
-    if (window.crypto && crypto.getRandomValues) {
-      crypto.getRandomValues(values);
-      currentCode = String(values[0] % 1000000).padStart(6, '0');
-    } else {
-      currentCode = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
-    }
-    demoCode.textContent = currentCode;
-  }
-
   function enteredCode() { return inputs.map(i => i.value).join(''); }
   function syncButton() { verifyBtn.disabled = enteredCode().length !== 6; }
   function clearError() { group.classList.remove('error'); errorMsg.classList.remove('show'); status.classList.remove('show'); }
@@ -172,33 +146,16 @@ h1 em{font-style:normal;color:#a87616}
     });
   });
 
-  function startTimer() {
-    window.clearInterval(timerId);
-    seconds = 30; resendBtn.disabled = true;
-    timerText.textContent = `Kode baru dapat dibuat dalam ${seconds} detik.`;
-    timerId = window.setInterval(() => {
-      seconds -= 1;
-      if (seconds <= 0) {
-        window.clearInterval(timerId);
-        timerText.textContent = 'Anda dapat membuat kode simulasi baru.';
-        resendBtn.disabled = false;
-      } else timerText.textContent = `Kode baru dapat dibuat dalam ${seconds} detik.`;
-    }, 1000);
-  }
-
-  resendBtn.addEventListener('click', () => {
-    makeCode(); inputs.forEach(i => i.value = ''); syncButton(); clearError(); inputs[0].focus(); startTimer();
-  });
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (enteredCode() !== currentCode) {
+    if (!/^\d{6}$/.test(enteredCode())) {
       group.classList.add('error'); errorMsg.classList.add('show'); inputs[0].focus(); return;
     }
     inputs.forEach(i => i.value = ''); syncButton(); clearError(); status.classList.add('show');
   });
 
-  makeCode(); startTimer(); inputs[0].focus();
+  inputs[0].focus();
 })();
 </script>
 </body>
