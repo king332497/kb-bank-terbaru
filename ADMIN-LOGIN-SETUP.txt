@@ -1,0 +1,17 @@
+LOGIN ADMIN - LANGKAH SINGKAT
+
+1. Deploy folder backend/ ke layanan Node.js (Render/Railway).
+2. Pada environment backend isi:
+   ADMIN_TOKEN = token rahasia minimal 24 karakter
+   ALLOWED_ORIGINS = domain frontend, contoh https://domain-anda.com
+3. Salin URL backend hasil deployment.
+4. Buka realtime-config.js dan isi DEPLOYED_BACKEND_URL dengan URL backend tersebut.
+5. Deploy/redeploy frontend.
+6. Buka: https://domain-anda.com/admin-login.html
+7. Masukkan ADMIN_TOKEN yang sama.
+8. Jika benar, browser otomatis membuka admin-simulasi.html.
+
+Catatan keamanan:
+- Jangan taruh ADMIN_TOKEN di realtime-config.js atau file JavaScript publik.
+- Token hanya dimasukkan lewat halaman admin-login.html.
+- Data sensitif user tidak menjadi telemetry Admin.

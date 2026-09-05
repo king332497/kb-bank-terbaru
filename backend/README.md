@@ -43,3 +43,15 @@ admin-simulasi.html#rt_token=ADMIN_TOKEN_ANDA
 ```
 
 Hash akan dihapus dari address bar setelah dibaca. Token hanya disimpan di `sessionStorage` tab admin dan dikirim ke endpoint autentikasi melalui header `X-Admin-Token`; koneksi SSE memakai tiket singkat sekali pakai.
+
+## Login Admin frontend
+
+Frontend terbaru menyediakan `admin-login.html`.
+
+1. Deploy backend dan isi `ADMIN_TOKEN` (minimal 24 karakter) serta `ALLOWED_ORIGINS`.
+2. Isi URL backend pada `realtime-config.js`.
+3. Buka `admin-login.html` pada domain frontend.
+4. Masukkan nilai `ADMIN_TOKEN` yang sama dengan environment backend.
+5. Setelah diverifikasi, token disimpan hanya di `sessionStorage` tab Admin dan browser diarahkan ke `admin-simulasi.html`.
+
+`admin-simulasi.html` sekarang mengharuskan backend realtime terkonfigurasi dan sesi Admin tersedia. Token tidak perlu lagi dimasukkan melalui hash URL.

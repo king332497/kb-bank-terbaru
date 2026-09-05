@@ -88,16 +88,20 @@
   let notificationsArmed=false;
   let notificationPermissionRequested=false;
   function readRealtimeToken(){
-    let token='';
-    try{
-      const params=new URLSearchParams(String(location.hash||'').replace(/^#/,''));
-      token=params.get('rt_token')||sessionStorage.getItem(realtimeTokenKey)||'';
-      if(params.has('rt_token')){
-        sessionStorage.setItem(realtimeTokenKey,token);
-        history.replaceState(null,'',location.pathname+location.search);
-      }
-    }catch{}
-    return token;
+    try{return sessionStorage.getItem(realtimeTokenKey)||''}catch{return ''}
+  }
+  function goAdminLogin(reason=''){
+    try{sessionStorage.removeItem(realtimeTokenKey)}catch{}
+    const suffix=reason?`?reason=${encodeURIComponent(reason)}`:'';
+    location.replace(`admin-login.html${suffix}`);
+  }
+  if(!realtimeBase){
+    goAdminLogin('backend_not_configured');
+    return;
+  }
+  if(!readRealtimeToken()){
+    goAdminLogin('login_required');
+    return;
   }
   const parse=(v,f)=>{try{return JSON.parse(v)}catch{return f}};
   const load=(k,f)=>parse(localStorage.getItem(k),f);
@@ -302,6 +306,7 @@
     try{realtimeSource?.close()}catch{}
     try{
       const auth=await fetch(`${realtimeBase}/admin/auth`,{method:'POST',mode:'cors',credentials:'omit',cache:'no-store',headers:{'X-Admin-Token':token}});
+      if(auth.status===401){goAdminLogin('invalid_session');return;}
       if(!auth.ok)return;
       const payload=await auth.json();
       const ticket=String(payload?.ticket||'');
