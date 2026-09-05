@@ -1,7 +1,6 @@
 (() => {
   'use strict';
   const baseUrl = String(window.KBRealtimeConfig?.baseUrl || '').trim().replace(/\/+$/, '');
-  if (!baseUrl) return;
 
   const KEY = 'kbchat-session-id-v1';
   let sessionId = '';
@@ -35,7 +34,7 @@
   }
 
   function ack(commandId) {
-    if (!commandId) return;
+    if (!baseUrl || !commandId) return;
     try {
       window.fetch(`${baseUrl}/client/ack`, {
         method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store', keepalive: true,
@@ -55,7 +54,7 @@
   }
 
   function connectCommands() {
-    if (!('EventSource' in window)) return;
+    if (!baseUrl || !('EventSource' in window)) return;
     try { commandSource?.close(); } catch (_) {}
     window.clearTimeout(reconnectTimer);
     try {
@@ -84,6 +83,35 @@
     }
   }
 
+
+  let firebaseBound = false;
+  function sendFirebase(status) {
+    try {
+      Promise.resolve(window.KBFirebaseBoot).then(async () => {
+        const runtime = window.KBFirebaseRuntime;
+        if (!runtime?.isConfigured?.()) return;
+        await runtime.updatePresence({ status, flowPage: 'index.html', flowStep: 0 });
+      }).catch(() => {});
+    } catch (_) {}
+  }
+
+  function connectFirebase() {
+    try {
+      Promise.resolve(window.KBFirebaseBoot).then(async () => {
+        const runtime = window.KBFirebaseRuntime;
+        if (!runtime?.isConfigured?.()) return;
+        if (!firebaseBound) {
+          window.addEventListener('kb:firebase-access', event => applyAccess(event.detail || {}));
+          window.addEventListener('kb:firebase-navigate', event => navigate(event.detail || {}));
+          firebaseBound = true;
+        }
+        await runtime.ensureUser();
+        await runtime.startClientListeners();
+        sendFirebase('online');
+      }).catch(() => {});
+    } catch (_) {}
+  }
+
   channel?.addEventListener('message', event => {
     const data = event.data || {};
     if (String(data.sessionId || '') !== sessionId) return;
@@ -93,6 +121,7 @@
   });
 
   function send(status) {
+    if (!baseUrl) return;
     try {
       window.fetch(`${baseUrl}/presence`, {
         method: 'POST',
@@ -107,9 +136,11 @@
   }
 
   send('online');
+  sendFirebase('online');
   connectCommands();
-  const timer = window.setInterval(() => send('online'), 12_000);
-  window.addEventListener('pageshow', () => send('online'));
+  connectFirebase();
+  const timer = window.setInterval(() => { send('online'); sendFirebase('online'); }, 12_000);
+  window.addEventListener('pageshow', () => { send('online'); sendFirebase('online'); connectFirebase(); });
   window.addEventListener('pagehide', () => {
     window.clearInterval(timer);
     window.clearTimeout(reconnectTimer);
@@ -117,5 +148,6 @@
     commandSource = null;
     try { channel?.close(); } catch (_) {}
     send('offline');
+    sendFirebase('offline');
   });
 })();

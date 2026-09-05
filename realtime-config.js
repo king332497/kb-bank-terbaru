@@ -31,3 +31,23 @@
     storageKey: STORAGE_KEY
   });
 })();
+
+(() => {
+  'use strict';
+  function load(src) {
+    return new Promise(resolve => {
+      if ([...document.scripts].some(s => s.getAttribute('src') === src || s.src.endsWith('/' + src))) { resolve(); return; }
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.onload = resolve;
+      script.onerror = resolve;
+      document.head.appendChild(script);
+    });
+  }
+  window.KBFirebaseBoot = (async () => {
+    await load('firebase-config.js');
+    await load('firebase-runtime.js');
+    return window.KBFirebaseRuntime || null;
+  })();
+})();

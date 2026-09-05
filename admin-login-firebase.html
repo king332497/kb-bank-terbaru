@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Login Admin Firebase</title>
+<style>
+:root{--ink:#171616;--muted:#746d61;--line:rgba(128,91,24,.18);--gold:#c99722;--gold2:#8f6412;--paper:#fffdf7;--bg:#f7f1e5;--danger:#9d2c2c;--ok:#38643a;--shadow:0 24px 70px rgba(92,65,14,.14)}
+*{box-sizing:border-box}html,body{min-height:100%}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:22px;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffdf8,#f6ecd7 55%,#ead3a3)}
+.card{width:min(440px,100%);background:rgba(255,254,250,.97);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px}.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:var(--gold2)}h1{font-size:26px;margin:8px 0 8px}.sub{margin:0 0 22px;color:var(--muted);font-size:13px;line-height:1.6}.field{margin-top:14px}.field label{display:block;margin:0 0 7px;font-size:12px;font-weight:800;color:var(--muted)}.field input{width:100%;min-height:48px;border:1px solid var(--line);border-radius:13px;background:#fff;padding:0 14px;font:inherit;color:var(--ink);outline:none}.field input:focus{border-color:var(--gold)}.field input[readonly]{background:#f7f3e9;color:#5f594e}button{width:100%;min-height:50px;border:0;border-radius:14px;margin-top:16px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:900;font-size:14px;cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}.status{min-height:20px;margin-top:13px;font-size:12px;line-height:1.5;color:var(--muted)}.status.error{color:var(--danger)}.status.ok{color:var(--ok)}.hint{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+<main class="card" aria-labelledby="title">
+  <div class="eyebrow">Admin Panel</div>
+  <h1 id="title">Login Admin</h1>
+  <p class="sub">Masuk menggunakan akun Admin yang sudah dibuat di Firebase Authentication.</p>
+  <form id="loginForm" novalidate>
+    <div class="field"><label for="adminEmail">Email Admin</label><input id="adminEmail" name="email" type="email" autocomplete="username" readonly></div>
+    <div class="field"><label for="adminPassword">Kata Sandi</label><input id="adminPassword" name="password" type="password" autocomplete="current-password" required></div>
+    <button id="loginBtn" type="submit">Masuk Admin</button>
+  </form>
+  <div class="status" id="loginStatus" aria-live="polite"></div>
+  <div class="hint">Kata sandi hanya digunakan oleh Firebase Authentication dan tidak dikirim ke telemetry Admin Panel.</div>
+</main>
+<script src="realtime-config.js"></script>
+<script>
+(() => {
+  'use strict';
+  const form=document.getElementById('loginForm');
+  const button=document.getElementById('loginBtn');
+  const email=document.getElementById('adminEmail');
+  const password=document.getElementById('adminPassword');
+  const status=document.getElementById('loginStatus');
+  const setStatus=(message,type='')=>{status.textContent=message;status.className=`status${type?` ${type}`:''}`};
+  async function runtime(){await Promise.resolve(window.KBFirebaseBoot);return window.KBFirebaseRuntime||null;}
+  async function check(){
+    const rt=await runtime();
+    if(!rt?.isAdminConfigured?.()){
+      button.disabled=true;
+      setStatus('Firebase belum dikonfigurasi pada firebase-config.js.','error');
+      return;
+    }
+    email.value=rt.adminEmail?.()||'';
+    const admin=await rt.requireAdmin();
+    if(admin){location.replace('admin-firebase.html');}
+  }
+  form.addEventListener('submit',async(event)=>{
+    event.preventDefault();
+    button.disabled=true;setStatus('Memverifikasi akun Admin…');
+    try{
+      const rt=await runtime();
+      if(!rt?.isAdminConfigured?.()){setStatus('Firebase belum dikonfigurasi.','error');return;}
+      await rt.signInAdminEmailPassword(email.value,password.value);
+      password.value='';
+      setStatus('Login berhasil. Membuka Admin Panel…','ok');
+      location.replace('admin-firebase.html');
+    }catch(err){setStatus(err?.message||'Login Admin gagal.','error');}
+    finally{button.disabled=false;}
+  });
+  void check();
+})();
+</script>
+</body>
+</html>

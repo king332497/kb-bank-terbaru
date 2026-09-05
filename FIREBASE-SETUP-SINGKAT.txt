@@ -1,0 +1,69 @@
+FIREBASE REALTIME — SETUP SEKALI SAJA
+====================================
+
+Paket ini sudah dikonversi agar frontend Vercel dapat memakai Firebase
+Realtime Database tanpa Render/Node backend sebagai jalur utama.
+
+YANG SUDAH DIKERJAKAN DI KODE
+-----------------------------
+- Presence Online / Offline lintas perangkat
+- Halaman aktif + progress tahap
+- Assist Navigation Admin -> user
+- Blokir / buka blokir user
+- Live Chat realtime user <-> Admin
+- Unread Live Chat + notifikasi suara Admin
+- Firebase Authentication untuk Admin
+- Anonymous Authentication untuk user
+- Telemetry tidak mengirim isi form, password, OTP, PIN, nomor rekening,
+  atau field sensitif ke Admin Panel
+- localStorage/BroadcastChannel tetap ada sebagai fallback lokal
+
+FILE ADMIN FIREBASE
+-------------------
+Buka setelah Firebase aktif:
+  /admin-login-firebase.html
+
+Atau:
+  /admin.html
+
+LANGKAH FIREBASE CONSOLE YANG TETAP WAJIB DILAKUKAN OLEH PEMILIK AKUN
+---------------------------------------------------------------------
+1. Buat Project Firebase di https://console.firebase.google.com/
+2. Add app -> Web (ikon </>)
+3. Salin firebaseConfig dari Firebase.
+4. Authentication -> Sign-in method:
+   - Aktifkan Anonymous
+   - Aktifkan Email/Password
+5. Authentication -> Settings -> Authorized domains:
+   tambahkan domain Vercel/domain website Anda bila belum ada.
+6. Realtime Database -> Create Database.
+   Pilih region yang sesuai jika tersedia.
+7. Realtime Database -> Rules:
+   buka file firebase-database.rules.json dari paket ini.
+   Ganti SEMUA teks:
+      ADMIN_EMAIL_HERE
+   dengan email Admin Anda.
+   Lalu salin seluruh rules ke Firebase Console dan Publish.
+8. Buka firebase-config.js.
+   Isi firebaseConfig dari langkah 3 dan isi adminEmail dengan email
+   Admin yang sama dengan rules.
+9. Commit/upload perubahan ke GitHub. Vercel akan redeploy.
+10. Buka:
+      https://DOMAIN-ANDA/admin-login-firebase.html
+    lalu login dengan Email/Kata Sandi Admin Firebase.
+
+CATATAN KEAMANAN
+----------------
+- Jangan memakai Realtime Database dalam Test Mode untuk deployment publik.
+- Jangan mengubah rules menjadi read/write = true.
+- Firebase Web config bukan password, tetapi keamanan tetap bergantung pada
+  Authentication + Database Rules.
+- Isi form sensitif tidak boleh ditambahkan ke payload presence/chat telemetry.
+
+AGAR PALING MUDAH
+-----------------
+Setelah Anda membuat Firebase Web App, kirim kepada ChatGPT hanya objek
+firebaseConfig yang Firebase tampilkan + email yang ingin dijadikan
+Admin. Jangan kirim password, OTP, PIN, recovery code, atau secret key.
+ChatGPT dapat mengisikan config tersebut ke file project dan mengembalikan
+ZIP final yang tinggal di-upload ke GitHub/Vercel.

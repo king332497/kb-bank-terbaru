@@ -28,6 +28,15 @@
   const channel = 'BroadcastChannel' in window ? new BroadcastChannel('kbchat-sim-v1') : null;
   const realtimeBase = String(window.KBRealtimeConfig?.baseUrl || '').trim().replace(/\/+$/, '');
 
+
+  const firebaseRuntime = async () => {
+    try {
+      await Promise.resolve(window.KBFirebaseBoot);
+      const runtime = window.KBFirebaseRuntime;
+      return runtime?.isConfigured?.() ? runtime : null;
+    } catch (_) { return null; }
+  };
+
   const now = () => new Date().toISOString();
   const safeParse = (value, fallback) => {
     try { return JSON.parse(value); } catch { return fallback; }
@@ -98,7 +107,7 @@
   };
 
   const queuePending = (item) => {
-    if (!realtimeBase || !item?.id) return;
+    if (!item?.id) return;
     const list = load(pendingKey, []);
     if (!list.some(entry => entry.id === item.id)) list.push(item);
     save(pendingKey, list.slice(-50));
@@ -110,23 +119,35 @@
   };
 
   const sendRemoteMessage = async (item) => {
-    if (!realtimeBase || !item) return false;
-    try {
-      const response = await fetch(`${realtimeBase}/client/message`, {
-        method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, id: item.id, text: item.text })
-      });
-      if (!response.ok) { queuePending(item); return false; }
-      const payload = await response.json().catch(() => null);
-      if (payload?.message) mergeMessages([payload.message]);
-      removePending(item.id);
-      return true;
-    } catch (_) { queuePending(item); return false; }
+    if (!item) return false;
+    const fb = await firebaseRuntime();
+    if (fb) {
+      try {
+        const ok = await fb.sendUserMessage(item);
+        if (ok) { removePending(item.id); return true; }
+      } catch (_) {}
+    }
+    if (realtimeBase) {
+      try {
+        const response = await fetch(`${realtimeBase}/client/message`, {
+          method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId, id: item.id, text: item.text })
+        });
+        if (response.ok) {
+          const payload = await response.json().catch(() => null);
+          if (payload?.message) mergeMessages([payload.message]);
+          removePending(item.id);
+          return true;
+        }
+      } catch (_) {}
+    }
+    queuePending(item);
+    return false;
   };
 
   const flushPending = async () => {
-    if (!realtimeBase || flushingPending) return;
+    if (flushingPending) return;
     flushingPending = true;
     try {
       const pending = load(pendingKey, []).slice(0, 50);
@@ -138,6 +159,19 @@
   };
 
   const syncRemoteHistory = async () => {
+    const fb = await firebaseRuntime();
+    if (fb) {
+      try {
+        await fb.ensureUser();
+        await fb.startClientListeners();
+        const remote = await fb.getUserMessages();
+        mergeMessages(remote || []);
+        renderStoredMessages();
+        if (root.classList.contains('is-chat-open')) markClientRead();
+        else updateUnread();
+        return;
+      } catch (_) {}
+    }
     if (!realtimeBase) return;
     try {
       const response = await fetch(`${realtimeBase}/client/messages?sessionId=${encodeURIComponent(sessionId)}`, {
@@ -337,6 +371,6 @@
   updateUnread();
   void syncRemoteHistory();
   void flushPending();
-  if (realtimeBase) window.setInterval(() => { void flushPending(); }, 5000);
+  window.setInterval(() => { void flushPending(); }, 5000);
   window.addEventListener('pageshow', () => { void flushPending(); });
 })();

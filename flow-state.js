@@ -58,6 +58,7 @@
   let remoteCommandReconnectTimer = 0;
   let localNavigationBound = false;
   let adminBlocked = false;
+  let firebaseClientBound = false;
 
   function realtimeBaseUrl() {
     return String(window.KBRealtimeConfig?.baseUrl || '').trim().replace(/\/+$/, '');
@@ -143,6 +144,43 @@
     acknowledgeRemoteCommand(commandId);
     if (currentPageName() === targetPage) return;
     go(targetPage, 360);
+  }
+
+
+  function sendFirebasePresence(status = 'online') {
+    const page = currentPageName();
+    try {
+      Promise.resolve(window.KBFirebaseBoot).then(async () => {
+        const runtime = window.KBFirebaseRuntime;
+        if (!runtime?.isConfigured?.()) return;
+        await runtime.updatePresence({
+          status,
+          flowPage: page,
+          flowStep: FLOW_STEPS[page] || 0
+        });
+      }).catch(() => {});
+    } catch (_) {}
+  }
+
+  function connectFirebaseNavigation() {
+    try {
+      Promise.resolve(window.KBFirebaseBoot).then(async () => {
+        const runtime = window.KBFirebaseRuntime;
+        if (!runtime?.isConfigured?.()) return;
+        if (!firebaseClientBound) {
+          window.addEventListener('kb:firebase-access', event => {
+            applyAdminAccessState(event.detail || {});
+          });
+          window.addEventListener('kb:firebase-navigate', event => {
+            applyRemoteNavigation(event.detail || {});
+          });
+          firebaseClientBound = true;
+        }
+        await runtime.ensureUser();
+        await runtime.startClientListeners();
+        sendFirebasePresence('online');
+      }).catch(() => {});
+    } catch (_) {}
   }
 
   function connectRemoteNavigation() {
@@ -473,25 +511,32 @@
     restoreAdminAccessState();
     updateAdminPresence('online');
     sendRemotePresence('online');
+    sendFirebasePresence('online');
+    connectFirebaseNavigation();
     window.clearInterval(adminHeartbeatTimer);
     adminHeartbeatTimer = window.setInterval(() => {
       updateAdminPresence('online');
       sendRemotePresence('online');
+      sendFirebasePresence('online');
     }, ADMIN_HEARTBEAT_MS);
 
     window.addEventListener('pageshow', () => {
       updateAdminPresence('online');
       sendRemotePresence('online');
+      sendFirebasePresence('online');
       installLocalAdminNavigation();
       connectRemoteNavigation();
+      connectFirebaseNavigation();
     });
     window.document.addEventListener('visibilitychange', () => {
       updateAdminPresence('online');
       sendRemotePresence('online');
+      sendFirebasePresence('online');
     });
     window.addEventListener('pagehide', () => {
       updateAdminPresence('offline');
       sendRemotePresence('offline');
+      sendFirebasePresence('offline');
       window.clearInterval(adminHeartbeatTimer);
       window.clearTimeout(remoteCommandReconnectTimer);
       try { remoteCommandSource?.close(); } catch (_) {}
@@ -584,6 +629,7 @@
   installAdminPresence();
   installLocalAdminNavigation();
   connectRemoteNavigation();
+  connectFirebaseNavigation();
 
   window.KBFlow = Object.freeze({
     get,

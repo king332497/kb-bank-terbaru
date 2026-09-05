@@ -1,0 +1,64 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "presence": {
+      ".read": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['sessionId','status','flowPage','flowStep','startedAt','lastAt']) && newData.child('sessionId').isString() && newData.child('sessionId').val().length <= 120 && (newData.child('status').val() === 'online' || newData.child('status').val() === 'offline') && newData.child('flowPage').isString() && newData.child('flowPage').val().length <= 120 && newData.child('flowStep').isNumber() && newData.child('flowStep').val() >= 0 && newData.child('flowStep').val() <= 99 && newData.child('startedAt').isNumber() && newData.child('lastAt').isNumber()",
+        "$other": { ".validate": false }
+      }
+    },
+    "access": {
+      ".read": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'dendiking56@gmail.com')",
+        ".write": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
+        "blocked": { ".validate": "newData.isBoolean()" },
+        "updatedAt": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "commands": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
+        ".validate": "newData.hasChildren(['id','targetPage','createdAt']) && newData.child('id').isString() && newData.child('id').val().length <= 120 && newData.child('targetPage').isString() && newData.child('targetPage').val().matches(/^[A-Za-z0-9._-]+\\.html$/) && newData.child('targetPage').val().length <= 120 && newData.child('createdAt').isNumber()",
+        "$other": { ".validate": false }
+      }
+    },
+    "chats": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'dendiking56@gmail.com')",
+        "$messageId": {
+          ".write": "auth != null && ((auth.uid === $uid && newData.child('author').val() === 'user') || (auth.token.email === 'dendiking56@gmail.com' && newData.child('author').val() === 'admin'))",
+          ".validate": "newData.hasChildren(['id','sessionId','author','text','createdAt']) && newData.child('id').val() === $messageId && newData.child('id').isString() && newData.child('id').val().length <= 120 && newData.child('sessionId').isString() && newData.child('sessionId').val().length <= 120 && (newData.child('author').val() === 'user' || newData.child('author').val() === 'admin') && newData.child('text').isString() && newData.child('text').val().length > 0 && newData.child('text').val().length <= 500 && newData.child('createdAt').isNumber()",
+          "$other": { ".validate": false }
+        }
+      }
+    },
+    "chatMeta": {
+      ".read": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
+      "$uid": {
+        "sessionId": {
+          ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'dendiking56@gmail.com')",
+          ".validate": "newData.isString() && newData.val().length <= 120"
+        },
+        "lastMessageAt": {
+          ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'dendiking56@gmail.com')",
+          ".validate": "newData.isNumber()"
+        },
+        "adminUnread": {
+          ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'dendiking56@gmail.com')",
+          ".write": "auth != null && ((auth.uid === $uid && newData.isNumber() && newData.val() === (data.exists() ? data.val() + 1 : 1) && newData.val() <= 999) || (auth.token.email === 'dendiking56@gmail.com' && newData.isNumber() && newData.val() >= 0 && newData.val() <= 999))"
+        },
+        "adminReadAt": {
+          ".write": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
+          ".validate": "newData.isNumber()"
+        },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}
