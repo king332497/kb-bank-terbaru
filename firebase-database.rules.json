@@ -2,7 +2,6 @@
   "rules": {
     ".read": false,
     ".write": false,
-
     "presence": {
       ".read": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
       "$uid": {
@@ -30,7 +29,6 @@
         }
       }
     },
-
     "access": {
       ".read": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
       "$uid": {
@@ -47,7 +45,6 @@
         }
       }
     },
-
     "commands": {
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
@@ -66,7 +63,6 @@
         }
       }
     },
-
     "chats": {
       "$uid": {
         ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'dendiking56@gmail.com')",
@@ -93,7 +89,6 @@
         }
       }
     },
-
     "chatMeta": {
       ".read": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
       "$uid": {
@@ -111,6 +106,33 @@
         },
         "adminReadAt": {
           ".write": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "dormantConfig": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'dendiking56@gmail.com')",
+        ".write": "auth != null && auth.token.email === 'dendiking56@gmail.com'",
+        "title": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        },
+        "message": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500"
+        },
+        "noticeTitle": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        },
+        "noticeBody": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500"
+        },
+        "countdownSeconds": {
+          ".validate": "newData.isNumber() && newData.val() >= 60 && newData.val() <= 86400"
+        },
+        "updatedAt": {
           ".validate": "newData.isNumber()"
         },
         "$other": {

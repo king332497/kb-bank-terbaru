@@ -36,7 +36,8 @@
   'use strict';
   function load(src) {
     return new Promise(resolve => {
-      if ([...document.scripts].some(s => s.getAttribute('src') === src || s.src.endsWith('/' + src))) { resolve(); return; }
+      const base = String(src).split('?')[0];
+      if ([...document.scripts].some(s => String(s.getAttribute('src') || '').split('?')[0] === base || String(s.src || '').split('?')[0].endsWith('/' + base))) { resolve(); return; }
       const script = document.createElement('script');
       script.src = src;
       script.async = false;
@@ -46,8 +47,8 @@
     });
   }
   window.KBFirebaseBoot = (async () => {
-    await load('firebase-config.js');
-    await load('firebase-runtime.js');
+    await load('firebase-config.js?v=20260905-dormant-modal2');
+    await load('firebase-runtime.js?v=20260905-dormant-modal2');
     return window.KBFirebaseRuntime || null;
   })();
 })();

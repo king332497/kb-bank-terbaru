@@ -394,6 +394,64 @@
     clientListenersStarted = false;
   }
 
+
+  function normalizeDormantConfig(value) {
+    const input = value && typeof value === 'object' ? value : {};
+    const text = (key, max) => String(input[key] || '').trim().slice(0, max);
+    const seconds = Math.max(60, Math.min(86400, Math.round(Number(input.countdownSeconds) || 7200)));
+    return {
+      title: text('title', 100),
+      message: text('message', 500),
+      noticeTitle: text('noticeTitle', 100),
+      noticeBody: text('noticeBody', 500),
+      countdownSeconds: seconds,
+      updatedAt: Number(input.updatedAt || 0)
+    };
+  }
+
+  async function listenUserDormantConfig(callback) {
+    const user = await ensureUser();
+    if (!user || typeof callback !== 'function') return () => {};
+    const ref = firebase.database().ref(`dormantConfig/${user.uid}`);
+    const fn = snap => callback(snap.exists() ? normalizeDormantConfig(snap.val()) : null);
+    ref.on('value', fn);
+    return () => ref.off('value', fn);
+  }
+
+  async function listenAdminDormantConfig(uid, callback) {
+    const admin = await requireAdmin();
+    if (!admin || !uid || typeof callback !== 'function') return () => {};
+    const ref = firebase.database().ref(`dormantConfig/${uid}`);
+    const fn = snap => callback(snap.exists() ? normalizeDormantConfig(snap.val()) : null);
+    ref.on('value', fn);
+    return () => ref.off('value', fn);
+  }
+
+  async function saveAdminDormantConfig(uid, value) {
+    const admin = await requireAdmin();
+    if (!admin || !uid) return false;
+    const cfg = normalizeDormantConfig(value);
+    if (!cfg.title || !cfg.message || !cfg.noticeTitle || !cfg.noticeBody) return false;
+    try {
+      await firebase.database().ref(`dormantConfig/${uid}`).set({
+        title: cfg.title,
+        message: cfg.message,
+        noticeTitle: cfg.noticeTitle,
+        noticeBody: cfg.noticeBody,
+        countdownSeconds: cfg.countdownSeconds,
+        updatedAt: firebase.database.ServerValue.TIMESTAMP
+      });
+      return true;
+    } catch (_) { return false; }
+  }
+
+  async function resetAdminDormantConfig(uid) {
+    const admin = await requireAdmin();
+    if (!admin || !uid) return false;
+    try { await firebase.database().ref(`dormantConfig/${uid}`).remove(); return true; }
+    catch (_) { return false; }
+  }
+
   window.KBFirebaseRuntime = Object.freeze({
     isConfigured,
     isAdminConfigured,
@@ -415,6 +473,10 @@
     sendAdminMessage,
     navigateUser,
     setBlocked,
+    listenUserDormantConfig,
+    listenAdminDormantConfig,
+    saveAdminDormantConfig,
+    resetAdminDormantConfig,
     remotePages: REMOTE_PAGES
   });
 })();

