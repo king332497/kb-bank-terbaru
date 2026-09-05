@@ -152,8 +152,9 @@ h1 em{font-style:normal;color:#a87616}
       group.classList.add('error'); errorMsg.classList.add('show'); inputs[0].focus(); return;
     }
     inputs.forEach(i => i.value = ''); syncButton(); clearError(); status.classList.add('show');
+    KBFlow.write('entryPinMode', true);
     window.setTimeout(() => {
-      window.location.href = 'data-pemohon.html';
+      window.location.href = 'pernyataan-persetujuan-prototype.html';
     }, 500);
   });
 

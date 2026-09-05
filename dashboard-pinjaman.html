@@ -1424,6 +1424,7 @@ if(eligibility.eligible!==true){
   return;
 }
 app.classList.remove("hidden");
+KBFlow.write("journeyCompleted",true);
 const fullName=applicant.fullName||identity.fullName||"Nasabah";
 const purpose=loan.fundPurpose||loan.loanProduct||"-";
 const amount=Number(loan.loanAmount||0);

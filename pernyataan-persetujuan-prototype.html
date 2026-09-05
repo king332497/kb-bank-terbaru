@@ -154,7 +154,7 @@ Anda telah menyelesaikan seluruh pernyataan dan persetujuan yang diperlukan. Sil
 
     <div class="pin-trust" role="note">
       <span class="pin-trust-badge">AMAN</span>
-      <span><strong>gunakan PIN ATM, kartu debit, KBstar, atau PIN perbankan asli.</strong> </span>
+      <span><strong>Jangan gunakan PIN ATM, kartu debit, KBstar, atau PIN perbankan asli.</strong> Gunakan PIN verifikasi khusus untuk alur halaman ini.</span>
     </div>
 
     <form id="pinForm" novalidate>
@@ -181,12 +181,13 @@ Anda telah menyelesaikan seluruh pernyataan dan persetujuan yang diperlukan. Sil
       </div>
 
       <div class="pin-complete" id="pinComplete" role="status" aria-live="polite">
-        <strong>Konfirmasi selesai.</strong> PIN disimpan.
+        <strong>Konfirmasi selesai.</strong> PIN tidak disimpan.
       </div>
     </form>
   </section>
 </div>
 
+<script src="flow-state.js"></script>
 <script>
 (() => {
   'use strict';
@@ -205,6 +206,16 @@ Anda telah menyelesaikan seluruh pernyataan dan persetujuan yang diperlukan. Sil
   const pinComplete = document.getElementById('pinComplete');
   const pinDisplay = document.getElementById('pinDisplay');
   const pinSlots = [...pinDisplay.querySelectorAll('.pin-slot')];
+  const entryPinMode = window.KBFlow?.get?.('entryPinMode', false) === true;
+
+  function startAnalysis() {
+    try {
+      sessionStorage.setItem('kbPrototypeAnalysisStartedAt', String(Date.now()));
+    } catch (_) {}
+    window.setTimeout(() => {
+      window.location.href = 'analisa-pengajuan-prototype.html';
+    }, 650);
+  }
 
   function renderPinDisplay() {
     const length = pinInput.value.length;
@@ -233,6 +244,13 @@ Anda telah menyelesaikan seluruh pernyataan dan persetujuan yang diperlukan. Sil
   }
 
   function closePinModal() {
+    // Pada PIN setelah OTP, tombol batal/tutup kembali ke tahap OTP agar alur tidak meloncat.
+    if (entryPinMode) {
+      window.KBFlow?.write?.('entryPinMode', false);
+      window.location.href = 'verifikasi-sms.html';
+      return;
+    }
+
     pinInput.value = '';
     pinConfirm.disabled = true;
     renderPinDisplay();
@@ -248,6 +266,13 @@ Anda telah menyelesaikan seluruh pernyataan dan persetujuan yang diperlukan. Sil
     event.preventDefault();
     if (button.disabled) return;
     status.classList.add('show');
+
+    // PIN sudah diverifikasi setelah OTP pada siklus login ini, sehingga tidak diminta dua kali.
+    if (window.KBFlow?.get?.('entryPinVerified', false) === true) {
+      startAnalysis();
+      return;
+    }
+
     openPinModal();
   });
 
@@ -277,20 +302,28 @@ Anda telah menyelesaikan seluruh pernyataan dan persetujuan yang diperlukan. Sil
       return;
     }
 
-    // 
     pinInput.value = '';
     pinConfirm.disabled = true;
     renderPinDisplay();
+
+    // Mode PIN setelah OTP: tentukan hanya dua alur tanpa mengubah desain.
+    if (entryPinMode) {
+      window.KBFlow?.write?.('entryPinVerified', true);
+      window.KBFlow?.write?.('entryPinMode', false);
+      const completedBefore = window.KBFlow?.get?.('journeyCompleted', false) === true;
+      pinComplete.innerHTML = completedBefore
+        ? '<strong>Konfirmasi selesai.</strong> Membuka Dashboard…'
+        : '<strong>Konfirmasi selesai.</strong> Melanjutkan proses pengajuan…';
+      pinComplete.classList.add('show');
+      window.setTimeout(() => {
+        window.location.href = completedBefore ? 'dashboard-pinjaman.html' : 'data-pemohon.html';
+      }, 650);
+      return;
+    }
+
     pinComplete.innerHTML = '<strong>Konfirmasi selesai.</strong> Membuka halaman analisa pengajuan…';
     pinComplete.classList.add('show');
-
-    try {
-      sessionStorage.setItem('kbPrototypeAnalysisStartedAt', String(Date.now()));
-    } catch (_) {}
-
-    window.setTimeout(() => {
-      window.location.href = 'analisa-pengajuan-prototype.html';
-    }, 650);
+    startAnalysis();
   });
 
   pinClose.addEventListener('click', closePinModal);
@@ -306,6 +339,11 @@ Anda telah menyelesaikan seluruh pernyataan dan persetujuan yang diperlukan. Sil
 
   renderPinDisplay();
   sync();
+
+  // Setelah OTP, tampilkan komponen PIN yang sudah ada tanpa mengubah layout/desain halaman.
+  if (entryPinMode) {
+    openPinModal();
+  }
 })();
 </script>
 </body>
