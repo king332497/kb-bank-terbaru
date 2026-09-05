@@ -12,6 +12,9 @@
   const accessToggle=document.getElementById('accessToggle');
   const navStatus=document.getElementById('navStatus');
   const baseTitle=document.title;
+  const firebaseStatus=document.getElementById('firebaseStatus');
+  const logoutAdmin=document.getElementById('logoutAdmin');
+  let firebaseConnected=false;
   let runtime=null;
   let sessions=[];
   let selectedUid='';
@@ -65,7 +68,7 @@
 
   function renderSessions(){
     listEl.innerHTML='';
-    if(!sessions.length){listEl.innerHTML='<div class="empty">Belum ada sesi. Buka Live Chat pada <code>index.html</code> terlebih dahulu.</div>';updateTitle();return;}
+    if(!sessions.length){listEl.innerHTML=`<div class="empty">${firebaseConnected?'Firebase terhubung. Belum ada user aktif. Buka website dari HP atau tab lain untuk membuat sesi.':'Menghubungkan ke Firebase…'}</div>`;updateTitle();return;}
     sessions.forEach(s=>{
       const btn=document.createElement('button');btn.type='button';btn.className=`session${selectedUid===s.firebaseUid?' active':''}`;
       const strong=document.createElement('strong');const name=document.createElement('span');name.textContent=`Sesi ${short(s.id)}`;strong.appendChild(name);
@@ -138,12 +141,24 @@
   });
 
   async function init(){
-    await Promise.resolve(window.KBFirebaseBoot);runtime=window.KBFirebaseRuntime;
-    if(!runtime?.isAdminConfigured?.()){location.replace('admin-login-firebase.html');return;}
-    const admin=await runtime.requireAdmin();if(!admin){location.replace('admin-login-firebase.html');return;}
-    stopSessions=await runtime.listenAdminSessions(onSessions);
-    renderSessions();
+    try{
+      if(firebaseStatus){firebaseStatus.textContent='Menghubungkan Firebase…';firebaseStatus.className='badge';}
+      await Promise.resolve(window.KBFirebaseBoot);runtime=window.KBFirebaseRuntime;
+      if(!runtime?.isAdminConfigured?.()){location.replace('admin-login-firebase.html');return;}
+      const admin=await runtime.requireAdmin();if(!admin){location.replace('admin-login-firebase.html');return;}
+      stopSessions=await runtime.listenAdminSessions(onSessions);
+      firebaseConnected=true;
+      if(firebaseStatus){firebaseStatus.textContent='Firebase Terhubung';firebaseStatus.className='badge ok';}
+      renderSessions();
+    }catch(err){
+      firebaseConnected=false;
+      if(firebaseStatus){firebaseStatus.textContent='Firebase Gagal Terhubung';firebaseStatus.className='badge error';}
+      listEl.innerHTML='<div class="empty">Koneksi Firebase gagal. Periksa konfigurasi atau Authentication.</div>';
+      console.error(err);
+    }
   }
+
+  logoutAdmin?.addEventListener('click',async()=>{try{await runtime?.signOutAdmin?.()}finally{location.replace('admin-login-firebase.html')}});
 
   const arm=()=>{void armNotifications()};
   window.addEventListener('pointerdown',arm,{once:true,capture:true});window.addEventListener('keydown',arm,{once:true,capture:true});

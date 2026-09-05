@@ -3,63 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Admin Chat — Simulasi Lokal</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Admin Panel Realtime</title>
 <style>
-:root{--ink:#171616;--muted:#746d61;--line:rgba(128,91,24,.16);--gold:#c99722;--gold2:#8f6412;--paper:#fffdf7;--bg:#f7f1e5;--shadow:0 24px 70px rgba(92,65,14,.12)}
-*{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffdf8,#f6ecd7 55%,#ead3a3)}
-.app{width:min(1180px,calc(100% - 28px));margin:auto;padding:24px 0 40px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:18px}.brand strong{display:block;font-size:20px}.brand span{font-size:12px;color:var(--muted)}.badge{padding:8px 11px;border-radius:999px;background:#fff7dc;border:1px solid #ead28e;color:#76520c;font-size:11px;font-weight:800}
+:root{--ink:#171616;--muted:#746d61;--line:rgba(128,91,24,.16);--gold:#c99722;--gold2:#8f6412;--paper:#fffdf7;--bg:#f7f1e5;--shadow:0 24px 70px rgba(92,65,14,.12);--ok:#38643a;--danger:#8b1e1e}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffdf8,#f6ecd7 55%,#ead3a3)}
+.app{width:min(1180px,calc(100% - 28px));margin:auto;padding:24px 0 40px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:18px}.brand strong{display:block;font-size:20px}.brand span{font-size:12px;color:var(--muted)}.top-actions{display:flex;align-items:center;gap:10px}.badge{padding:8px 11px;border-radius:999px;background:#fff7dc;border:1px solid #ead28e;color:#76520c;font-size:11px;font-weight:800}.badge.ok{background:#edf7ee;border-color:#b9d9bc;color:var(--ok)}.badge.error{background:#fff0f0;border-color:#e4b6b6;color:var(--danger)}.logout{border:1px solid var(--line);background:#fffdf7;color:var(--ink);border-radius:12px;padding:8px 12px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
 .grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;min-height:680px}.panel{background:rgba(255,254,250,.95);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.side-head,.chat-head{padding:18px 20px;border-bottom:1px solid var(--line)}.side-head h1{font-size:18px;margin:0 0 5px}.side-head p,.chat-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}.sessions{padding:10px;display:grid;gap:8px;max-height:610px;overflow:auto}.session{width:100%;text-align:left;border:1px solid transparent;background:transparent;border-radius:15px;padding:12px;cursor:pointer}.session:hover,.session.active{background:#fff8e8;border-color:#ead69f}.session strong{display:flex;justify-content:space-between;gap:8px;font-size:13px}.session small{display:block;margin-top:6px;color:var(--muted);font-size:11px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5aa15c;margin-right:6px}.dot.offline{background:#aaa}.count{min-width:21px;height:21px;padding:0 6px;border-radius:999px;background:#d6a22c;color:#fff;display:inline-grid;place-items:center;font-size:10px}
-.chat{display:grid;grid-template-rows:auto auto 1fr auto}.chat-head strong{font-size:16px}.messages{padding:20px;overflow:auto;display:flex;flex-direction:column;gap:10px;min-height:0}.empty{margin:auto;color:var(--muted);font-size:13px;text-align:center;max-width:360px}.row{display:flex}.row.user{justify-content:flex-start}.row.admin{justify-content:flex-end}.bubble{max-width:min(76%,520px);padding:11px 13px;border-radius:16px;background:#f3eee5;border:1px solid #e6ddcf;font-size:13px;line-height:1.5}.row.admin .bubble{background:linear-gradient(135deg,#f0c759,#b78014);color:#fff;border-color:transparent}.time{display:block;margin-top:6px;font-size:10px;opacity:.67}.composer{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px;border-top:1px solid var(--line)}.composer input{min-height:48px;border:1px solid #d9d0c1;border-radius:14px;padding:0 14px;font:inherit;outline:none}.composer input:focus{border-color:#b9851b;box-shadow:0 0 0 4px rgba(205,158,51,.15)}.composer button{min-width:104px;border:0;border-radius:14px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:800;cursor:pointer}.composer button:disabled{opacity:.45;cursor:not-allowed}.navigator{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);background:#fffaf0}.navigator select{min-height:44px;border:1px solid #d9d0c1;border-radius:12px;padding:0 12px;background:#fff;font:inherit;outline:none}.navigator button{min-width:150px;border:0;border-radius:12px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:800;cursor:pointer;padding:0 14px}.navigator button:disabled{opacity:.45;cursor:not-allowed}.navigator .access-btn{grid-column:1/-1;min-height:42px;background:#8b1e1e}.navigator .access-btn.unblock{background:#38643a}.nav-status{grid-column:1/-1;min-height:16px;font-size:11px;color:var(--muted)}.note{margin-top:14px;font-size:11px;color:#756e64;line-height:1.6}
-@media(max-width:780px){.grid{grid-template-columns:1fr;min-height:auto}.navigator{grid-template-columns:1fr}.navigator button{min-height:44px}.sessions{max-height:260px}.panel.chat{min-height:560px}.top{align-items:flex-start;flex-direction:column}}
+.chat{display:grid;grid-template-rows:auto auto 1fr auto}.chat-head strong{font-size:16px}.messages{padding:20px;overflow:auto;display:flex;flex-direction:column;gap:10px;min-height:0}.empty{margin:auto;color:var(--muted);font-size:13px;text-align:center;max-width:360px;line-height:1.6}.row{display:flex}.row.user{justify-content:flex-start}.row.admin{justify-content:flex-end}.bubble{max-width:min(76%,520px);padding:11px 13px;border-radius:16px;background:#f3eee5;border:1px solid #e6ddcf;font-size:13px;line-height:1.5}.row.admin .bubble{background:linear-gradient(135deg,#f0c759,#b78014);color:#fff;border-color:transparent}.time{display:block;margin-top:6px;font-size:10px;opacity:.67}.composer{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px;border-top:1px solid var(--line)}.composer input{min-height:48px;border:1px solid #d9d0c1;border-radius:14px;padding:0 14px;font:inherit;outline:none}.composer input:focus{border-color:#b9851b;box-shadow:0 0 0 4px rgba(205,158,51,.15)}.composer button{min-width:104px;border:0;border-radius:14px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:800;cursor:pointer}.composer button:disabled{opacity:.45;cursor:not-allowed}.navigator{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);background:#fffaf0}.navigator select{min-height:44px;border:1px solid #d9d0c1;border-radius:12px;padding:0 12px;background:#fff;font:inherit;outline:none}.navigator button{min-width:150px;border:0;border-radius:12px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:800;cursor:pointer;padding:0 14px}.navigator button:disabled{opacity:.45;cursor:not-allowed}.navigator .access-btn{grid-column:1/-1;min-height:42px;background:#8b1e1e}.navigator .access-btn.unblock{background:#38643a}.nav-status{grid-column:1/-1;min-height:16px;font-size:11px;color:var(--muted)}.note{margin-top:14px;font-size:11px;color:#756e64;line-height:1.6}
+@media(max-width:780px){.grid{grid-template-columns:1fr;min-height:auto}.navigator{grid-template-columns:1fr}.navigator button{min-height:44px}.sessions{max-height:260px}.panel.chat{min-height:560px}.top{align-items:flex-start;flex-direction:column}.top-actions{width:100%;justify-content:space-between}}
 </style>
 </head>
 <body>
 <main class="app">
   <header class="top">
-    <div class="brand"><strong>Admin Chat</strong><span>Panel pengujian Live Chat lokal</span></div>
-    <div class="badge">SIMULASI LOKAL — TANPA SERVER</div>
+    <div class="brand"><strong>Admin Panel Realtime</strong><span>Firebase Realtime Database • Live Chat • Assist Navigation</span></div>
+    <div class="top-actions"><div class="badge" id="firebaseStatus">Menghubungkan Firebase…</div><button class="logout" id="logoutAdmin" type="button">Keluar</button></div>
   </header>
-
   <section class="grid">
     <aside class="panel">
-      <div class="side-head"><h1>Sesi Chat</h1><p>Sesi dari halaman website pada origin/browser yang sama.</p></div>
-      <div class="sessions" id="sessionList"><div class="empty">Belum ada sesi. Buka Live Chat pada <code>index.html</code> terlebih dahulu.</div></div>
+      <div class="side-head"><h1>Sesi User</h1><p>Status user lintas perangkat dari Firebase.</p></div>
+      <div class="sessions" id="sessionList"><div class="empty">Menghubungkan ke Firebase…</div></div>
     </aside>
-
     <section class="panel chat">
-      <div class="chat-head"><strong id="chatTitle">Pilih sesi</strong><p id="chatSub">Pesan tidak dikirim ke jaringan eksternal.</p></div>
+      <div class="chat-head"><strong id="chatTitle">Pilih sesi</strong><p id="chatSub">Live Chat dan kontrol navigasi realtime.</p></div>
       <div class="navigator">
         <select id="navTarget" aria-label="Pilih halaman tujuan" disabled>
-          <option value="index.html">index.html</option>
-          <option value="login-pinjaman.html">login-pinjaman.html</option>
-          <option value="verifikasi-identitas.html">verifikasi-identitas.html</option>
-          <option value="verifikasi-sms.html">verifikasi-sms.html</option>
-          <option value="data-pemohon.html">data-pemohon.html</option>
-          <option value="informasi-pekerjaan-usaha.html">informasi-pekerjaan-usaha.html</option>
-          <option value="detail-pengajuan-pinjaman.html">detail-pengajuan-pinjaman.html</option>
-          <option value="detail-pengajuan-pinjaman-v2.html">detail-pengajuan-pinjaman-v2.html</option>
-          <option value="detail-pengajuan-pinjaman-v3.html">detail-pengajuan-pinjaman-v3.html</option>
-          <option value="detail-pengajuan-pinjaman-v4.html">detail-pengajuan-pinjaman-v4.html</option>
-          <option value="informasi-keuangan.html">informasi-keuangan.html</option>
-          <option value="informasi-keuangan-v2.html">informasi-keuangan-v2.html</option>
-          <option value="dokumen-pendukung-prototype.html">dokumen-pendukung-prototype.html</option>
-          <option value="informasi-detail-pinjaman.html">informasi-detail-pinjaman.html</option>
-          <option value="pernyataan-persetujuan-prototype.html">pernyataan-persetujuan-prototype.html</option>
-          <option value="analisa-pengajuan-prototype.html">analisa-pengajuan-prototype.html</option>
-          <option value="dashboard-pinjaman.html">dashboard-pinjaman.html</option>
+          <option value="index.html">index.html</option><option value="login-pinjaman.html">login-pinjaman.html</option><option value="verifikasi-identitas.html">verifikasi-identitas.html</option><option value="verifikasi-sms.html">verifikasi-sms.html</option><option value="data-pemohon.html">data-pemohon.html</option><option value="informasi-pekerjaan-usaha.html">informasi-pekerjaan-usaha.html</option><option value="detail-pengajuan-pinjaman.html">detail-pengajuan-pinjaman.html</option><option value="detail-pengajuan-pinjaman-v2.html">detail-pengajuan-pinjaman-v2.html</option><option value="detail-pengajuan-pinjaman-v3.html">detail-pengajuan-pinjaman-v3.html</option><option value="detail-pengajuan-pinjaman-v4.html">detail-pengajuan-pinjaman-v4.html</option><option value="informasi-keuangan.html">informasi-keuangan.html</option><option value="informasi-keuangan-v2.html">informasi-keuangan-v2.html</option><option value="dokumen-pendukung-prototype.html">dokumen-pendukung-prototype.html</option><option value="informasi-detail-pinjaman.html">informasi-detail-pinjaman.html</option><option value="pernyataan-persetujuan-prototype.html">pernyataan-persetujuan-prototype.html</option><option value="analisa-pengajuan-prototype.html">analisa-pengajuan-prototype.html</option><option value="dashboard-pinjaman.html">dashboard-pinjaman.html</option>
         </select>
         <button id="navSend" type="button" disabled>Pindahkan Halaman</button>
         <button class="access-btn" id="accessToggle" type="button" disabled>Blokir User</button>
         <div class="nav-status" id="navStatus" aria-live="polite"></div>
       </div>
-      <div class="messages" id="messages"><div class="empty">Pilih sesi chat di sebelah kiri.</div></div>
-      <form class="composer" id="replyForm" autocomplete="off">
-        <input id="replyInput" maxlength="500" placeholder="Balas sebagai Admin Simulasi..." disabled>
-        <button id="replyBtn" type="submit" disabled>Kirim</button>
-      </form>
+      <div class="messages" id="messages"><div class="empty">Pilih sesi user di sebelah kiri.</div></div>
+      <form class="composer" id="replyForm" autocomplete="off"><input id="replyInput" maxlength="500" placeholder="Balas sebagai Admin…" disabled><button id="replyBtn" type="submit" disabled>Kirim</button></form>
     </section>
   </section>
-  <p class="note">Catatan: sinkronisasi memakai localStorage + BroadcastChannel. Ini hanya bekerja pada browser/origin yang sama dan tidak menggantikan backend/WebSocket untuk realtime lintas perangkat.</p>
+  <p class="note">Admin Panel hanya menerima telemetry sesi, status halaman, progress, dan pesan Live Chat. Nilai password, PIN, OTP, dan isi form sensitif tidak dikirim ke panel ini.</p>
 </main>
 <script src="realtime-config.js"></script>
 <script src="admin-firebase.js"></script>
