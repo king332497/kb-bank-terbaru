@@ -38,11 +38,6 @@
   };
 
   const now = () => new Date().toISOString();
-  const cssEscape = (value) => {
-    const raw = String(value ?? '');
-    if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(raw);
-    return raw.replace(/[^a-zA-Z0-9_-]/g, ch => `\\${ch}`);
-  };
   const safeParse = (value, fallback) => {
     try { return JSON.parse(value); } catch { return fallback; }
   };
@@ -222,7 +217,7 @@
 
   const renderMessage = (item) => {
     if (!messages || !item) return;
-    if (messages.querySelector(`[data-message-id="${cssEscape(item.id)}"]`)) return;
+    if (messages.querySelector(`[data-message-id="${CSS.escape(item.id)}"]`)) return;
     const row = document.createElement('div');
     row.className = `kb-chat-row${item.author === 'user' ? ' is-user' : ''}`;
     row.dataset.messageId = item.id;
@@ -301,53 +296,19 @@
   openLive?.addEventListener('click', showChat);
   closeChat?.addEventListener('click', hideChat);
 
-  let submitting = false;
-
-  const syncSendState = () => {
-    if (!send) return;
-    send.disabled = submitting || !String(input?.value || '').trim();
-  };
-
-  const submitCurrentMessage = async () => {
-    if (submitting) return;
-    const raw = String(input?.value || '');
-    if (!raw.trim()) { syncSendState(); return; }
-
-    const item = appendStoredMessage('user', raw);
-    if (!item) { syncSendState(); return; }
-
-    submitting = true;
-    renderMessage(item);
-    if (input) input.value = '';
-    syncSendState();
-
-    try {
-      await sendRemoteMessage(item);
-    } finally {
-      submitting = false;
-      syncSendState();
-      try { input?.focus({ preventScroll: true }); } catch (_) { input?.focus(); }
-    }
-  };
-
-  ['input', 'keyup', 'change', 'compositionend'].forEach(type => {
-    input?.addEventListener(type, syncSendState);
+  input?.addEventListener('input', () => {
+    if (send) send.disabled = !input.value.trim();
   });
-  input?.addEventListener('paste', () => window.setTimeout(syncSendState, 0));
 
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
-    void submitCurrentMessage();
-  });
-
-  send?.addEventListener('pointerup', () => {
-    if (!form?.requestSubmit && !send.disabled) void submitCurrentMessage();
-  });
-
-  input?.addEventListener('keydown', (event) => {
-    if (event.key !== 'Enter' || event.shiftKey || event.isComposing) return;
-    event.preventDefault();
-    void submitCurrentMessage();
+    const item = appendStoredMessage('user', input?.value);
+    if (!item) return;
+    renderMessage(item);
+    void sendRemoteMessage(item);
+    input.value = '';
+    if (send) send.disabled = true;
+    input.focus();
   });
 
   quickButtons.forEach(button => {
@@ -404,7 +365,6 @@
     channel?.close();
   });
 
-  syncSendState();
   if (status) status.textContent = 'Simulasi lokal • aktif';
   updateSession({ status: 'online' });
   renderStoredMessages();

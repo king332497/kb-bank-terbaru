@@ -1112,6 +1112,7 @@ a{text-decoration:none;color:inherit}
 }
 
 </style>
+  <link rel="stylesheet" href="client-chat-sim.css">
 </head>
 <body>
 <div id="guard" class="guard card hidden">
@@ -1642,5 +1643,117 @@ $("menuButton")?.addEventListener("click",()=>$("sidebar").classList.toggle("ope
   queueMicrotask(syncHeaderName);
 })();
 </script>
+
+
+<aside aria-label="Hubungi Kami KB Bank" class="kb-chat" id="kbLiveChat">
+<button aria-controls="kbChatContactMenu" aria-expanded="false" aria-label="Buka menu Hubungi Kami" class="kb-chat-launcher" id="kbChatLauncher" type="button">
+<span class="kb-chat-launcher-main">
+<svg aria-hidden="true" class="kb-chat-headset" viewbox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 13a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2v-6H4Zm16 0h-2v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2ZM18 19c0 1.1-.9 2-2 2h-3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+<span>Hubungi Kami</span>
+</span>
+<svg aria-hidden="true" class="kb-chat-launcher-chevron" viewbox="0 0 24 24"><path d="m8 10 4 4 4-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span aria-label="1 pesan belum dibaca" class="kb-chat-unread" id="kbChatUnread">1</span>
+</button>
+<section aria-label="Pilihan Hubungi Kami" class="kb-chat-contact-menu" hidden="" id="kbChatContactMenu">
+<button aria-label="Tutup menu Hubungi Kami" class="kb-chat-menu-head" id="kbChatMenuClose" type="button">
+<span>
+<svg aria-hidden="true" class="kb-chat-headset" viewbox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 13a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2v-6H4Zm16 0h-2v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2ZM18 19c0 1.1-.9 2-2 2h-3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+          Hubungi Kami
+        </span>
+<svg aria-hidden="true" class="kb-chat-menu-chevron" viewbox="0 0 24 24"><path d="m8 10 4 4 4-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<ul class="kb-chat-contact-list">
+<li>
+<button class="kb-chat-contact-item kb-chat-live-entry" id="kbChatOpenLive" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-4.8 3.5c-.5.4-1.2 0-1.2-.6V17H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.7"></path><path d="M8 10h8M8 13h5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>
+<span class="kb-chat-item-copy">Live Chat<small>Customer Service</small></span>
+<svg aria-hidden="true" class="kb-chat-item-arrow" viewbox="0 0 24 24"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</li>
+<li>
+<a aria-label="Telepon 14005" class="kb-chat-contact-item" href="tel:14005">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M7.1 3.5 4.6 4.8c-.8.4-1.2 1.3-1 2.2 1.2 5.8 5.7 10.3 11.5 11.5.9.2 1.8-.2 2.2-1l1.3-2.5-4-2-1.2 1.8a13.8 13.8 0 0 1-4.2-4.2L11 9.4l-1.9-4Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+<span class="kb-chat-item-copy">14005</span>
+<span aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a class="kb-chat-contact-item" href="https://www.kbbank.co.id/support-center" rel="noopener noreferrer" target="_blank">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m3 6 5-2 8 2 5-2v14l-5 2-8-2-5 2V6Zm5-2v14m8-12v14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg>
+<span class="kb-chat-item-copy">Kantor Cabang</span>
+<svg aria-hidden="true" class="kb-chat-item-arrow" viewbox="0 0 24 24"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</li>
+<li>
+<a class="kb-chat-contact-item" href="mailto:customer_care@kbbank.co.id">
+<svg aria-hidden="true" viewbox="0 0 24 24"><rect fill="none" height="14" rx="1.5" stroke="currentColor" stroke-width="1.7" width="18" x="3" y="5"></rect><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg>
+<span class="kb-chat-item-copy">Kirim Email</span>
+<svg aria-hidden="true" class="kb-chat-item-arrow" viewbox="0 0 24 24"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</li>
+<li>
+<a aria-label="Whistleblowing System" class="kb-chat-contact-item" href="https://www.kbbank.co.id/profile/contact-us" rel="noopener noreferrer" target="_blank">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 4a7 7 0 1 0 7 7M12 2v4m-7.1-.9 2.8 2.8m-4.7 3.1h4m9.3-3.1 2.8-2.8M17 15l4-4m0 0v4m0-4h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg>
+<span class="kb-chat-item-copy">Whistleblowing<br/>System</span>
+<svg aria-hidden="true" class="kb-chat-item-arrow" viewbox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path><path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</a>
+</li>
+<li>
+<a class="kb-chat-contact-item" href="https://play.google.com/store/apps/details?id=com.kbBukopin.Kbstar" rel="noopener noreferrer" target="_blank">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 12h16M5.5 12V9.5h13V12M7 9.5V6.8h10v2.7M8 15h2m4 0h2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg>
+<span class="kb-chat-item-copy">Buka Tabungan</span>
+<svg aria-hidden="true" class="kb-chat-item-arrow" viewbox="0 0 24 24"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</li>
+</ul>
+</section>
+<section aria-labelledby="kbChatTitle" aria-modal="false" class="kb-chat-panel" hidden="" id="kbChatPanel" role="dialog">
+<header class="kb-chat-header">
+<div aria-hidden="true" class="kb-chat-avatar">
+<svg viewbox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 13a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2v-6H4Zm16 0h-2v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2ZM18 19c0 1.1-.9 2-2 2h-3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</div>
+<div class="kb-chat-heading">
+<strong id="kbChatTitle">Live Chat KB Bank</strong>
+<span class="kb-chat-status">Layanan bantuan</span>
+</div>
+<button aria-label="Kembali ke Hubungi Kami" class="kb-chat-close" id="kbChatClose" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m15 6-6 6 6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</header>
+<div class="kb-chat-security">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 3 5 6v5c0 4.7 2.8 8.5 7 10 4.2-1.5 7-5.3 7-10V6l-7-3Zm0 4a2 2 0 0 1 2 2v1h1v5H9v-5h1V9a2 2 0 0 1 2-2Zm0 1.5a.5.5 0 0 0-.5.5v1h1V9a.5.5 0 0 0-.5-.5Z" fill="currentColor"></path></svg>
+<span>Jangan pernah membagikan PIN, OTP, password, CVV, atau kode keamanan melalui chat.</span>
+</div>
+<div aria-live="polite" class="kb-chat-messages" id="kbChatMessages">
+<div class="kb-chat-day">Hari ini</div>
+<div class="kb-chat-row">
+<div class="kb-chat-bubble">
+            Halo, selamat datang. Ada yang dapat kami bantu terkait layanan dan informasi KB Bank?
+            <span class="kb-chat-time">Customer Care</span>
+</div>
+</div>
+<div class="kb-chat-row">
+<div class="kb-chat-bubble">
+            Pilih topik di bawah atau tuliskan pertanyaan Anda.
+            <span class="kb-chat-time">Customer Care</span>
+</div>
+</div>
+</div>
+<div aria-label="Pilihan topik cepat" class="kb-chat-quick">
+<button data-kb-chat-quick="Informasi pinjaman" type="button">Informasi Pinjaman</button>
+<button data-kb-chat-quick="Status pengajuan" type="button">Status Pengajuan</button>
+<button data-kb-chat-quick="Bantuan rekening" type="button">Bantuan Rekening</button>
+<button data-kb-chat-quick="Bantuan lainnya" type="button">Lainnya</button>
+</div>
+<form autocomplete="off" class="kb-chat-form" id="kbChatForm">
+<input aria-label="Tulis pesan Live Chat" class="kb-chat-input" id="kbChatInput" maxlength="500" placeholder="Tulis pesan..." type="text"/>
+<button aria-label="Kirim pesan" class="kb-chat-send" disabled="" id="kbChatSend" type="submit">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m3 11 17-8-6.8 18-2.1-7.1L3 11Zm8.1 2.9L20 3l-9.8 8.9.9 2Z" fill="currentColor"></path></svg>
+</button>
+</form>
+</section>
+</aside>
+
+  <script src="client-chat-sim.js" defer></script>
 </body>
 </html>
