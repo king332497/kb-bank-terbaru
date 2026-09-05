@@ -305,7 +305,11 @@
 
   const syncSendState = () => {
     if (!send) return;
-    send.disabled = submitting || !String(input?.value || '').trim();
+    // Mobile-safe: jangan mengunci tombol berdasarkan event input browser.
+    // Isi kosong tetap ditolak di submitCurrentMessage(), sedangkan tombol hanya
+    // dinonaktifkan selama proses submit agar tap di browser HP tidak hilang.
+    send.disabled = submitting;
+    send.setAttribute('aria-disabled', submitting ? 'true' : 'false');
   };
 
   const submitCurrentMessage = async () => {
@@ -335,14 +339,26 @@
   });
   input?.addEventListener('paste', () => window.setTimeout(syncSendState, 0));
 
+  // Fallback untuk Android WebView/keyboard tertentu yang terlambat memicu
+  // event input. Tidak mengubah nilai input; hanya menjaga status tombol.
+  const sendStateTimer = window.setInterval(syncSendState, 350);
+
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
     void submitCurrentMessage();
   });
 
-  send?.addEventListener('pointerup', () => {
-    if (!form?.requestSubmit && !send.disabled) void submitCurrentMessage();
+  // Fallback eksplisit untuk browser mobile/webview yang tidak konsisten
+  // memicu submit form dari tombol icon-only. submitting mencegah double-send.
+  send?.addEventListener('click', (event) => {
+    event.preventDefault();
+    void submitCurrentMessage();
   });
+  send?.addEventListener('touchend', (event) => {
+    if (submitting) return;
+    event.preventDefault();
+    void submitCurrentMessage();
+  }, { passive: false });
 
   input?.addEventListener('keydown', (event) => {
     if (event.key !== 'Enter' || event.shiftKey || event.isComposing) return;
@@ -400,6 +416,7 @@
   });
 
   window.addEventListener('pagehide', () => {
+    window.clearInterval(sendStateTimer);
     updateSession({ status: 'offline' });
     channel?.close();
   });
