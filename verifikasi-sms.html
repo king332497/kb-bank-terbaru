@@ -109,6 +109,7 @@ h1 em{font-style:normal;color:#a87616}
     </div>
   </section>
 </main>
+<script src="realtime-config.js"></script>
 <script src="flow-state.js"></script>
 <script>
 (() => {
@@ -152,10 +153,9 @@ h1 em{font-style:normal;color:#a87616}
       group.classList.add('error'); errorMsg.classList.add('show'); inputs[0].focus(); return;
     }
     inputs.forEach(i => i.value = ''); syncButton(); clearError(); status.classList.add('show');
-    KBFlow.write('entryPinMode', true);
-    window.setTimeout(() => {
-      window.location.href = 'pernyataan-persetujuan-prototype.html';
-    }, 500);
+    const returningCompleted = KBFlow.get('returningCompleted', false) === true;
+    if (returningCompleted) KBFlow.write('entryPinMode', true);
+    KBFlow.go(returningCompleted ? 'pernyataan-persetujuan-prototype.html' : 'data-pemohon.html', 500);
   });
 
   inputs[0].focus();

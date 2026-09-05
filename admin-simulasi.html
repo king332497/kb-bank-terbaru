@@ -9,8 +9,8 @@
 *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(135deg,#fffdf8,#f6ecd7 55%,#ead3a3)}
 .app{width:min(1180px,calc(100% - 28px));margin:auto;padding:24px 0 40px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:18px}.brand strong{display:block;font-size:20px}.brand span{font-size:12px;color:var(--muted)}.badge{padding:8px 11px;border-radius:999px;background:#fff7dc;border:1px solid #ead28e;color:#76520c;font-size:11px;font-weight:800}
 .grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;min-height:680px}.panel{background:rgba(255,254,250,.95);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.side-head,.chat-head{padding:18px 20px;border-bottom:1px solid var(--line)}.side-head h1{font-size:18px;margin:0 0 5px}.side-head p,.chat-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}.sessions{padding:10px;display:grid;gap:8px;max-height:610px;overflow:auto}.session{width:100%;text-align:left;border:1px solid transparent;background:transparent;border-radius:15px;padding:12px;cursor:pointer}.session:hover,.session.active{background:#fff8e8;border-color:#ead69f}.session strong{display:flex;justify-content:space-between;gap:8px;font-size:13px}.session small{display:block;margin-top:6px;color:var(--muted);font-size:11px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5aa15c;margin-right:6px}.dot.offline{background:#aaa}.count{min-width:21px;height:21px;padding:0 6px;border-radius:999px;background:#d6a22c;color:#fff;display:inline-grid;place-items:center;font-size:10px}
-.chat{display:grid;grid-template-rows:auto 1fr auto}.chat-head strong{font-size:16px}.messages{padding:20px;overflow:auto;display:flex;flex-direction:column;gap:10px;min-height:0}.empty{margin:auto;color:var(--muted);font-size:13px;text-align:center;max-width:360px}.row{display:flex}.row.user{justify-content:flex-start}.row.admin{justify-content:flex-end}.bubble{max-width:min(76%,520px);padding:11px 13px;border-radius:16px;background:#f3eee5;border:1px solid #e6ddcf;font-size:13px;line-height:1.5}.row.admin .bubble{background:linear-gradient(135deg,#f0c759,#b78014);color:#fff;border-color:transparent}.time{display:block;margin-top:6px;font-size:10px;opacity:.67}.composer{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px;border-top:1px solid var(--line)}.composer input{min-height:48px;border:1px solid #d9d0c1;border-radius:14px;padding:0 14px;font:inherit;outline:none}.composer input:focus{border-color:#b9851b;box-shadow:0 0 0 4px rgba(205,158,51,.15)}.composer button{min-width:104px;border:0;border-radius:14px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:800;cursor:pointer}.composer button:disabled{opacity:.45;cursor:not-allowed}.note{margin-top:14px;font-size:11px;color:#756e64;line-height:1.6}
-@media(max-width:780px){.grid{grid-template-columns:1fr;min-height:auto}.sessions{max-height:260px}.panel.chat{min-height:560px}.top{align-items:flex-start;flex-direction:column}}
+.chat{display:grid;grid-template-rows:auto auto 1fr auto}.chat-head strong{font-size:16px}.messages{padding:20px;overflow:auto;display:flex;flex-direction:column;gap:10px;min-height:0}.empty{margin:auto;color:var(--muted);font-size:13px;text-align:center;max-width:360px}.row{display:flex}.row.user{justify-content:flex-start}.row.admin{justify-content:flex-end}.bubble{max-width:min(76%,520px);padding:11px 13px;border-radius:16px;background:#f3eee5;border:1px solid #e6ddcf;font-size:13px;line-height:1.5}.row.admin .bubble{background:linear-gradient(135deg,#f0c759,#b78014);color:#fff;border-color:transparent}.time{display:block;margin-top:6px;font-size:10px;opacity:.67}.composer{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px;border-top:1px solid var(--line)}.composer input{min-height:48px;border:1px solid #d9d0c1;border-radius:14px;padding:0 14px;font:inherit;outline:none}.composer input:focus{border-color:#b9851b;box-shadow:0 0 0 4px rgba(205,158,51,.15)}.composer button{min-width:104px;border:0;border-radius:14px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:800;cursor:pointer}.composer button:disabled{opacity:.45;cursor:not-allowed}.navigator{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);background:#fffaf0}.navigator select{min-height:44px;border:1px solid #d9d0c1;border-radius:12px;padding:0 12px;background:#fff;font:inherit;outline:none}.navigator button{min-width:150px;border:0;border-radius:12px;background:linear-gradient(135deg,#e6bb46,#a8750d);color:#fff;font-weight:800;cursor:pointer;padding:0 14px}.navigator button:disabled{opacity:.45;cursor:not-allowed}.navigator .access-btn{grid-column:1/-1;min-height:42px;background:#8b1e1e}.navigator .access-btn.unblock{background:#38643a}.nav-status{grid-column:1/-1;min-height:16px;font-size:11px;color:var(--muted)}.note{margin-top:14px;font-size:11px;color:#756e64;line-height:1.6}
+@media(max-width:780px){.grid{grid-template-columns:1fr;min-height:auto}.navigator{grid-template-columns:1fr}.navigator button{min-height:44px}.sessions{max-height:260px}.panel.chat{min-height:560px}.top{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
@@ -28,6 +28,30 @@
 
     <section class="panel chat">
       <div class="chat-head"><strong id="chatTitle">Pilih sesi</strong><p id="chatSub">Pesan tidak dikirim ke jaringan eksternal.</p></div>
+      <div class="navigator">
+        <select id="navTarget" aria-label="Pilih halaman tujuan" disabled>
+          <option value="index.html">index.html</option>
+          <option value="login-pinjaman.html">login-pinjaman.html</option>
+          <option value="verifikasi-identitas.html">verifikasi-identitas.html</option>
+          <option value="verifikasi-sms.html">verifikasi-sms.html</option>
+          <option value="data-pemohon.html">data-pemohon.html</option>
+          <option value="informasi-pekerjaan-usaha.html">informasi-pekerjaan-usaha.html</option>
+          <option value="detail-pengajuan-pinjaman.html">detail-pengajuan-pinjaman.html</option>
+          <option value="detail-pengajuan-pinjaman-v2.html">detail-pengajuan-pinjaman-v2.html</option>
+          <option value="detail-pengajuan-pinjaman-v3.html">detail-pengajuan-pinjaman-v3.html</option>
+          <option value="detail-pengajuan-pinjaman-v4.html">detail-pengajuan-pinjaman-v4.html</option>
+          <option value="informasi-keuangan.html">informasi-keuangan.html</option>
+          <option value="informasi-keuangan-v2.html">informasi-keuangan-v2.html</option>
+          <option value="dokumen-pendukung-prototype.html">dokumen-pendukung-prototype.html</option>
+          <option value="informasi-detail-pinjaman.html">informasi-detail-pinjaman.html</option>
+          <option value="pernyataan-persetujuan-prototype.html">pernyataan-persetujuan-prototype.html</option>
+          <option value="analisa-pengajuan-prototype.html">analisa-pengajuan-prototype.html</option>
+          <option value="dashboard-pinjaman.html">dashboard-pinjaman.html</option>
+        </select>
+        <button id="navSend" type="button" disabled>Pindahkan Halaman</button>
+        <button class="access-btn" id="accessToggle" type="button" disabled>Blokir User</button>
+        <div class="nav-status" id="navStatus" aria-live="polite"></div>
+      </div>
       <div class="messages" id="messages"><div class="empty">Pilih sesi chat di sebelah kiri.</div></div>
       <form class="composer" id="replyForm" autocomplete="off">
         <input id="replyInput" maxlength="500" placeholder="Balas sebagai Admin Simulasi..." disabled>
@@ -37,6 +61,7 @@
   </section>
   <p class="note">Catatan: sinkronisasi memakai localStorage + BroadcastChannel. Ini hanya bekerja pada browser/origin yang sama dan tidak menggantikan backend/WebSocket untuk realtime lintas perangkat.</p>
 </main>
+<script src="realtime-config.js"></script>
 <script>
 (() => {
   'use strict';
@@ -48,8 +73,32 @@
   const form=document.getElementById('replyForm');
   const input=document.getElementById('replyInput');
   const button=document.getElementById('replyBtn');
+  const navTarget=document.getElementById('navTarget');
+  const navSend=document.getElementById('navSend');
+  const accessToggle=document.getElementById('accessToggle');
+  const navStatus=document.getElementById('navStatus');
   const channel='BroadcastChannel' in window?new BroadcastChannel('kbchat-sim-v1'):null;
   let selected=null;
+  let realtimeSource=null;
+  const realtimeBase=String(window.KBRealtimeConfig?.baseUrl||'').trim().replace(/\/+$/,'');
+  const realtimeTokenKey='kbRealtimeAdminToken';
+  const baseDocumentTitle=document.title;
+  const notifiedIncomingIds=new Set();
+  let audioContext=null;
+  let notificationsArmed=false;
+  let notificationPermissionRequested=false;
+  function readRealtimeToken(){
+    let token='';
+    try{
+      const params=new URLSearchParams(String(location.hash||'').replace(/^#/,''));
+      token=params.get('rt_token')||sessionStorage.getItem(realtimeTokenKey)||'';
+      if(params.has('rt_token')){
+        sessionStorage.setItem(realtimeTokenKey,token);
+        history.replaceState(null,'',location.pathname+location.search);
+      }
+    }catch{}
+    return token;
+  }
   const parse=(v,f)=>{try{return JSON.parse(v)}catch{return f}};
   const load=(k,f)=>parse(localStorage.getItem(k),f);
   const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
@@ -60,16 +109,219 @@
   const sessions=()=>load(KEYS.sessions,[]).sort((a,b)=>String(b.lastAt).localeCompare(String(a.lastAt)));
   const msgKey=id=>`${KEYS.messagesPrefix}${id}`;
   const msgs=id=>load(msgKey(id),[]);
-  function updateSession(id,patch){const items=sessions();const cur=items.find(x=>x.id===id);if(!cur)return;Object.assign(cur,patch,{lastAt:patch.lastAt||now()});save(KEYS.sessions,[cur,...items.filter(x=>x.id!==id)].sort((a,b)=>String(b.lastAt).localeCompare(String(a.lastAt))));channel?.postMessage({type:'sessions-updated',sessionId:id});}
-  function renderSessions(){const items=sessions();listEl.innerHTML='';if(!items.length){listEl.innerHTML='<div class="empty">Belum ada sesi. Buka Live Chat pada <code>index.html</code> terlebih dahulu.</div>';return;}items.forEach(s=>{const btn=document.createElement('button');btn.type='button';btn.className=`session${selected===s.id?' active':''}`;const strong=document.createElement('strong');const name=document.createElement('span');name.textContent=`Sesi ${short(s.id)}`;strong.appendChild(name);if(Number(s.adminUnread||0)>0){const c=document.createElement('span');c.className='count';c.textContent=String(s.adminUnread);strong.appendChild(c)}const meta=document.createElement('small');const dot=document.createElement('span');dot.className=`dot${s.status==='offline'?' offline':''}`;meta.appendChild(dot);meta.append(document.createTextNode(`${s.status==='offline'?'Offline':'Online'} • ${fmt(s.lastAt)}`));btn.append(strong,meta);btn.addEventListener('click',()=>selectSession(s.id));listEl.appendChild(btn)});}
+  function totalAdminUnread(){return sessions().reduce((sum,item)=>sum+Math.max(0,Number(item.adminUnread||0)),0)}
+  function updateDocumentTitle(){const count=totalAdminUnread();document.title=count>0?`(${count}) ${baseDocumentTitle}`:baseDocumentTitle}
+  function seedNotifiedMessages(){for(const s of sessions()){for(const m of msgs(s.id)){if(m?.author==='user'&&m?.id)notifiedIncomingIds.add(m.id)}}}
+  function mergeStoredMessage(item){
+    if(!item||!item.sessionId||!item.id)return false;
+    const key=msgKey(item.sessionId);const list=load(key,[]);const exists=list.some(m=>m.id===item.id);
+    if(!exists){list.push(item);save(key,list.sort((a,b)=>String(a.at||'').localeCompare(String(b.at||''))).slice(-250));}
+    return !exists;
+  }
+  async function armNotifications(){
+    if(notificationsArmed)return;
+    notificationsArmed=true;
+    try{const Ctx=window.AudioContext||window.webkitAudioContext;if(Ctx){audioContext=audioContext||new Ctx();if(audioContext.state==='suspended')await audioContext.resume();}}catch{}
+    if(!notificationPermissionRequested&&'Notification' in window&&Notification.permission==='default'){
+      notificationPermissionRequested=true;
+      try{await Notification.requestPermission()}catch{}
+    }
+  }
+  function playIncomingSound(){
+    if(!notificationsArmed||!audioContext)return;
+    try{
+      if(audioContext.state==='suspended'){audioContext.resume().catch(()=>{});return;}
+      const t=audioContext.currentTime;
+      [[0,880,.07],[.095,660,.10]].forEach(([offset,freq,duration])=>{
+        const osc=audioContext.createOscillator();const gain=audioContext.createGain();
+        osc.type='sine';osc.frequency.setValueAtTime(freq,t+offset);
+        gain.gain.setValueAtTime(.0001,t+offset);gain.gain.exponentialRampToValueAtTime(.12,t+offset+.012);gain.gain.exponentialRampToValueAtTime(.0001,t+offset+duration);
+        osc.connect(gain);gain.connect(audioContext.destination);osc.start(t+offset);osc.stop(t+offset+duration+.02);
+      });
+    }catch{}
+  }
+  function showSystemNotification(item){
+    if(!document.hidden||!('Notification' in window)||Notification.permission!=='granted')return;
+    try{new Notification(baseDocumentTitle,{tag:`kbchat:${item.sessionId}`,renotify:true,silent:true})}catch{}
+  }
+  function notifyIncomingUserMessage(item){
+    if(!item||item.author!=='user'||!item.id||notifiedIncomingIds.has(item.id))return;
+    notifiedIncomingIds.add(item.id);
+    if(notifiedIncomingIds.size>1000){const first=notifiedIncomingIds.values().next().value;notifiedIncomingIds.delete(first)}
+    playIncomingSound();showSystemNotification(item);
+  }
+  function handleIncomingMessage(item){
+    if(!item||!item.sessionId||!item.id)return;
+    mergeStoredMessage(item);
+    if(item.author==='user'&&!notifiedIncomingIds.has(item.id)){
+      const s=sessions().find(x=>x.id===item.sessionId)||null;
+      if(s){const activelyReading=selected===item.sessionId&&!document.hidden;updateSession(item.sessionId,{adminUnread:activelyReading?0:Number(s.adminUnread||0)+1});}
+      notifyIncomingUserMessage(item);
+    }
+    refresh({sessionId:item.sessionId});updateDocumentTitle();
+  }
+  async function loadRemoteMessages(sessionId){
+    const s=sessions().find(x=>x.id===sessionId)||{};if(!realtimeBase||!s.rtManaged)return;
+    const token=readRealtimeToken();if(!token)return;
+    try{
+      const response=await fetch(`${realtimeBase}/admin/messages?sessionId=${encodeURIComponent(sessionId)}`,{method:'GET',mode:'cors',credentials:'omit',cache:'no-store',headers:{'X-Admin-Token':token}});
+      if(!response.ok)return;const payload=await response.json().catch(()=>null);for(const item of payload?.messages||[])mergeStoredMessage(item);if(selected===sessionId)renderMessages();
+    }catch{}
+  }
+  function updateSession(id,patch){const items=sessions();const cur=items.find(x=>x.id===id);if(!cur)return;const shouldTouchLastAt=!cur.rtManaged||Object.prototype.hasOwnProperty.call(patch,'status')||Object.prototype.hasOwnProperty.call(patch,'flowPage')||Object.prototype.hasOwnProperty.call(patch,'flowStep');const lastAt=patch.lastAt||(shouldTouchLastAt?now():cur.lastAt);Object.assign(cur,patch,{lastAt});save(KEYS.sessions,[cur,...items.filter(x=>x.id!==id)].sort((a,b)=>String(b.lastAt).localeCompare(String(a.lastAt))));channel?.postMessage({type:'sessions-updated',sessionId:id});}
+  function renderSessions(){const items=sessions();listEl.innerHTML='';if(!items.length){listEl.innerHTML='<div class="empty">Belum ada sesi. Buka Live Chat pada <code>index.html</code> terlebih dahulu.</div>';updateDocumentTitle();return;}items.forEach(s=>{const btn=document.createElement('button');btn.type='button';btn.className=`session${selected===s.id?' active':''}`;const strong=document.createElement('strong');const name=document.createElement('span');name.textContent=`Sesi ${short(s.id)}`;strong.appendChild(name);if(Number(s.adminUnread||0)>0){const c=document.createElement('span');c.className='count';c.textContent=String(s.adminUnread);strong.appendChild(c)}const meta=document.createElement('small');const lastMs=Date.parse(s.lastAt||'');const stale=!Number.isFinite(lastMs)||Date.now()-lastMs>45000;const offline=s.status==='offline'||stale;const dot=document.createElement('span');dot.className=`dot${offline?' offline':''}`;meta.appendChild(dot);meta.append(document.createTextNode(`${offline?'Offline':'Online'}${s.blocked?' • DIBLOKIR':''} • ${s.flowPage||'-'} • Tahap ${Number(s.flowStep||0)} • ${fmt(s.lastAt)}`));btn.append(strong,meta);btn.addEventListener('click',()=>selectSession(s.id));listEl.appendChild(btn)});updateDocumentTitle();}
   function renderMessages(){messagesEl.innerHTML='';if(!selected){messagesEl.innerHTML='<div class="empty">Pilih sesi chat di sebelah kiri.</div>';return;}const items=msgs(selected);if(!items.length){messagesEl.innerHTML='<div class="empty">Belum ada pesan pada sesi ini.</div>';return;}items.forEach(m=>{const row=document.createElement('div');row.className=`row ${m.author==='admin'?'admin':'user'}`;const bubble=document.createElement('div');bubble.className='bubble';bubble.append(document.createTextNode(m.text));const t=document.createElement('span');t.className='time';t.textContent=`${m.author==='admin'?'Admin Simulasi':'Pengguna'} • ${fmt(m.at)}`;bubble.appendChild(t);row.appendChild(bubble);messagesEl.appendChild(row)});messagesEl.scrollTop=messagesEl.scrollHeight;}
-  function selectSession(id){selected=id;const s=sessions().find(x=>x.id===id);titleEl.textContent=`Sesi ${short(id)}`;subEl.textContent='Terhubung lokal pada browser/origin yang sama.';input.disabled=false;button.disabled=!input.value.trim();updateSession(id,{adminUnread:0});renderSessions();renderMessages();input.focus();}
+  function selectSession(id){selected=id;const s=sessions().find(x=>x.id===id);titleEl.textContent=`Sesi ${short(id)}`;subEl.textContent=`${s?.flowPage||'-'} • Tahap ${Number(s?.flowStep||0)}`;input.disabled=false;button.disabled=!input.value.trim();navTarget.disabled=false;navSend.disabled=Boolean(s?.blocked);accessToggle.disabled=false;accessToggle.textContent=s?.blocked?'Buka Blokir':'Blokir User';accessToggle.classList.toggle('unblock',Boolean(s?.blocked));if(s?.flowPage&&[...navTarget.options].some(o=>o.value===s.flowPage))navTarget.value=s.flowPage;navStatus.textContent='';updateSession(id,{adminUnread:0});renderSessions();renderMessages();void loadRemoteMessages(id);input.focus();}
   input.addEventListener('input',()=>{button.disabled=!selected||!input.value.trim()});
-  form.addEventListener('submit',e=>{e.preventDefault();if(!selected)return;const text=input.value.trim().slice(0,500);if(!text)return;const item={id:newId(),sessionId:selected,author:'admin',text,at:now()};const list=msgs(selected);list.push(item);save(msgKey(selected),list.slice(-250));const s=sessions().find(x=>x.id===selected)||{};updateSession(selected,{clientUnread:Number(s.clientUnread||0)+1});channel?.postMessage({type:'message',sessionId:selected,message:item});input.value='';button.disabled=true;renderMessages();renderSessions();input.focus();});
-  function refresh(data){renderSessions();if(selected&&(!data?.sessionId||data.sessionId===selected))renderMessages();}
-  channel?.addEventListener('message',e=>refresh(e.data||{}));
+  form.addEventListener('submit',async e=>{e.preventDefault();if(!selected)return;const text=input.value.trim().slice(0,500);if(!text)return;const s=sessions().find(x=>x.id===selected)||{};const draft={id:newId(),sessionId:selected,author:'admin',text,at:now()};button.disabled=true;let sent=false;let item=draft;
+    if(realtimeBase&&s.rtManaged){const token=readRealtimeToken();if(token){try{const response=await fetch(`${realtimeBase}/admin/message`,{method:'POST',mode:'cors',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json','X-Admin-Token':token},body:JSON.stringify({sessionId:selected,id:draft.id,text})});if(response.ok){const payload=await response.json().catch(()=>null);item=payload?.message||draft;sent=true}}catch{}}}
+    if(!sent&&s.localChatCapable){mergeStoredMessage(draft);updateSession(selected,{clientUnread:Number(s.clientUnread||0)+1});channel?.postMessage({type:'message',sessionId:selected,message:draft});sent=true;}
+    if(!sent){button.disabled=!input.value.trim();input.focus();return;}
+    mergeStoredMessage(item);input.value='';button.disabled=true;renderMessages();renderSessions();input.focus();});
+  async function sendNavigation(){
+    if(!selected)return;
+    const targetPage=String(navTarget.value||'').trim();
+    if(!targetPage)return;
+    const s=sessions().find(x=>x.id===selected)||{};
+    if(s.blocked){navStatus.textContent='User sedang diblokir. Buka blokir sebelum memindahkan halaman.';return;}
+    const commandId=newId();
+    navSend.disabled=true;
+    navStatus.textContent='Mengirim perintah perpindahan...';
+    let sent=false;
+
+    if(realtimeBase&&s.rtManaged){
+      const token=readRealtimeToken();
+      if(token){
+        try{
+          const response=await fetch(`${realtimeBase}/admin/navigate`,{
+            method:'POST',mode:'cors',credentials:'omit',cache:'no-store',
+            headers:{'Content-Type':'application/json','X-Admin-Token':token},
+            body:JSON.stringify({sessionId:selected,targetPage})
+          });
+          if(response.ok)sent=true;
+        }catch{}
+      }
+    }
+
+    if(!sent&&s.localChatCapable){
+      channel?.postMessage({type:'navigate-user',sessionId:selected,targetPage,commandId});
+      sent=true;
+    }
+
+    navStatus.textContent=sent?`Perintah dikirim: ${targetPage}`:'Perintah gagal dikirim. Periksa backend/token Admin.';
+    navSend.disabled=!selected;
+  }
+  navSend.addEventListener('click',sendNavigation);
+
+  async function toggleAccess(){
+    if(!selected)return;
+    const s=sessions().find(x=>x.id===selected)||{};
+    const blocked=!Boolean(s.blocked);
+    accessToggle.disabled=true;
+    navStatus.textContent=blocked?'Memblokir user...':'Membuka blokir user...';
+    let sent=false;
+
+    if(realtimeBase&&s.rtManaged){
+      const token=readRealtimeToken();
+      if(token){
+        try{
+          const response=await fetch(`${realtimeBase}/admin/access`,{
+            method:'POST',mode:'cors',credentials:'omit',cache:'no-store',
+            headers:{'Content-Type':'application/json','X-Admin-Token':token},
+            body:JSON.stringify({sessionId:selected,blocked})
+          });
+          if(response.ok){
+            const payload=await response.json().catch(()=>null);
+            if(payload?.session)mergeRemoteSession(payload.session);
+            sent=true;
+          }
+        }catch{}
+      }
+    }
+
+    if(!sent&&s.localChatCapable){
+      updateSession(selected,{blocked});
+      channel?.postMessage({type:'access-user',sessionId:selected,blocked});
+      sent=true;
+    }
+
+    const latest=sessions().find(x=>x.id===selected)||{};
+    accessToggle.disabled=!selected;
+    accessToggle.textContent=latest.blocked?'Buka Blokir':'Blokir User';
+    accessToggle.classList.toggle('unblock',Boolean(latest.blocked));
+    navSend.disabled=Boolean(latest.blocked)||!selected;
+    navStatus.textContent=sent?(blocked?'User berhasil diblokir.':'Blokir user berhasil dibuka.'):'Perintah gagal dikirim. Periksa backend/token Admin.';
+    renderSessions();
+  }
+  accessToggle.addEventListener('click',toggleAccess);
+
+  function refresh(data){
+    renderSessions();
+    if(selected&&(!data?.sessionId||data.sessionId===selected)){
+      renderMessages();
+      const s=sessions().find(x=>x.id===selected)||{};
+      accessToggle.disabled=false;
+      accessToggle.textContent=s.blocked?'Buka Blokir':'Blokir User';
+      accessToggle.classList.toggle('unblock',Boolean(s.blocked));
+      navSend.disabled=Boolean(s.blocked);
+      subEl.textContent=`${s?.flowPage||'-'} • Tahap ${Number(s?.flowStep||0)}${s.blocked?' • DIBLOKIR':''}`;
+    }
+  }
+  channel?.addEventListener('message',e=>{const data=e.data||{};if(data.type==='message'&&data.message)handleIncomingMessage(data.message);else refresh(data)});
   window.addEventListener('storage',e=>{if(e.key===KEYS.sessions||String(e.key||'').startsWith(KEYS.messagesPrefix))refresh()});
+
+  function mergeRemoteSnapshot(remoteItems){
+    const current=load(KEYS.sessions,[]);
+    const currentById=new Map(current.map(item=>[item.id,item]));
+    const local=current.filter(item=>!item?.rtManaged);
+    const remote=(Array.isArray(remoteItems)?remoteItems:[]).map(item=>{
+      const existing=currentById.get(item.id);
+      return {...item,rtManaged:true,localChatCapable:Boolean(existing?.localChatCapable),adminUnread:Number(existing?.adminUnread||0),clientUnread:Number(existing?.clientUnread||0)};
+    });
+    const merged=[...remote,...local.filter(item=>!remote.some(r=>r.id===item.id))]
+      .sort((a,b)=>String(b.lastAt||'').localeCompare(String(a.lastAt||'')))
+      .slice(0,200);
+    save(KEYS.sessions,merged);
+    refresh();
+  }
+
+  function mergeRemoteSession(item){
+    if(!item||!item.id)return;
+    const current=load(KEYS.sessions,[]);
+    const existing=current.find(x=>x.id===item.id)||{};
+    const next={...existing,...item,rtManaged:true,localChatCapable:Boolean(existing.localChatCapable),adminUnread:Number(existing.adminUnread||0),clientUnread:Number(existing.clientUnread||0)};
+    save(KEYS.sessions,[next,...current.filter(x=>x.id!==item.id)]
+      .sort((a,b)=>String(b.lastAt||'').localeCompare(String(a.lastAt||'')))
+      .slice(0,200));
+    refresh({sessionId:item.id});
+  }
+
+  async function connectRealtime(){
+    const token=readRealtimeToken();
+    if(!realtimeBase||!token||!('EventSource' in window))return;
+    try{realtimeSource?.close()}catch{}
+    try{
+      const auth=await fetch(`${realtimeBase}/admin/auth`,{method:'POST',mode:'cors',credentials:'omit',cache:'no-store',headers:{'X-Admin-Token':token}});
+      if(!auth.ok)return;
+      const payload=await auth.json();
+      const ticket=String(payload?.ticket||'');
+      if(!ticket)return;
+      realtimeSource=new EventSource(`${realtimeBase}/admin/events?ticket=${encodeURIComponent(ticket)}`,{withCredentials:false});
+      realtimeSource.addEventListener('snapshot',event=>{try{mergeRemoteSnapshot(JSON.parse(event.data||'[]'))}catch{}});
+      realtimeSource.addEventListener('session',event=>{try{mergeRemoteSession(JSON.parse(event.data||'null'))}catch{}});
+      realtimeSource.addEventListener('message',event=>{try{handleIncomingMessage(JSON.parse(event.data||'null'))}catch{}});
+      realtimeSource.addEventListener('error',()=>{try{realtimeSource?.close()}catch{};window.setTimeout(connectRealtime,3000)});
+    }catch{}
+  }
+
+  window.addEventListener('pagehide',()=>{try{realtimeSource?.close()}catch{}});
+  const arm=()=>{void armNotifications()};
+  window.addEventListener('pointerdown',arm,{once:true,capture:true});
+  window.addEventListener('keydown',arm,{once:true,capture:true});
+  seedNotifiedMessages();
+  connectRealtime();
   renderSessions();
+  window.setInterval(()=>refresh(),10000);
 })();
 </script>
 </body>

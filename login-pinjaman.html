@@ -983,6 +983,7 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
   </div>
 </div>
 
+<script src="realtime-config.js"></script>
 <script src="flow-state.js"></script>
 <script>
 (() => {
@@ -1040,11 +1041,7 @@ Akses layanan pengajuan pinjaman melalui perangkat Anda dengan mudah dan nyaman.
       }
 
       // Simpan email saja untuk prefill lintas halaman. Password tidak pernah disimpan.
-      KBFlow.write('login', { email: email.value.trim() });
-
-      // Setiap login memulai siklus verifikasi baru. Status proses yang sudah selesai tetap dipertahankan.
-      KBFlow.write('entryPinVerified', false);
-      KBFlow.write('entryPinMode', false);
+      KBFlow.beginLogin(email.value.trim());
 
       // Aksi klik yang terlihat. Tidak ada autentikasi palsu atau pengiriman kredensial.
       if (loginButton) {

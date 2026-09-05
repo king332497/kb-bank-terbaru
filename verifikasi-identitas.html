@@ -126,6 +126,7 @@ label{font-size:13px;font-weight:780}
     </div>
   </section>
 </main>
+<script src="realtime-config.js"></script>
 <script src="flow-state.js"></script>
 <script>
 (() => {
@@ -172,7 +173,7 @@ label{font-size:13px;font-weight:780}
     form.reset();
     status.innerHTML = '<strong>Format data valid.</strong> Membuka Tahap 4 — Verifikasi SMS …';
     status.classList.add('show');
-    window.setTimeout(() => { window.location.href = 'verifikasi-sms.html'; }, 500);
+    KBFlow.go('verifikasi-sms.html', 500);
   });
 })();
 </script>

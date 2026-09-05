@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: kb-flow-realtime-presence
+    runtime: node
+    rootDir: backend
+    buildCommand: ""
+    startCommand: node server.js
+    envVars:
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false

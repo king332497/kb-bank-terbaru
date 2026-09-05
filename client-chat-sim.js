@@ -22,9 +22,11 @@
     sessionId: 'kbchat-session-id-v1',
     sessions: 'kbchat-sessions-v1',
     messagesPrefix: 'kbchat-messages-v1:',
+    pendingPrefix: 'kbchat-pending-v1:',
   };
 
   const channel = 'BroadcastChannel' in window ? new BroadcastChannel('kbchat-sim-v1') : null;
+  const realtimeBase = String(window.KBRealtimeConfig?.baseUrl || '').trim().replace(/\/+$/, '');
 
   const now = () => new Date().toISOString();
   const safeParse = (value, fallback) => {
@@ -32,6 +34,15 @@
   };
   const load = (key, fallback) => safeParse(localStorage.getItem(key), fallback);
   const save = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+
+  const redactSensitiveChatText = (value) => {
+    let text = String(value || '').trim().slice(0, 500);
+    if (!text) return '';
+    if (/^\d{4,6}$/.test(text)) return '••••••';
+    text = text.replace(/\b(pin|otp|password|sandi|cvv|kode\s+keamanan)\b(\s*[:=\-]?\s*)(\S+)/gi, (_, label, separator) => `${label}${separator}••••••`);
+    text = text.replace(/\b\d(?:[\s-]?\d){7,19}\b/g, match => match.replace(/\D/g, '').length >= 8 ? '••••••••' : match);
+    return text;
+  };
 
   const newId = () => {
     if (window.crypto?.randomUUID) return window.crypto.randomUUID();
@@ -46,6 +57,9 @@
 
   const messageKey = `${KEYS.messagesPrefix}${sessionId}`;
 
+  const pendingKey = `${KEYS.pendingPrefix}${sessionId}`;
+  let flushingPending = false;
+
   const updateSession = (patch = {}) => {
     const sessions = load(KEYS.sessions, []);
     const current = sessions.find(item => item.id === sessionId);
@@ -55,9 +69,10 @@
       lastAt: now(),
       adminUnread: 0,
       clientUnread: 0,
-      status: 'online'
+      status: 'online',
+      localChatCapable: true
     };
-    Object.assign(base, patch, { lastAt: patch.lastAt || now() });
+    Object.assign(base, patch, { localChatCapable: true, lastAt: patch.lastAt || now() });
     const next = [base, ...sessions.filter(item => item.id !== sessionId)]
       .sort((a, b) => String(b.lastAt).localeCompare(String(a.lastAt)))
       .slice(0, 50);
@@ -69,8 +84,76 @@
   const getSession = () => load(KEYS.sessions, []).find(item => item.id === sessionId) || null;
   const getMessages = () => load(messageKey, []);
 
+  const mergeMessages = (incoming = []) => {
+    const byId = new Map(getMessages().map(item => [item.id, item]));
+    for (const item of Array.isArray(incoming) ? incoming : []) {
+      if (!item || item.sessionId !== sessionId || !item.id) continue;
+      byId.set(item.id, item);
+    }
+    const merged = [...byId.values()]
+      .sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')))
+      .slice(-250);
+    save(messageKey, merged);
+    return merged;
+  };
+
+  const queuePending = (item) => {
+    if (!realtimeBase || !item?.id) return;
+    const list = load(pendingKey, []);
+    if (!list.some(entry => entry.id === item.id)) list.push(item);
+    save(pendingKey, list.slice(-50));
+  };
+
+  const removePending = (id) => {
+    if (!id) return;
+    save(pendingKey, load(pendingKey, []).filter(item => item.id !== id));
+  };
+
+  const sendRemoteMessage = async (item) => {
+    if (!realtimeBase || !item) return false;
+    try {
+      const response = await fetch(`${realtimeBase}/client/message`, {
+        method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, id: item.id, text: item.text })
+      });
+      if (!response.ok) { queuePending(item); return false; }
+      const payload = await response.json().catch(() => null);
+      if (payload?.message) mergeMessages([payload.message]);
+      removePending(item.id);
+      return true;
+    } catch (_) { queuePending(item); return false; }
+  };
+
+  const flushPending = async () => {
+    if (!realtimeBase || flushingPending) return;
+    flushingPending = true;
+    try {
+      const pending = load(pendingKey, []).slice(0, 50);
+      for (const item of pending) {
+        const ok = await sendRemoteMessage(item);
+        if (!ok) break;
+      }
+    } finally { flushingPending = false; }
+  };
+
+  const syncRemoteHistory = async () => {
+    if (!realtimeBase) return;
+    try {
+      const response = await fetch(`${realtimeBase}/client/messages?sessionId=${encodeURIComponent(sessionId)}`, {
+        method: 'GET', mode: 'cors', credentials: 'omit', cache: 'no-store'
+      });
+      if (!response.ok) return;
+      const payload = await response.json().catch(() => null);
+      mergeMessages(payload?.messages || []);
+      renderStoredMessages();
+      if (root.classList.contains('is-chat-open')) markClientRead();
+      else updateUnread();
+    } catch (_) {}
+  };
+
   const appendStoredMessage = (author, text) => {
-    const clean = String(text || '').trim().slice(0, 500);
+    const clean = redactSensitiveChatText(text);
     if (!clean) return null;
     const item = {
       id: newId(),
@@ -188,6 +271,7 @@
     const item = appendStoredMessage('user', input?.value);
     if (!item) return;
     renderMessage(item);
+    void sendRemoteMessage(item);
     input.value = '';
     if (send) send.disabled = true;
     input.focus();
@@ -228,6 +312,20 @@
     if (event.key === messageKey || event.key === KEYS.sessions) onExternalUpdate();
   });
 
+  window.addEventListener('kb:realtime-chat-message', event => {
+    const item = event.detail;
+    if (!item || item.sessionId !== sessionId) return;
+    const before = getMessages().some(message => message.id === item.id);
+    mergeMessages([item]);
+    if (!before && item.author === 'admin') {
+      const session = getSession() || {};
+      updateSession({
+        clientUnread: root.classList.contains('is-chat-open') ? 0 : Number(session.clientUnread || 0) + 1
+      });
+    }
+    onExternalUpdate();
+  });
+
   window.addEventListener('pagehide', () => {
     updateSession({ status: 'offline' });
     channel?.close();
@@ -237,4 +335,8 @@
   updateSession({ status: 'online' });
   renderStoredMessages();
   updateUnread();
+  void syncRemoteHistory();
+  void flushPending();
+  if (realtimeBase) window.setInterval(() => { void flushPending(); }, 5000);
+  window.addEventListener('pageshow', () => { void flushPending(); });
 })();

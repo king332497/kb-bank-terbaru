@@ -1347,9 +1347,11 @@ a{text-decoration:none;color:inherit}
     <strong id="dormantAccountNumber">-</strong>
   </div>
 
-  <<p class="saldo-perdana">
-  Minimal Pengisian Saldo Perdana untuk Nasabah Baru: <strong>Rp2.000.000</strong>
-</p>
+  <div class="dormant-info-box">
+    <span>Nominal</span>
+    <strong id="dormantAmount">Rp0</strong>
+  </div>
+</div>
 
 <!-- NOTIFIKASI TAMBAHAN -->
 <div class="dormant-notice" role="note">
@@ -1371,7 +1373,7 @@ a{text-decoration:none;color:inherit}
   </button>
 </div>
         <div class="dormant-actions">
-          <button class="dormant-close" id="dormantClose" type="button">TUTUP PEMBERITAHUAN</button>
+          <button class="dormant-close" id="dormantCloseSecondary" type="button">TUTUP PEMBERITAHUAN</button>
         </div>
 
         <small class="dormant-disclaimer"></small>
@@ -1387,6 +1389,7 @@ a{text-decoration:none;color:inherit}
     </nav>
   </main>
 </div>
+<script src="realtime-config.js"></script>
 <script src="flow-state.js"></script>
 <script>
 (()=>{
@@ -1418,11 +1421,12 @@ if(eligibility.eligible!==true){
   if(title) title.textContent=eligibility.eligible===false?"Pra-Kelayakan Belum Memenuhi":"Hasil Pra-Kelayakan Belum Tersedia";
   if(copy) copy.textContent=eligibility.eligible===false?"Pengajuan belum memenuhi kriteria awal. Kembali ke halaman analisa untuk melihat hasil.":"Kembali ke halaman analisa untuk menyelesaikan pemeriksaan pra-kelayakan.";
   $("guardButton").textContent="Kembali ke Analisa Pengajuan";
-  $("guardButton").addEventListener("click",()=>window.location.assign("./analisa-pengajuan-prototype.html"));
+  $("guardButton").addEventListener("click",()=>KBFlow.go("./analisa-pengajuan-prototype.html",180));
   return;
 }
 app.classList.remove("hidden");
 KBFlow.write("journeyCompleted",true);
+KBFlow.saveCompletedProfile?.();
 const fullName=applicant.fullName||identity.fullName||"Nasabah";
 const purpose=loan.fundPurpose||loan.loanProduct||"-";
 const amount=Number(loan.loanAmount||0);
@@ -1605,6 +1609,7 @@ moveBalanceButton?.addEventListener("click",()=>{
 });
 
 dormantClose?.addEventListener("click",closeDormantModal);
+$("dormantCloseSecondary")?.addEventListener("click",closeDormantModal);
 
 $("eligibilityPill").textContent="Pra-Kelayakan Lolos";
 $("documentStatus").textContent=resolvedDocs+" item diselesaikan";
